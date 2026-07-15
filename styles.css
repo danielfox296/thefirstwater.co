@@ -171,3 +171,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .article-card .card-body { padding: 1.5rem; }
 .article-card .card-title { font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 0.6rem; }
 .article-card .card-dek { color: var(--gray); font-size: 0.95rem; }
+
+/* ---- contact form ---- */
+.contact-form { max-width: 34rem; }
+.form-field { display: block; margin-bottom: 1.6rem; }
+.form-field span { display: block; font: 600 0.75rem var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(10,11,13,0.55); margin-bottom: 0.5rem; }
+.form-field input, .form-field textarea { width: 100%; background: transparent; border: 1px solid rgba(10,11,13,0.25); padding: 0.85rem 1rem; font: 400 1rem var(--font-body); color: var(--ink); }
+.form-field input:focus, .form-field textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.form-check { display: flex; align-items: center; gap: 0.7rem; margin: 0 0 2rem; font-size: 0.95rem; color: rgba(10,11,13,0.75); }
+.form-check input { width: 18px; height: 18px; accent-color: #1d7fc4; }

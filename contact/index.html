@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="https://REPLACE-WITH-DOMAIN.example/about/index.html">
+  <link rel="canonical" href="https://REPLACE-WITH-DOMAIN.example/contact/index.html">
   <meta name="robots" content="index, follow">
-  <title>About — Sound Sessions Denver</title>
-  <meta name="description" content="Built by a professional music producer who needed the room himself. Engineered sound experiences in Denver: sub-bass, ceremony, and nothing to explain.">
+  <title>Contact — Sound Sessions Denver</title>
+  <meta name="description" content="Write to Sound Sessions in Denver. Questions, venues, press, or a note about the next session.">
   <meta name="theme-color" content="#0A0B0D">
 
   <!-- Open Graph -->
   <link rel="alternate" type="application/rss+xml" title="Sound Sessions Journal" href="../rss.xml">
-  <meta property="og:title" content="About — Sound Sessions Denver">
-  <meta property="og:description" content="Built by a professional music producer who needed the room himself. Engineered sound experiences in Denver: sub-bass, ceremony, and nothing to explain.">
-  <meta property="og:url" content="https://REPLACE-WITH-DOMAIN.example/about/index.html">
+  <meta property="og:title" content="Contact — Sound Sessions Denver">
+  <meta property="og:description" content="Write to Sound Sessions in Denver. Questions, venues, press, or a note about the next session.">
+  <meta property="og:url" content="https://REPLACE-WITH-DOMAIN.example/contact/index.html">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://REPLACE-WITH-DOMAIN.example/img/og-default.png">
   <meta property="og:site_name" content="Sound Sessions">
@@ -21,8 +21,8 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="About — Sound Sessions Denver">
-  <meta name="twitter:description" content="Built by a professional music producer who needed the room himself. Engineered sound experiences in Denver: sub-bass, ceremony, and nothing to explain.">
+  <meta name="twitter:title" content="Contact — Sound Sessions Denver">
+  <meta name="twitter:description" content="Write to Sound Sessions in Denver. Questions, venues, press, or a note about the next session.">
   <meta name="twitter:image" content="https://REPLACE-WITH-DOMAIN.example/img/og-default.png">
 
   <!-- Structured Data -->
@@ -68,7 +68,7 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "About \u2014 Sound Sessions Denver"
+      "name": "Contact \u2014 Sound Sessions Denver"
     }
   ]
 }
@@ -99,41 +99,36 @@
 </header>
 
   <main>
-  <section class="section section--dark">
+  <section class="section section--dark blog-hero-section">
   <div class="container">
-    <span class="eyebrow">About</span>
-    <h1 style="font-size:clamp(2.6rem,6vw,4.6rem);font-weight:300;">You feel it<br>before you can explain it.</h1>
-    <p class="hero-sub" style="max-width:44rem;">I make music for a living, and somewhere in
-    all those years of sessions I learned the thing every producer learns eventually: people
-    feel a record before they have a single thought about it. I have spent my working life
-    trying to make that first moment happen on purpose, in songs, and now in rooms.</p>
+    <span class="eyebrow">Contact</span>
+    <h1 style="font-weight:300;">Write to us</h1>
+    <p class="hero-sub">Questions, venues, press, or a note. You'll hear back.</p>
   </div>
 </section>
 
 <section class="section section--light">
   <div class="container">
-    <span class="eyebrow">The practice</span>
-    <h2>Rooms built the way records are built</h2>
-    <p>Sound Sessions is that work at room scale. Each night is a facilitated group
-    experience built on engineered sound: a dark room with one light, sub-bass you feel
-    in your sternum, a formal opening and a formal close, and the better part of an hour
-    with nothing to do and nothing to say.</p>
-    <p>Every session is built around something worth putting down. The first nights are
-    for people carrying the end of a relationship, and more are coming behind them, each
-    with its own reason to lie down on the floor.</p>
-  </div>
-</section>
-
-<section class="section section--dark">
-  <div class="container">
-    <span class="eyebrow">The craft</span>
-    <h2>The bet is production</h2>
-    <p>Nearly everything I believe about this practice comes down to how the room sounds.
-    A room can sound like a gymnasium or it can sound like the inside of a cello, and the
-    difference between the two is the same discipline I use to make records: sub-bass
-    placed for the chest, arcs built the way songs are built, a space treated like a
-    studio instead of a stage. That is what I know how to do, so that is the bet.</p>
-    <p style="margin-top:2rem;"><a class="btn btn-primary" href="../sessions/healing-from-breakups/">See the next session</a></p>
+    <!-- ENDPOINT: create a free Formspree form, then replace REPLACE_FORM_ID below -->
+    <form class="contact-form" action="https://formspree.io/f/REPLACE_FORM_ID" method="POST">
+      <label class="form-field">
+        <span>Name</span>
+        <input type="text" name="name" autocomplete="name" required>
+      </label>
+      <label class="form-field">
+        <span>Email</span>
+        <input type="email" name="email" autocomplete="email" required>
+      </label>
+      <label class="form-field">
+        <span>Message</span>
+        <textarea name="message" rows="6" required></textarea>
+      </label>
+      <label class="form-check">
+        <input type="checkbox" name="notify_next_session" value="yes">
+        <span>Tell me when the next session goes up</span>
+      </label>
+      <button type="submit" class="btn btn-primary">Send</button>
+    </form>
   </div>
 </section>
   </main>
