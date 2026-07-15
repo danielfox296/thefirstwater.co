@@ -1,0 +1,6 @@
+{% set level = block.level|default(2) %}
+{% set anchor = block.anchor|default(block.text|lower|replace(' ', '-')|replace('"', '')|replace("'", '')) %}
+<h{{ level }} id="{{ anchor }}" class="blog-subhead blog-subhead--h{{ level }}">
+  {{ block.text }}
+  <a href="#{{ anchor }}" class="anchor-link" aria-label="Link to section">#</a>
+</h{{ level }}>

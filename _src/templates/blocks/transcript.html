@@ -1,0 +1,38 @@
+{# Transcript / chapters block.
+   block.chapters: list of {label, time (seconds), body? (markdown)}.
+   Renders a jump-linked chapter outline always, and a full chaptered
+   transcript when chapter bodies are present (degrades to outline-only). #}
+{% set v = ctx.post.video %}
+{% set watch = 'https://www.youtube.com/watch?v=' ~ (v.id if v else '') %}
+{% set has_body = block.chapters | selectattr('body') | list | length > 0 %}
+<div class="blog-transcript fade-up">
+  <h2 class="blog-transcript__heading" id="chapters">Chapters</h2>
+  <ol class="blog-transcript__toc">
+    {% for c in block.chapters %}
+    <li>
+      {% if v and v.id %}
+      <a href="{{ watch }}&amp;t={{ c.time }}s" target="_blank" rel="noopener">
+        <span class="blog-transcript__time">{{ '%d:%02d' | format(c.time // 60, c.time % 60) }}</span>
+        {{ c.label }}
+      </a>
+      {% else %}
+      <span class="blog-transcript__time">{{ '%d:%02d' | format(c.time // 60, c.time % 60) }}</span>
+      {{ c.label }}
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+
+  {% if has_body %}
+  <h2 class="blog-transcript__heading" id="transcript">Transcript</h2>
+  {% for c in block.chapters %}
+  {% if c.body %}
+  <h3 class="blog-transcript__chapter" id="{{ c.label | slugify }}">
+    <span class="blog-transcript__time">{{ '%d:%02d' | format(c.time // 60, c.time % 60) }}</span>
+    {{ c.label }}
+  </h3>
+  {{ c.body | markdown | safe }}
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+</div>

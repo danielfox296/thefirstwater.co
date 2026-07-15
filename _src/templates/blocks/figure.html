@@ -1,0 +1,10 @@
+<figure class="blog-figure">
+  <img src="{{ block.src }}" alt="{{ block.alt }}" loading="lazy">
+  {% if block.caption or block.source %}
+  <figcaption>
+    {% if block.caption %}{{ block.caption }}{% endif %}
+    {% if block.caption and block.source %} &mdash; {% endif %}
+    {% if block.source %}<cite>{{ block.source }}</cite>{% endif %}
+  </figcaption>
+  {% endif %}
+</figure>

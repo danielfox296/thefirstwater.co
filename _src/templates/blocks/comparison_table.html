@@ -1,0 +1,30 @@
+{% set columns = block.columns|default([]) %}
+<figure class="blog-comparison-table">
+  {% if block.title %}
+  <figcaption class="blog-comparison-table__title">{{ block.title }}</figcaption>
+  {% endif %}
+  <div class="blog-comparison-table__wrapper">
+    <table>
+      <thead>
+        <tr>
+          {% for col in columns %}
+          <th scope="col">{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in block.rows %}
+        <tr>
+          {% for cell in row %}
+          {% if loop.index0 == 0 %}
+          <th scope="row" data-label="{{ columns[0] }}">{{ cell }}</th>
+          {% else %}
+          <td data-label="{{ columns[loop.index0] }}">{{ cell }}</td>
+          {% endif %}
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</figure>

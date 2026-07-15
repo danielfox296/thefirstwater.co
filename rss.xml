@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Sound Sessions Journal | Retail Music Strategy</title>
+  <link>https://REPLACE-WITH-DOMAIN.example/blog.html</link>
+  <description>Research-backed insights on retail music strategy, in-store customer behavior, and AI-powered audio optimization.</description>
+  <language>en-us</language>
+  <atom:link href="https://REPLACE-WITH-DOMAIN.example/rss.xml" rel="self" type="application/rss+xml"/>
+</channel>
+</rss>

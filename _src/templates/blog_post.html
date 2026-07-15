@@ -1,0 +1,86 @@
+{# Blog post article template — outputs content for the {{content}} slot in base.html.
+   Does NOT include <html>, <head>, nav, or footer — build.py handles those via base.html.
+
+   Variables provided by blog_renderer.py:
+     title, slug, eyebrow, dek, date, author (dict), hero (dict),
+     reading_time (int), sections_html, key_takeaways_html, cta_html,
+     related_html, nav_prefix
+#}
+
+<!-- Reading progress bar -->
+<div class="blog-progress" aria-hidden="true">
+  <div class="blog-progress__bar" id="reading-progress"></div>
+</div>
+
+<article class="blog-article">
+
+  <!-- Article header -->
+  <header class="blog-article__header">
+    <div class="blog-eyebrow">{{ eyebrow }}</div>
+    <h1 class="blog-headline">{{ title }}</h1>
+    <p class="blog-dek">{{ dek }}</p>
+    <div class="blog-byline">
+      {% if author.avatar %}
+      <img src="{{ author.avatar }}" alt="{{ author.name }}" class="blog-byline__avatar" width="40" height="40">
+      {% endif %}
+      <span class="blog-byline__author">{{ author.name }}</span>
+      {% if author.role %}
+      <span class="blog-byline__role">{{ author.role }}</span>
+      {% endif %}
+      <span class="blog-byline__sep" aria-hidden="true">&middot;</span>
+      <time class="blog-byline__date" datetime="{{ date }}">{{ date }}</time>
+      <span class="blog-byline__sep" aria-hidden="true">&middot;</span>
+      <span class="blog-byline__reading-time">{{ reading_time }} min read</span>
+    </div>
+  </header>
+
+  <!-- Hero image -->
+  {% if hero %}
+  <figure class="blog-hero fade-up">
+    <img src="{{ hero.src }}" alt="{{ hero.alt }}" class="blog-hero__img" loading="lazy">
+    {% if hero.caption %}
+    <figcaption class="blog-hero__caption">{{ hero.caption }}</figcaption>
+    {% endif %}
+  </figure>
+  {% endif %}
+
+  <!-- Key takeaways -->
+  {% if key_takeaways_html %}
+  {{ key_takeaways_html|safe }}
+  {% endif %}
+
+  <!-- Article body (all sections except key_takeaways, cta, related) -->
+  <div class="blog-article__body">
+    {{ sections_html|safe }}
+  </div>
+
+  <!-- CTA -->
+  {% if cta_html %}
+  {{ cta_html|safe }}
+  {% endif %}
+
+  <!-- Related posts -->
+  {% if related_html %}
+  {{ related_html|safe }}
+  {% endif %}
+
+</article>
+
+<!-- Blog-specific JS (reading progress + anchor copy) -->
+<script>
+  // Reading progress bar
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    document.getElementById('reading-progress').style.width = pct + '%';
+  });
+
+  // Anchor link copy-to-clipboard
+  document.querySelectorAll('.anchor-link').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      navigator.clipboard.writeText(window.location.origin + window.location.pathname + a.getAttribute('href'));
+      a.textContent = '\u2713'; setTimeout(() => a.textContent = '#', 1500);
+    });
+  });
+</script>

@@ -1,0 +1,15 @@
+<figure class="blog-data-viz">
+  {% if block.title %}
+  <div class="blog-data-viz__title">{{ block.title }}</div>
+  {% endif %}
+  <div class="blog-data-viz__chart">
+    {{ block.svg_html|safe }}
+  </div>
+  {% if block.caption or block.source %}
+  <figcaption class="blog-data-viz__caption">
+    {% if block.caption %}{{ block.caption }}{% endif %}
+    {% if block.caption and block.source %} &mdash; {% endif %}
+    {% if block.source %}<cite>{{ block.source }}</cite>{% endif %}
+  </figcaption>
+  {% endif %}
+</figure>

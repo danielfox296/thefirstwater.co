@@ -1,0 +1,40 @@
+title: "Healing from Breakups"
+slug: "breakups"
+eyebrow: "A SOUND SESSION"
+dek: "You did everything right. It's still there when the apartment goes quiet at night."
+date: "2026-07-14"
+last_updated: "2026-07-14"
+author:
+  name: "Sound Sessions"
+  role: "Denver"
+meta_description: "A facilitated sound session in Denver for anyone carrying the end of a relationship. One dark room, engineered sound, 75 minutes."
+llms_description: "A facilitated sound session in Denver for people moving through a breakup. Engineered sub-bass sound descent, optional silent partner sitting, 75 minutes."
+tags: [sessions, breakups, denver]
+sections:
+  - type: prose
+    body: |
+      You did everything right. Deleted the photos, blocked the number, said yes to everything. It's still there when the apartment goes quiet at night.
+
+      And if you're honest, it's been going on longer than you tell people. You've gotten good at the part where someone asks how you're doing and you give the answer that ends the conversation, and then you go home and check a profile you promised yourself you were done checking, and you feel the particular stupidity of doing a thing you decided not to do. Enough months of that and you stop noticing what it costs you, which is the real problem with it.
+
+      Talking has probably helped less than everyone promised it would, and I think that's because the thing that hurts doesn't live in the part of you that talks. This room works on the other part.
+
+  - type: subhead
+    level: 2
+    text: "The night, plainly"
+
+  - type: prose
+    body: |
+      The room is dark except for one light, and you lie down on a mat among twenty or so people who are there for the same reason you are. For the better part of an hour there's nothing to do and nothing to say, just sound, most of it pitched low enough that you feel it in your chest before you hear it, and it will take you further down than you've managed to get on your own. Near the end you'll be invited to sit with one other person in silence for a few minutes, and if you'd rather stay on the floor, that's what the floor is for. Then the sound brings you back up, and the night is over.
+
+      Most people leave lighter than they came in, and some leave without something they'd been carrying for a long time. I can't tell you which you'll be. I can tell you there's a version of you somewhere ahead who hears your song come on in a grocery store and just keeps shopping, and this room was built to move you an hour in that direction.
+
+  - type: subhead
+    level: 2
+    text: "The details"
+
+  - type: prose
+    body: |
+      [DATE] at [STUDIO], Denver. 75 minutes, $[XX], and the room holds 24. Mats and blankets are there already, so wear something soft. Doors close at [TIME] and stay closed.
+
+      If the night wasn't for you, say so and your ticket comes back.
