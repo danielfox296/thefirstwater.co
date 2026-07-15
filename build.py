@@ -388,7 +388,7 @@ def build():
         # ---------------------------------------------------------------
         output_check = config.get('output', f'{page_name}.html')
         use_new_renderer = (
-            output_check.startswith('blog/')
+            output_check.startswith(('blog/', 'sessions/'))
             and _is_new_format_blog(page_path)
         )
 

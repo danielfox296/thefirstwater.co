@@ -6,5 +6,12 @@
   <description>Research-backed insights on retail music strategy, in-store customer behavior, and AI-powered audio optimization.</description>
   <language>en-us</language>
   <atom:link href="https://REPLACE-WITH-DOMAIN.example/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Healing from Breakups</title>
+    <link>https://REPLACE-WITH-DOMAIN.example/blog/breakups.html</link>
+    <description>A facilitated sound session in Denver for anyone carrying the end of a relationship. One dark room, engineered sound, 75 minutes.</description>
+    <pubDate>Tue, 14 Jul 2026 00:00:00 +0000</pubDate>
+    <guid>https://REPLACE-WITH-DOMAIN.example/blog/breakups.html</guid>
+  </item>
 </channel>
 </rss>
