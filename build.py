@@ -45,6 +45,13 @@ SRC      = os.path.join(REPO, '_src')
 LAYOUTS  = os.path.join(SRC, 'layouts')
 PARTIALS = os.path.join(SRC, 'partials')
 PAGES    = os.path.join(SRC, 'pages')
+
+# Sessions feed (WP5 seam): fetched from the events service at build time,
+# cached in data/sessions-cache.json, never allowed to break the build.
+# Stdlib-only module, safe to import unconditionally.
+if REPO not in sys.path:
+    sys.path.insert(0, REPO)
+from _src.lib import sessions_feed
 SITE_URL = 'https://REPLACE-WITH-DOMAIN.example'  # TODO: set when domain is chosen
 
 # Sitewide description used in LocalBusiness + WebSite JSON-LD.
@@ -347,6 +354,13 @@ def build():
 
     pages_built = []
 
+    # Load the sessions feed (WP5). On any failure this falls back to the
+    # committed data/sessions-cache.json, then to an empty feed — the build
+    # always proceeds.
+    print('Loading sessions feed...')
+    feed = sessions_feed.load_feed(REPO)
+    print()
+
     # Find all page directories (supports nested: pages/blog-posts/slug/)
     page_dirs = []
     for root, dirs, files in os.walk(PAGES):
@@ -480,6 +494,42 @@ def build():
             if os.path.exists(content_yaml_path):
                 yaml_data = parse_simple_yaml(read(content_yaml_path))
                 content = resolve_content(content, {'content': yaml_data})
+
+        # ---------------------------------------------------------------
+        # SESSIONS FEED INJECTION (WP5)
+        # Session pages: append the dates/tickets block (inside the article)
+        # for future on_sale/sold_out/scheduled sessions of this event.
+        # Homepage: fill the hero next-date slot with the earliest future
+        # on_sale/scheduled session. With no sessions (the empty-cache
+        # state) both branches are no-ops and output is byte-identical.
+        # ---------------------------------------------------------------
+        page_sessions = []
+        _sess_match = re.fullmatch(r'sessions/([^/]+)/index\.html', output)
+        if _sess_match and output != 'sessions/index.html':
+            page_sessions = sessions_feed.sessions_for_slug(feed, _sess_match.group(1))
+            if page_sessions:
+                # Depth-correct asset prefix (nav_prefix is '../' for all
+                # new-renderer pages, which is wrong at sessions/<slug>/ depth).
+                _asset_prefix = '../' * output.count('/')
+                _block = sessions_feed.render_sessions_block(page_sessions, _asset_prefix)
+                if '</article>' in content:
+                    content = content.replace('</article>', _block + '\n\n</article>', 1)
+                else:
+                    content += '\n\n' + _block
+
+        if output == 'index.html':
+            _next = sessions_feed.next_session(feed)
+            if _next:
+                _hero_label = (
+                    f'<a href="sessions/{html_mod.escape(_next["event_slug"], quote=True)}/">'
+                    f'Denver &middot; next session '
+                    f'{html_mod.escape(sessions_feed.fmt_date_short(_next["starts_at"]))}</a>'
+                )
+                content = re.sub(
+                    r'(<span class="hero-date fade-up">).*?(</span>)',
+                    lambda m: m.group(1) + _hero_label + m.group(2),
+                    content, count=1, flags=re.DOTALL,
+                )
 
         # ---------------------------------------------------------------
         # SHARED LAYOUT ASSEMBLY (both old and new pipelines converge)
@@ -772,6 +822,19 @@ def build():
                 "itemListElement": crumbs
             }
             schema_json += f'\n  <script type="application/ld+json">\n{json.dumps(breadcrumb_schema, indent=2)}\n  </script>'
+
+        # Event schema (WP5) — one per real dated session on this page.
+        # Only ever emitted when the feed has a future dated session, which
+        # is exactly DESIGN.md's "Event schema once a real date exists" rule.
+        if page_sessions:
+            _event_title = (post_data.get('title') if use_new_renderer else config.get('title', '')) or og_title
+            _event_title = _event_title.split(' — ')[0].strip()
+            for _s in page_sessions:
+                _ev = sessions_feed.event_schema(
+                    _s, _event_title, canonical_url, SITE_URL,
+                    description=description, image=og_image,
+                )
+                schema_json += f'\n  <script type="application/ld+json">\n{json.dumps(_ev, indent=2)}\n  </script>'
 
         # Substitute into base layout
         html = base

@@ -3,6 +3,11 @@ name: Deploy sound sessions site
 on:
   push:
     branches: [main]
+  # The events service fires this when sessions change, so the static site
+  # rebuilds with fresh dates without a code push:
+  #   POST /repos/<owner>/<repo>/dispatches  {"event_type": "sessions-updated"}
+  repository_dispatch:
+    types: [sessions-updated]
   workflow_dispatch:
 
 jobs:
