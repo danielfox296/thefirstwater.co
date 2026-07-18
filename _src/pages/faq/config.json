@@ -1,5 +1,6 @@
 {
   "title": "FAQ \u2014 What Happens at a Sound Session",
   "meta_description": "What a sound session is, what happens in the room, what to wear, and where nights happen in Denver.",
-  "output": "faq/index.html"
+  "output": "faq/index.html",
+  "og_image": "img/og/faq.png"
 }

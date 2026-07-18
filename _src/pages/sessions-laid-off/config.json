@@ -1,5 +1,6 @@
 {
-  "title": "Laid Off — a Sound Session",
+  "title": "Laid Off \u2014 a Sound Session",
   "meta_description": "A sound session for people leaving a company and the teams they leave behind. Usually booked by the employer as part of a decent goodbye.",
-  "output": "sessions/laid-off/index.html"
+  "output": "sessions/laid-off/index.html",
+  "og_image": "img/og/sessions-laid-off.png"
 }

@@ -1,5 +1,6 @@
 {
   "title": "About \u2014 Sound Sessions Denver",
   "meta_description": "Built by a professional music producer who needed the room himself. Engineered sound experiences in Denver: sub-bass, ceremony, and nothing to explain.",
-  "output": "about/index.html"
+  "output": "about/index.html",
+  "og_image": "img/og/about.png"
 }

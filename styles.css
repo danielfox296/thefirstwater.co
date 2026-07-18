@@ -67,6 +67,9 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.
 .hero-section h1 { font-size: clamp(3.5rem, 9vw, 7.5rem); font-weight: 300; letter-spacing: -0.01em; max-width: 15ch; }
 .hero-sub { color: var(--gray); font-size: 1.15rem; max-width: 38rem; margin: 1.8rem 0 2.6rem; }
 .hero-wave { position: absolute; left: 0; right: 0; bottom: 8%; opacity: 0.45; pointer-events: none; }
+/* Waveform as section divider (DESIGN.md signature element; opacity <= .5) */
+.wave-divider { opacity: 0.3; pointer-events: none; margin: -3.5rem 0 3.5rem; }
+.wave-divider img { display: block; width: 100%; height: 44px; }
 .hero-date { color: var(--accent); font: 600 0.85rem var(--font-body); letter-spacing: 0.12em; text-transform: uppercase; }
 
 /* ---- buttons ---- */

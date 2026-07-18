@@ -6,78 +6,78 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/about/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/contact/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/blog/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/corporate/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/contact/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/faq/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/corporate/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/couples/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/faq/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/grief/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/couples/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/healing-from-breakups/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/grief/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/healing-from-breakups/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/laid-off/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/new-to-denver/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/laid-off/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/quiet-new-years/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/new-to-denver/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/singles/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/quiet-new-years/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/sleep/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/singles/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/sunday-downshift/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/sleep/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/blog/index.html</loc>
+    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/sunday-downshift/</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 </urlset>

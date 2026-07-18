@@ -1,5 +1,6 @@
 {
-  "title": "Singles — a Social Night with Sound at the Center",
+  "title": "Singles \u2014 a Social Night with Sound at the Center",
   "meta_description": "A social night in Denver with sound at the center, for single people who would rather meet someone in a calm room than a loud one.",
-  "output": "sessions/singles/index.html"
+  "output": "sessions/singles/index.html",
+  "og_image": "img/og/sessions-singles.png"
 }

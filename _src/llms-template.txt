@@ -1,2 +1,5 @@
 Sound Sessions — facilitated sound experiences in Denver.
 Engineered sub-bass sound descents with formal ceremony, built around things worth putting down.
+
+## Blog
+{{blog_entries}}

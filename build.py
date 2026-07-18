@@ -47,6 +47,28 @@ PARTIALS = os.path.join(SRC, 'partials')
 PAGES    = os.path.join(SRC, 'pages')
 SITE_URL = 'https://REPLACE-WITH-DOMAIN.example'  # TODO: set when domain is chosen
 
+# Sitewide description used in LocalBusiness + WebSite JSON-LD.
+# Assembled from pre-existing approved schema copy plus the canonical line
+# "Each night is built around something worth putting down." (VOICE.md).
+SITE_DESCRIPTION = (
+    'Facilitated sound sessions in Denver. Engineered sound experiences with '
+    'sub-bass, studio-grade production, and formal ceremony. Each night is '
+    'built around something worth putting down.'
+)
+
+
+def page_url(output):
+    """Public directory-style URL for a built output path.
+
+    'index.html' -> SITE_URL/ ; 'about/index.html' -> SITE_URL/about/ ;
+    anything else keeps its literal path.
+    """
+    if output == 'index.html':
+        return f'{SITE_URL}/'
+    if output.endswith('/index.html'):
+        return f'{SITE_URL}/{output[:-len("index.html")]}'
+    return f'{SITE_URL}/{output}'
+
 # ---------------------------------------------------------------------------
 # New blog renderer (Jinja2 + YAML pipeline)
 # ---------------------------------------------------------------------------
@@ -425,10 +447,13 @@ def build():
             css_path    = nav_prefix
             content     = content_html
 
-            # Store new-format post data for RSS generation later
-            if not hasattr(build, '_new_format_posts'):
-                build._new_format_posts = []
-            build._new_format_posts.append(post_data)
+            # Store new-format post data for RSS generation later.
+            # Session pages also use this renderer but are not blog posts:
+            # only blog/ outputs belong in the feed.
+            if output_check.startswith('blog/'):
+                if not hasattr(build, '_new_format_posts'):
+                    build._new_format_posts = []
+                build._new_format_posts.append(post_data)
 
         else:
             # --- Original pipeline (unchanged) ---
@@ -478,10 +503,8 @@ def build():
             if css_content:
                 page_style = f'<style>\n{css_content}\n  </style>'
 
-        # New-format blog posts need the blog.css stylesheet
-        if use_new_renderer:
-            blog_css_link = f'<link rel="stylesheet" href="{css_path}styles/blog.css">'
-            page_style = blog_css_link + '\n  ' + page_style
+        # (No separate blog.css: all .blog-* rules live in styles.css, which
+        # base.html already links. A styles/blog.css link here 404'd.)
 
         # Apply nav_prefix to header and footer
         page_header = header.strip().replace('{{nav_prefix}}', nav_prefix)
@@ -490,19 +513,17 @@ def build():
             page_header = ''
             page_footer = ''
 
-        # Compute canonical URL
-        if output == 'index.html':
-            canonical_url = f'{SITE_URL}/'
-        else:
-            canonical_url = f'{SITE_URL}/{output}'
+        # Compute canonical URL (directory-style; never /index.html)
+        canonical_url = page_url(output)
         # Frontmatter canonical override (new-format posts): consolidate a
         # near-duplicate spoke onto its hub without a destructive 301 — the page
         # stays live for readers/internal links, ranking signal points to the hub.
         if use_new_renderer and post_data.get('canonical'):
             canonical_url = post_data['canonical']
 
-        # Determine if blog post
-        is_blog = output.startswith('blog/')
+        # Determine if blog post (the blog listing page is not a post:
+        # it gets LocalBusiness schema, not Article + author)
+        is_blog = output.startswith('blog/') and output != 'blog/index.html'
 
         # Clean title for OG/schema (strip suffixes)
         og_title = title
@@ -544,12 +565,15 @@ def build():
 
         if is_blog:
             # For new-format posts, dates come from YAML; for old, from config.json
+            # Pseudonymity: the founder's legal name never enters machine-
+            # readable data. Until name day the author is the business itself;
+            # the [NAME] pseudonym replaces this when it lands.
             if use_new_renderer:
                 _pub_time = post_data.get('date', '2026-03-25')
-                _author_name = post_data.get('author', {}).get('name', 'Daniel Fox') if isinstance(post_data.get('author'), dict) else 'Daniel Fox'
+                _author_name = post_data.get('author', {}).get('name', 'Sound Sessions') if isinstance(post_data.get('author'), dict) else 'Sound Sessions'
             else:
                 _pub_time = config.get('date_published', '2026-03-25')
-                _author_name = 'Daniel Fox'
+                _author_name = 'Sound Sessions'
             og_tags += '\n  ' + f'<meta property="article:published_time" content="{_pub_time}">'
             og_tags += '\n  ' + f'<meta property="article:author" content="{_author_name}">'
 
@@ -570,12 +594,15 @@ def build():
                 date_published = config.get('date_published', '2026-03-25')
                 date_modified = config.get('date_modified', '2026-03-25')
             _schema_author = _author_name
+            # Organization author until name day: a Person node would need a
+            # real or pseudonymous name, and neither exists publicly yet.
+            _author_type = 'Organization' if _schema_author == 'Sound Sessions' else 'Person'
             schema = {
                 "@context": "https://schema.org",
                 "@type": "Article",
                 "headline": og_title,
                 "author": {
-                    "@type": "Person",
+                    "@type": _author_type,
                     "name": _schema_author
                 },
                 "publisher": {
@@ -604,7 +631,7 @@ def build():
                 "name": "Sound Sessions",
                 "url": SITE_URL,
                 "image": f"{SITE_URL}/img/og-default.png",
-                "description": "Facilitated sound sessions in Denver. Engineered sound experiences with sub-bass, studio-grade production, and formal ceremony — built around things worth putting down.",
+                "description": SITE_DESCRIPTION,
                 "areaServed": {
                     "@type": "AdministrativeArea",
                     "name": "Denver metro and the Colorado Front Range"
@@ -671,7 +698,7 @@ def build():
                 "@type": "WebSite",
                 "name": "Sound Sessions",
                 "url": SITE_URL,
-                "description": "Music engineered to your customer and your outcome. Original compositions specified at the parameter level and PRO-indemnified at every tier.",
+                "description": SITE_DESCRIPTION,
                 "publisher": {
                     "@type": "Organization",
                     "name": "Sound Sessions"
@@ -731,20 +758,11 @@ def build():
             crumbs = [{"@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL + "/"}]
 
             if is_blog:
-                crumbs.append({"@type": "ListItem", "position": 2, "name": "Blog", "item": SITE_URL + "/blog.html"})
+                crumbs.append({"@type": "ListItem", "position": 2, "name": "Blog", "item": SITE_URL + "/blog/"})
                 crumbs.append({"@type": "ListItem", "position": 3, "name": og_title})
-            elif output.startswith('for-'):
-                crumbs.append({"@type": "ListItem", "position": 2, "name": "For Your Industry", "item": SITE_URL + "/for-apparel.html"})
-                # Determine industry name from output
-                industry_names = {
-                    'for-apparel.html': 'Apparel',
-                    'for-cosmetics.html': 'Cosmetics',
-                    'for-home-goods.html': 'Home Goods',
-                    'for-cfos.html': 'For CFOs',
-                    'for-retail-leaders.html': 'For Retail Leaders'
-                }
-                industry_name = industry_names.get(output, og_title)
-                crumbs.append({"@type": "ListItem", "position": 3, "name": industry_name})
+            elif output.startswith('sessions/') and output != 'sessions/index.html':
+                crumbs.append({"@type": "ListItem", "position": 2, "name": "Sessions", "item": SITE_URL + "/sessions/"})
+                crumbs.append({"@type": "ListItem", "position": 3, "name": og_title})
             else:
                 crumbs.append({"@type": "ListItem", "position": 2, "name": og_title})
 
@@ -755,51 +773,6 @@ def build():
             }
             schema_json += f'\n  <script type="application/ld+json">\n{json.dumps(breadcrumb_schema, indent=2)}\n  </script>'
 
-        # Service schema for key product pages
-        if output in ('how-it-works.html', 'pricing.html', 'enterprise.html'):
-            service_schema = {
-                "@context": "https://schema.org",
-                "@type": "Service",
-                "name": "Sound Sessions",
-                "provider": {
-                    "@type": "Organization",
-                    "name": "Sound Sessions",
-                    "url": SITE_URL
-                },
-                "description": "Music engineered to your customer and your outcome. Original compositions specified at the parameter level (tempo, key, lyrical density, energy arc) and PRO-indemnified at every tier.",
-                "serviceType": "Retail Audio Optimization",
-                "areaServed": "US",
-                "offers": [
-                    {
-                        "@type": "Offer",
-                        "name": "Sound Session",
-                        "price": "0",
-                        "priceCurrency": "USD",
-                        "description": "Free, indefinite. Outcome-tuned music for your floor. PRO-indemnified."
-                    },
-                    {
-                        "@type": "Offer",
-                        "name": "Boost",
-                        "price": "99",
-                        "priceCurrency": "USD",
-                        "description": "Music tailored to your single Ideal Customer Profile. $99/store/month."
-                    },
-                    {
-                        "@type": "Offer",
-                        "name": "Professional",
-                        "price": "399",
-                        "priceCurrency": "USD",
-                        "description": "POS integration, Outcome Scheduling, multiple ICPs, self-improving refinement. $399/store/month."
-                    },
-                    {
-                        "@type": "Offer",
-                        "name": "Enterprise",
-                        "description": "Multi-fleet rollouts, custom ICP design, performance guarantees where lift can be cleanly measured. Contact for pricing."
-                    }
-                ]
-            }
-            schema_json += f'\n  <script type="application/ld+json">\n{json.dumps(service_schema, indent=2)}\n  </script>'
-
         # Substitute into base layout
         html = base
         html = html.replace('{{title}}',            title)
@@ -809,7 +782,7 @@ def build():
         html = html.replace('{{css_path}}',         css_path)
         html = html.replace('{{page_style}}',       page_style)
         # Add RSS autodiscovery link
-        og_tags = f'<link rel="alternate" type="application/rss+xml" title="Sound Sessions Journal" href="{css_path}rss.xml">\n  ' + og_tags
+        og_tags = f'<link rel="alternate" type="application/rss+xml" title="Sound Sessions Blog" href="{css_path}rss.xml">\n  ' + og_tags
 
         html = html.replace('{{og_tags}}',          og_tags)
         html = html.replace('{{twitter_tags}}',     twitter_tags)
@@ -908,12 +881,14 @@ def build():
     rss_items.sort(key=lambda x: x['date_sort'], reverse=True)
 
     # Build RSS XML
+    # Channel description reuses the blog index meta description verbatim
+    # (_src/pages/blog-index/config.json) — no new copy.
     rss_xml = '''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-  <title>Sound Sessions Journal | Retail Music Strategy</title>
-  <link>{site_url}/blog.html</link>
-  <description>Research-backed insights on retail music strategy, in-store customer behavior, and AI-powered audio optimization.</description>
+  <title>Sound Sessions Blog</title>
+  <link>{site_url}/blog/</link>
+  <description>Writing on sound, rooms, and what people put down in them. From the producer behind Denver sound sessions.</description>
   <language>en-us</language>
   <atom:link href="{site_url}/rss.xml" rel="self" type="application/rss+xml"/>
 '''.format(site_url=SITE_URL)
@@ -991,7 +966,7 @@ def generate_sitemap(page_dirs):
         if output == '404.html':
             continue
 
-        is_blog = output.startswith('blog/')
+        is_blog = output.startswith('blog/') and output != 'blog/index.html'
         is_new_format = is_blog and _is_new_format_blog(page_path)
 
         if is_new_format:
@@ -1002,7 +977,7 @@ def generate_sitemap(page_dirs):
             if 'noindex' in robots_value:
                 continue
             canonical = data.get('canonical')
-            own_url = f'{SITE_URL}/{output}'
+            own_url = page_url(output)
             if canonical and canonical != own_url:
                 print(f'  ↷ sitemap: excluding {output} (canonical → {canonical})')
                 continue
@@ -1017,7 +992,7 @@ def generate_sitemap(page_dirs):
                 continue
             lastmod = config.get('date_modified') or config.get('date_published')
             default_cf, default_pr = 'monthly', 0.7
-            loc = f'{SITE_URL}/{output}'
+            loc = page_url(output)
         else:
             robots_value = config.get('robots', 'index, follow')
             if 'noindex' in robots_value:
@@ -1025,10 +1000,9 @@ def generate_sitemap(page_dirs):
             lastmod = config.get('lastmod')
             if output == 'index.html':
                 default_cf, default_pr = 'weekly', 1.0
-                loc = f'{SITE_URL}/'
             else:
                 default_cf, default_pr = 'monthly', 0.8
-                loc = f'{SITE_URL}/{output}'
+            loc = page_url(output)
 
         changefreq = config.get('sitemap_changefreq', default_cf)
         priority = config.get('sitemap_priority', default_pr)
@@ -1101,7 +1075,7 @@ def generate_llms():
         # page (a slug shared with a distinct root asset) is consolidated away —
         # list only the canonical URL, not this duplicate. (WEB-F1/F2, 2026-07-12)
         canonical = data.get('canonical')
-        own_url = f'{SITE_URL}/{output}'
+        own_url = page_url(output)
         if canonical and canonical != own_url:
             print(f'  ↷ llms: excluding {output} (canonical → {canonical})')
             continue

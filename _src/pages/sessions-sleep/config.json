@@ -1,5 +1,6 @@
 {
-  "title": "Sleep Descent — a Recorded Sound Session",
+  "title": "Sleep Descent \u2014 a Recorded Sound Session",
   "meta_description": "A recorded sound descent for the end of the day, produced with the same care as the live rooms. Arrives free for the email list first.",
-  "output": "sessions/sleep/index.html"
+  "output": "sessions/sleep/index.html",
+  "og_image": "img/og/sessions-sleep.png"
 }

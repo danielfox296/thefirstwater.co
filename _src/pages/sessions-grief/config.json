@@ -1,5 +1,6 @@
 {
-  "title": "Grief — a Sound Session in Denver",
+  "title": "Grief \u2014 a Sound Session in Denver",
   "meta_description": "A facilitated sound session in Denver for people carrying a death. A smaller room, fewer seats, more time held at the quiet end.",
-  "output": "sessions/grief/index.html"
+  "output": "sessions/grief/index.html",
+  "og_image": "img/og/sessions-grief.png"
 }

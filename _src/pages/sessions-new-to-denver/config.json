@@ -1,5 +1,6 @@
 {
-  "title": "New to Denver — a Sound Session",
+  "title": "New to Denver \u2014 a Sound Session",
   "meta_description": "A sound session for people who just moved to Denver. Seventy-five minutes of engineered sound, then time to meet others who came for the same reason.",
-  "output": "sessions/new-to-denver/index.html"
+  "output": "sessions/new-to-denver/index.html",
+  "og_image": "img/og/sessions-new-to-denver.png"
 }

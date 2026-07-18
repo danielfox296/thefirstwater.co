@@ -1,5 +1,6 @@
 {
-  "title": "Quiet New Year's — a Sound Session in Denver",
+  "title": "Quiet New Year's \u2014 a Sound Session in Denver",
   "meta_description": "An alternative to the New Year's party in Denver. One night at the turn of the year for entering it rested and clear.",
-  "output": "sessions/quiet-new-years/index.html"
+  "output": "sessions/quiet-new-years/index.html",
+  "og_image": "img/og/sessions-quiet-new-years.png"
 }

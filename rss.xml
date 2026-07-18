@@ -1,74 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-  <title>Sound Sessions Journal | Retail Music Strategy</title>
-  <link>https://REPLACE-WITH-DOMAIN.example/blog.html</link>
-  <description>Research-backed insights on retail music strategy, in-store customer behavior, and AI-powered audio optimization.</description>
+  <title>Sound Sessions Blog</title>
+  <link>https://REPLACE-WITH-DOMAIN.example/blog/</link>
+  <description>Writing on sound, rooms, and what people put down in them. From the producer behind Denver sound sessions.</description>
   <language>en-us</language>
   <atom:link href="https://REPLACE-WITH-DOMAIN.example/rss.xml" rel="self" type="application/rss+xml"/>
-  <item>
-    <title>Couples Reconnection</title>
-    <link>https://REPLACE-WITH-DOMAIN.example/blog/couples.html</link>
-    <description>A date-night sound session in Denver for two people who want an evening side by side. Shared sound, low light, somewhere to start talking after.</description>
-    <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
-    <guid>https://REPLACE-WITH-DOMAIN.example/blog/couples.html</guid>
-  </item>
-  <item>
-    <title>Grief</title>
-    <link>https://REPLACE-WITH-DOMAIN.example/blog/grief.html</link>
-    <description>A facilitated sound session in Denver for people carrying a death. A smaller room, fewer seats, more time held at the quiet end.</description>
-    <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
-    <guid>https://REPLACE-WITH-DOMAIN.example/blog/grief.html</guid>
-  </item>
-  <item>
-    <title>Laid Off</title>
-    <link>https://REPLACE-WITH-DOMAIN.example/blog/laid-off.html</link>
-    <description>A sound session for people leaving a company and the teams they leave behind. Usually booked by the employer as part of a decent goodbye.</description>
-    <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
-    <guid>https://REPLACE-WITH-DOMAIN.example/blog/laid-off.html</guid>
-  </item>
-  <item>
-    <title>New to Denver</title>
-    <link>https://REPLACE-WITH-DOMAIN.example/blog/new-to-denver.html</link>
-    <description>A sound session for people who just moved to Denver. Seventy-five minutes of engineered sound, then time to meet others who came for the same reason.</description>
-    <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
-    <guid>https://REPLACE-WITH-DOMAIN.example/blog/new-to-denver.html</guid>
-  </item>
-  <item>
-    <title>Quiet New Year's</title>
-    <link>https://REPLACE-WITH-DOMAIN.example/blog/quiet-new-years.html</link>
-    <description>An alternative to the New Year's party in Denver. One night at the turn of the year for entering it rested and clear.</description>
-    <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
-    <guid>https://REPLACE-WITH-DOMAIN.example/blog/quiet-new-years.html</guid>
-  </item>
-  <item>
-    <title>Singles</title>
-    <link>https://REPLACE-WITH-DOMAIN.example/blog/singles.html</link>
-    <description>A social night in Denver with sound at the center, for single people who would rather meet someone in a calm room than a loud one.</description>
-    <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
-    <guid>https://REPLACE-WITH-DOMAIN.example/blog/singles.html</guid>
-  </item>
-  <item>
-    <title>Sleep Descent</title>
-    <link>https://REPLACE-WITH-DOMAIN.example/blog/sleep.html</link>
-    <description>A recorded sound descent for the end of the day, produced with the same care as the live rooms. Arrives free for the email list first.</description>
-    <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
-    <guid>https://REPLACE-WITH-DOMAIN.example/blog/sleep.html</guid>
-  </item>
-  <item>
-    <title>Sunday Downshift</title>
-    <link>https://REPLACE-WITH-DOMAIN.example/blog/sunday-downshift.html</link>
-    <description>A recurring Sunday evening sound session in Denver for closing the week on purpose. Seventy-five minutes of engineered sound and guided rest.</description>
-    <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
-    <guid>https://REPLACE-WITH-DOMAIN.example/blog/sunday-downshift.html</guid>
-  </item>
-  <item>
-    <title>Healing from Breakups</title>
-    <link>https://REPLACE-WITH-DOMAIN.example/blog/breakups.html</link>
-    <description>A facilitated sound session in Denver for anyone carrying the end of a relationship. Seventy-five minutes of engineered sound, low light, formal ceremony. First date being set.</description>
-    <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
-    <guid>https://REPLACE-WITH-DOMAIN.example/blog/breakups.html</guid>
-  </item>
   <item>
     <title>Blog</title>
     <link>https://REPLACE-WITH-DOMAIN.example/blog/index.html</link>
