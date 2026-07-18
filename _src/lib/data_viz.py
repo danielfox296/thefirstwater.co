@@ -1,31 +1,30 @@
 """
-Server-side SVG chart generator for Entuned blog data visualizations.
+Server-side SVG chart generator for Sound Sessions blog data visualizations.
 
 Generates inline SVG strings from structured data using brand tokens.
 No third-party chart libraries -- pure Python SVG generation.
 
-Brand tokens:
-    Page bg:     #161613
-    Raised bg:   #20201c
-    Ice text:    #d4e1e5
-    Muted text:  rgba(212, 225, 229, 0.5)
-    Teal:        #50929c  (primary data color)
-    Gold:        #d7af74  (secondary data color)
-    Heading:     Manrope
+Brand tokens (DESIGN.md):
+    Chart bg:    #12151A  (--panel, raised surface on dark)
+    Text:        #F5F7FA  (--paper / --text-on-dark)
+    Muted text:  #98A1AB  (--gray)
+    Accent:      #62B6E8  (--accent, primary data color)
+    Gray:        #98A1AB  (--gray, secondary data color)
+    Heading:     Space Grotesk
     Body:        Inter
+    Radius:      0 everywhere (sharp editorial edges)
 """
 
 __all__ = ["render_chart"]
 
 # -- Brand tokens ----------------------------------------------------------
 
-_BG = "#161613"
-_BG_RAISED = "#20201c"
-_TEXT = "#d4e1e5"
-_TEXT_MUTED = "rgba(212, 225, 229, 0.5)"
-_TEAL = "#50929c"
-_GOLD = "#d7af74"
-_FONT_HEADING = "Manrope, sans-serif"
+_BG = "#12151A"
+_TEXT = "#F5F7FA"
+_TEXT_MUTED = "#98A1AB"
+_SERIES1 = "#62B6E8"
+_SERIES2 = "#98A1AB"
+_FONT_HEADING = "'Space Grotesk', sans-serif"
 _FONT_BODY = "Inter, sans-serif"
 
 # -- Helpers ----------------------------------------------------------------
@@ -134,7 +133,7 @@ def _render_bar(data: list, title: str) -> str:
         bars.append(
             f'<rect x="{x:.1f}" y="{y:.1f}" '
             f'width="{bar_w:.1f}" height="{bar_h:.1f}" '
-            f'fill="{_TEAL}" rx="3"/>'
+            f'fill="{_SERIES1}"/>'
         )
         # Value label above bar
         bars.append(
@@ -166,7 +165,7 @@ def _render_bar(data: list, title: str) -> str:
     svg = (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {vb_w} {vb_h}" '
         f'role="img" aria-label="{_escape(title)}" '
-        f'style="width:100%;height:auto;background:{_BG};border-radius:8px">\n'
+        f'style="width:100%;height:auto;background:{_BG}">\n'
         f"  {title_el}\n"
         + "\n".join(f"  {g}" for g in grid_lines)
         + "\n"
@@ -251,7 +250,7 @@ def _render_line(data: list, title: str) -> str:
     for x, y in points_1:
         dots_1.append(
             f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4" '
-            f'fill="{_TEAL}" stroke="{_BG}" stroke-width="2"/>'
+            f'fill="{_SERIES1}" stroke="{_BG}" stroke-width="2"/>'
         )
 
     # Secondary line (if dual)
@@ -262,13 +261,13 @@ def _render_line(data: list, title: str) -> str:
         polyline_2 = " ".join(f"{x:.1f},{y:.1f}" for x, y in points_2)
         line_2_el = (
             f'<polyline points="{polyline_2}" '
-            f'fill="none" stroke="{_GOLD}" stroke-width="2.5" '
+            f'fill="none" stroke="{_SERIES2}" stroke-width="2.5" '
             f'stroke-linejoin="round" stroke-linecap="round"/>'
         )
         for x, y in points_2:
             dots_2.append(
                 f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4" '
-                f'fill="{_GOLD}" stroke="{_BG}" stroke-width="2"/>'
+                f'fill="{_SERIES2}" stroke="{_BG}" stroke-width="2"/>'
             )
 
     # X-axis labels
@@ -300,10 +299,10 @@ def _render_line(data: list, title: str) -> str:
         lx = vb_w - pad_right
         ly = 25
         legend = (
-            f'<circle cx="{lx - 130}" cy="{ly}" r="5" fill="{_TEAL}"/>'
+            f'<circle cx="{lx - 130}" cy="{ly}" r="5" fill="{_SERIES1}"/>'
             f'<text x="{lx - 120}" y="{ly + 4}" fill="{_TEXT}" '
             f'font-size="11" font-family="{_FONT_BODY}">Series 1</text>'
-            f'<circle cx="{lx - 55}" cy="{ly}" r="5" fill="{_GOLD}"/>'
+            f'<circle cx="{lx - 55}" cy="{ly}" r="5" fill="{_SERIES2}"/>'
             f'<text x="{lx - 45}" y="{ly + 4}" fill="{_TEXT}" '
             f'font-size="11" font-family="{_FONT_BODY}">Series 2</text>'
         )
@@ -311,7 +310,7 @@ def _render_line(data: list, title: str) -> str:
     svg = (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {vb_w} {vb_h}" '
         f'role="img" aria-label="{_escape(title)}" '
-        f'style="width:100%;height:auto;background:{_BG};border-radius:8px">\n'
+        f'style="width:100%;height:auto;background:{_BG}">\n'
         f"  {title_el}\n"
         f"  {legend}\n"
         + "\n".join(f"  {g}" for g in grid_lines)
@@ -320,7 +319,7 @@ def _render_line(data: list, title: str) -> str:
         + "\n"
         f"  {baseline}\n"
         f'  <polyline points="{polyline_1}" '
-        f'fill="none" stroke="{_TEAL}" stroke-width="2.5" '
+        f'fill="none" stroke="{_SERIES1}" stroke-width="2.5" '
         f'stroke-linejoin="round" stroke-linecap="round"/>\n'
         + (f"  {line_2_el}\n" if line_2_el else "")
         + "\n".join(f"  {d}" for d in dots_1)
@@ -362,7 +361,7 @@ def _render_comparison(data: list, title: str) -> str:
     max_val = max(values) if max(values) > 0 else 1
     nice_ceil = _nice_ceil(max_val)
 
-    colors = [_TEAL, _GOLD]
+    colors = [_SERIES1, _SERIES2]
     bar_w = chart_w * 0.3
     center_gap = chart_w * 0.1
     total_bars_w = bar_w * 2 + center_gap
@@ -396,7 +395,7 @@ def _render_comparison(data: list, title: str) -> str:
         bars.append(
             f'<rect x="{x:.1f}" y="{y:.1f}" '
             f'width="{bar_w:.1f}" height="{bar_h:.1f}" '
-            f'fill="{colors[i]}" rx="3"/>'
+            f'fill="{colors[i]}"/>'
         )
         # Value above bar
         bars.append(
@@ -422,7 +421,7 @@ def _render_comparison(data: list, title: str) -> str:
     svg = (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {vb_w} {vb_h}" '
         f'role="img" aria-label="{_escape(title)}" '
-        f'style="width:100%;height:auto;background:{_BG};border-radius:8px">\n'
+        f'style="width:100%;height:auto;background:{_BG}">\n'
         f"  {title_el}\n"
         + "\n".join(f"  {g}" for g in grid_lines)
         + "\n"
