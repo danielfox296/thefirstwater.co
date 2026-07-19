@@ -459,6 +459,23 @@ def _esc(v):
     return html.escape(str(v), quote=True)
 
 
+# External ticket/source URLs come from third-party listings a pull scraped, so
+# they are attacker-influenced. They are rendered as hrefs on this PUBLIC page and
+# emitted into the Event JSON-LD — allow only http(s) so a javascript:/data:
+# scheme can neither execute in a visitor's browser nor poison structured data.
+# Browsers ignore ASCII control chars inside a scheme ("java\tscript:"), so those
+# are stripped from the probe before the check. Unsafe -> '' (no link, no url).
+_SAFE_URL_PROBE_RE = re.compile(r'[\x00-\x20]')
+
+
+def _safe_ext_url(v):
+    if not v:
+        return ''
+    s = str(v).strip()
+    probe = _SAFE_URL_PROBE_RE.sub('', s).lower()
+    return s if probe.startswith(('http://', 'https://')) else ''
+
+
 # Register-passable PLACEHOLDER empty-state line (per-city). Flagged for Daniel.
 EMPTY_STATE = 'No rooms on the calendar in {city} this week.'
 
@@ -512,14 +529,19 @@ def _render_row(row, in_strip=False, nav_prefix=''):
         parts.append(f'    <p class="cal-row__note">{_esc(row["note"])}</p>')
 
     # Ticket link. External -> their link, new tab. Firstwater -> its session page.
+    # Firstwater rows carry an internal, trusted relative path (nav_prefix + slug);
+    # external rows carry a scraped URL, so it is scheme-checked before it becomes
+    # an href — an unsafe URL simply yields no link (the fact row still stands).
     if row['kind'] == 'firstwater':
         href = f'{nav_prefix}{row["ticket_url"]}'
         parts.append(f'    <p class="cal-row__cta"><a href="{_esc(href)}">Get tickets</a></p>')
-    elif row['ticket_url']:
-        parts.append(
-            f'    <p class="cal-row__cta"><a href="{_esc(row["ticket_url"])}" '
-            f'target="_blank" rel="noopener">Tickets</a></p>'
-        )
+    else:
+        safe = _safe_ext_url(row['ticket_url'])
+        if safe:
+            parts.append(
+                f'    <p class="cal-row__cta"><a href="{_esc(safe)}" '
+                f'target="_blank" rel="noopener">Tickets</a></p>'
+            )
     parts.append('  </div>')
     parts.append('</article>')
     return '\n'.join(parts)
@@ -602,7 +624,7 @@ def _external_offer(row):
     """Offer/AggregateOffer for an external row, or None. Ticket url only when
     known; price only when it can be read accurately from the price string."""
     kind = _parse_price(row['price'])
-    url = row['ticket_url'] or None
+    url = _safe_ext_url(row['ticket_url']) or None
     if kind[0] == 'fixed':
         offer = {'@type': 'Offer', 'price': _fmt_price_num(kind[1]), 'priceCurrency': 'USD'}
     elif kind[0] == 'free':
@@ -645,8 +667,9 @@ def _external_event(row):
     offer = _external_offer(row)
     if offer:
         ev['offers'] = offer
-    if row['ticket_url']:
-        ev['url'] = row['ticket_url']
+    _safe_url = _safe_ext_url(row['ticket_url'])
+    if _safe_url:
+        ev['url'] = _safe_url
     return ev
 
 
