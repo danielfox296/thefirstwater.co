@@ -14,6 +14,8 @@
   <div class="container">
     <p class="cal-updated">Last updated <!-- CALENDAR_LAST_UPDATED -->.</p>
 
+    <p class="cal-summary" id="cal-summary"><!-- CALENDAR_SUMMARY --></p>
+
     <div class="hear-first" id="the-list">
       <span class="eyebrow">The digest</span>
       <p class="form-note">The week's rooms, Thursday mornings.</p>
@@ -26,6 +28,16 @@
         <label class="form-field">
           <span>Email</span>
           <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <label class="form-field">
+          <span>Which areas?</span>
+          <select name="cities">
+            <option value="all" selected>Everywhere on the Front Range</option>
+            <option value="denver">Denver</option>
+            <option value="boulder">Boulder</option>
+            <option value="fort-collins">Fort Collins</option>
+            <option value="colorado-springs">Colorado Springs</option>
+          </select>
         </label>
         <button type="submit" class="btn btn-primary">Get the digest</button>
       </form>
@@ -59,6 +71,16 @@
         <label class="form-field">
           <span>Email</span>
           <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <label class="form-field">
+          <span>Which areas?</span>
+          <select name="cities">
+            <option value="all" selected>Everywhere on the Front Range</option>
+            <option value="denver">Denver</option>
+            <option value="boulder">Boulder</option>
+            <option value="fort-collins">Fort Collins</option>
+            <option value="colorado-springs">Colorado Springs</option>
+          </select>
         </label>
         <button type="submit" class="btn btn-primary">Get the digest</button>
       </form>
