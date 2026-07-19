@@ -45,3 +45,8 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # Tell IndexNow-participating engines (Bing, etc.) the site changed.
+      # The script swallows its own errors, so a dead endpoint never fails a deploy.
+      - name: Ping IndexNow
+        run: python3 scripts/indexnow.py
