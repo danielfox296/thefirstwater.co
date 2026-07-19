@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Sound Sessions — Site Builder
+Firstwater — Site Builder
 ======================
 Assembles static HTML pages from modular source files.
 
@@ -33,6 +33,7 @@ Notes:
 """
 
 import os
+import posixpath
 import sys
 import json
 import glob
@@ -52,7 +53,7 @@ PAGES    = os.path.join(SRC, 'pages')
 if REPO not in sys.path:
     sys.path.insert(0, REPO)
 from _src.lib import sessions_feed
-SITE_URL = 'https://REPLACE-WITH-DOMAIN.example'  # TODO: set when domain is chosen
+SITE_URL = 'https://thefirstwater.co'
 
 # Sitewide description used in LocalBusiness + WebSite JSON-LD.
 # Assembled from pre-existing approved schema copy plus the canonical line
@@ -387,15 +388,26 @@ def build():
             redirect_output = config.get('output', f'{page_name}.html')
             safe_target = html_mod.escape(redirect_target, quote=True)
             redirect_title = html_mod.escape(
-                config.get('title', 'Redirecting… | Sound Sessions'), quote=True
+                config.get('title', 'Redirecting… | Firstwater'), quote=True
             )
+            # Canonical must be absolute; resolve relative targets against
+            # the stub's own directory (meta-refresh/JS stay relative).
+            if redirect_target.startswith(('http://', 'https://')):
+                canonical_href = redirect_target
+            else:
+                _resolved = posixpath.normpath(posixpath.join(
+                    posixpath.dirname(redirect_output), redirect_target))
+                canonical_href = f'{SITE_URL}/{"" if _resolved == "." else _resolved}'
+                if redirect_target.endswith('/') and not canonical_href.endswith('/'):
+                    canonical_href += '/'
+            safe_canonical = html_mod.escape(canonical_href, quote=True)
             stub = (
                 '<!DOCTYPE html>\n'
                 '<html lang="en">\n'
                 '<head>\n'
                 '<meta charset="utf-8">\n'
                 f'<title>{redirect_title}</title>\n'
-                f'<link rel="canonical" href="{safe_target}">\n'
+                f'<link rel="canonical" href="{safe_canonical}">\n'
                 f'<meta http-equiv="refresh" content="0; url={safe_target}">\n'
                 '<meta name="robots" content="noindex">\n'
                 '</head>\n'
@@ -447,13 +459,13 @@ def build():
 
             # Pull metadata from the YAML frontmatter.
             # seo_title (if set) drives the <title> tag; title drives the H1.
-            _raw_title = post_data.get('seo_title') or post_data.get('title', config.get('title', 'Sound Sessions'))
+            _raw_title = post_data.get('seo_title') or post_data.get('title', config.get('title', 'Firstwater'))
             # Strip any existing suffix (legacy or canonical) before re-appending
-            for legacy in (' | Sound Sessions', ' — Sound Sessions', ' | Sound Sessions', ' — Sound Sessions'):
+            for legacy in (' | Firstwater', ' — Firstwater', ' | Sound Sessions', ' — Sound Sessions'):
                 if _raw_title.endswith(legacy):
                     _raw_title = _raw_title[:-len(legacy)]
                     break
-            title = f"{_raw_title} | Sound Sessions"
+            title = f"{_raw_title} | Firstwater"
             description = post_data.get('meta_description',
                                         config.get('meta_description', ''))
             output      = output_check
@@ -472,7 +484,7 @@ def build():
         else:
             # --- Original pipeline (unchanged) ---
             # seo_title (if set) drives the <title> tag; title drives the H1.
-            title       = config.get('seo_title') or config.get('title', 'Sound Sessions')
+            title       = config.get('seo_title') or config.get('title', 'Firstwater')
             description = config.get('description', '') or config.get('meta_description', '')
             output      = config.get('output', f'{page_name}.html')
 
@@ -577,7 +589,7 @@ def build():
 
         # Clean title for OG/schema (strip suffixes)
         og_title = title
-        for suffix in [' — Sound Sessions', ' — Sound Sessions']:
+        for suffix in [' — Firstwater', ' — Sound Sessions']:
             if og_title.endswith(suffix):
                 og_title = og_title[:-len(suffix)]
                 break
@@ -609,7 +621,7 @@ def build():
             f'<meta property="og:url" content="{canonical_url}">',
             f'<meta property="og:type" content="{og_type}">',
             f'<meta property="og:image" content="{og_image}">',
-            f'<meta property="og:site_name" content="Sound Sessions">',
+            f'<meta property="og:site_name" content="Firstwater">',
             f'<meta property="og:locale" content="en_US">',
         ])
 
@@ -620,10 +632,10 @@ def build():
             # the [NAME] pseudonym replaces this when it lands.
             if use_new_renderer:
                 _pub_time = post_data.get('date', '2026-03-25')
-                _author_name = post_data.get('author', {}).get('name', 'Sound Sessions') if isinstance(post_data.get('author'), dict) else 'Sound Sessions'
+                _author_name = post_data.get('author', {}).get('name', 'Firstwater') if isinstance(post_data.get('author'), dict) else 'Firstwater'
             else:
                 _pub_time = config.get('date_published', '2026-03-25')
-                _author_name = 'Sound Sessions'
+                _author_name = 'Firstwater'
             og_tags += '\n  ' + f'<meta property="article:published_time" content="{_pub_time}">'
             og_tags += '\n  ' + f'<meta property="article:author" content="{_author_name}">'
 
@@ -646,7 +658,7 @@ def build():
             _schema_author = _author_name
             # Organization author until name day: a Person node would need a
             # real or pseudonymous name, and neither exists publicly yet.
-            _author_type = 'Organization' if _schema_author == 'Sound Sessions' else 'Person'
+            _author_type = 'Organization' if _schema_author == 'Firstwater' else 'Person'
             schema = {
                 "@context": "https://schema.org",
                 "@type": "Article",
@@ -657,7 +669,7 @@ def build():
                 },
                 "publisher": {
                     "@type": "Organization",
-                    "name": "Sound Sessions",
+                    "name": "Firstwater",
                     "url": SITE_URL
                 },
                 "datePublished": date_published,
@@ -678,7 +690,7 @@ def build():
             schema = {
                 "@context": "https://schema.org",
                 "@type": "LocalBusiness",
-                "name": "Sound Sessions",
+                "name": "Firstwater",
                 "url": SITE_URL,
                 "image": f"{SITE_URL}/img/og-default.png",
                 "description": SITE_DESCRIPTION,
@@ -722,7 +734,7 @@ def build():
                 "embedUrl": f'https://www.youtube.com/embed/{_vid}',
                 "publisher": {
                     "@type": "Organization",
-                    "name": "Sound Sessions",
+                    "name": "Firstwater",
                     "url": SITE_URL
                 }
             }
@@ -746,12 +758,12 @@ def build():
             website_schema = {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
-                "name": "Sound Sessions",
+                "name": "Firstwater",
                 "url": SITE_URL,
                 "description": SITE_DESCRIPTION,
                 "publisher": {
                     "@type": "Organization",
-                    "name": "Sound Sessions"
+                    "name": "Firstwater"
                 }
             }
             schema_json += f'\n  <script type="application/ld+json">\n{json.dumps(website_schema, indent=2)}\n  </script>'
@@ -845,7 +857,7 @@ def build():
         html = html.replace('{{css_path}}',         css_path)
         html = html.replace('{{page_style}}',       page_style)
         # Add RSS autodiscovery link
-        og_tags = f'<link rel="alternate" type="application/rss+xml" title="Sound Sessions Blog" href="{css_path}rss.xml">\n  ' + og_tags
+        og_tags = f'<link rel="alternate" type="application/rss+xml" title="Firstwater Blog" href="{css_path}rss.xml">\n  ' + og_tags
 
         html = html.replace('{{og_tags}}',          og_tags)
         html = html.replace('{{twitter_tags}}',     twitter_tags)
@@ -880,7 +892,7 @@ def build():
             slug = post_data.get('slug', '')
             new_format_slugs.add(slug)
 
-            rss_title = post_data.get('title', 'Sound Sessions')
+            rss_title = post_data.get('title', 'Firstwater')
             rss_desc = post_data.get('meta_description', post_data.get('dek', ''))
             rss_date = post_data.get('date', '2026-03-25')
             rss_link = f'{SITE_URL}/blog/{slug}.html'
@@ -914,9 +926,9 @@ def build():
         if old_slug in new_format_slugs:
             continue
 
-        title = config.get('title', 'Sound Sessions')
+        title = config.get('title', 'Firstwater')
         # Clean title
-        for suffix in [' — Sound Sessions', ' — Sound Sessions']:
+        for suffix in [' — Firstwater', ' — Sound Sessions']:
             if title.endswith(suffix):
                 title = title[:-len(suffix)]
                 break
@@ -949,7 +961,7 @@ def build():
     rss_xml = '''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-  <title>Sound Sessions Blog</title>
+  <title>Firstwater Blog</title>
   <link>{site_url}/blog/</link>
   <description>Writing on sound, rooms, and what people put down in them. From the producer behind Denver sound sessions.</description>
   <language>en-us</language>
@@ -1145,7 +1157,7 @@ def generate_llms():
 
         slug = data.get('slug', entry.replace('blog-', '', 1))
         url = f'{SITE_URL}/blog/{slug}.html'
-        title = data.get('title', 'Sound Sessions')
+        title = data.get('title', 'Firstwater')
         description = data.get('llms_description') or data.get('meta_description', '')
         lastmod = data.get('last_updated') or data.get('date') or ''
 
@@ -1166,10 +1178,10 @@ def generate_llms():
 
 if __name__ == '__main__':
     if '--lint' in sys.argv:
-        print('Sound Sessions — Lint mode\n')
+        print('Firstwater — Lint mode\n')
         ok = lint()
         sys.exit(0 if ok else 1)
     else:
-        print('Building Sound Sessions...\n')
+        print('Building Firstwater...\n')
         build()
         print('\nDone.')

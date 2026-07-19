@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-  <title>Sound Sessions Blog</title>
-  <link>https://REPLACE-WITH-DOMAIN.example/blog/</link>
+  <title>Firstwater Blog</title>
+  <link>https://thefirstwater.co/blog/</link>
   <description>Writing on sound, rooms, and what people put down in them. From the producer behind Denver sound sessions.</description>
   <language>en-us</language>
-  <atom:link href="https://REPLACE-WITH-DOMAIN.example/rss.xml" rel="self" type="application/rss+xml"/>
+  <atom:link href="https://thefirstwater.co/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Blog</title>
-    <link>https://REPLACE-WITH-DOMAIN.example/blog/index.html</link>
+    <link>https://thefirstwater.co/blog/index.html</link>
     <description>Writing on sound, rooms, and what people put down in them. From the producer behind Denver sound sessions.</description>
     <pubDate>Wed, 25 Mar 2026 00:00:00 +0000</pubDate>
-    <guid>https://REPLACE-WITH-DOMAIN.example/blog/index.html</guid>
+    <guid>https://thefirstwater.co/blog/index.html</guid>
   </item>
 </channel>
 </rss>

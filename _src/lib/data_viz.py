@@ -1,5 +1,5 @@
 """
-Server-side SVG chart generator for Sound Sessions blog data visualizations.
+Server-side SVG chart generator for Firstwater blog data visualizations.
 
 Generates inline SVG strings from structured data using brand tokens.
 No third-party chart libraries -- pure Python SVG generation.

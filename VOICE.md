@@ -1,4 +1,4 @@
-# VOICE.md — Sound Sessions Copy Voice
+# VOICE.md — Firstwater Copy Voice
 *A drafting guide for copy written on Daniel's behalf: site, event pages, ads,
 clips, email. Its job is keeping agent drafts on-voice. It does not govern
 Daniel; his call always wins, and nothing here restricts what he chooses to
@@ -64,8 +64,10 @@ he departs from it whenever it serves.
 - "If you'd rather stay on the floor, that's what the floor is for."
 - "Say so and your ticket comes back."
 - "Doors close at start time and stay closed."
-- Entity block (name slot pending): "[NAME] is a sound session facilitator in
-  Denver who leads engineered sound experiences... " — verbatim across home,
+- Entity block (name settled 2026-07-18): "Firstwater is a sound session
+  facilitator in Denver who leads engineered sound experiences: deep-listening
+  events built with sub-bass, studio-grade production, and formal ceremony.
+  Themed sessions include Healing from Breakups." — verbatim across home,
   About, GBP, Eventbrite, Insight Timer, all bios.
 
 ## Structure for selling pages

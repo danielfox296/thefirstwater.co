@@ -1,4 +1,4 @@
-name: Deploy sound sessions site
+name: Deploy Firstwater site
 
 on:
   push:

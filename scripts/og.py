@@ -50,7 +50,7 @@ def card(path, title, eyebrow=None, title_size=76):
 
 
 # Sitewide default (homepage + fallback)
-card('img/og-default.png', 'SOUND SESSIONS')
+card('img/og-default.png', 'FIRSTWATER')
 
 # Per-page cards. Keys are image slugs; values are the page display titles.
 PAGES = {
@@ -72,6 +72,6 @@ PAGES = {
 }
 
 for slug, title in PAGES.items():
-    card(f'img/og/{slug}.png', title, eyebrow='SOUND SESSIONS')
+    card(f'img/og/{slug}.png', title, eyebrow='FIRSTWATER')
 
 print('og done')

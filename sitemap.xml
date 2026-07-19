@@ -1,82 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/</loc>
+    <loc>https://thefirstwater.co/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/about/</loc>
+    <loc>https://thefirstwater.co/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/blog/</loc>
+    <loc>https://thefirstwater.co/blog/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/contact/</loc>
+    <loc>https://thefirstwater.co/contact/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/corporate/</loc>
+    <loc>https://thefirstwater.co/corporate/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/faq/</loc>
+    <loc>https://thefirstwater.co/faq/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/couples/</loc>
+    <loc>https://thefirstwater.co/sessions/couples/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/grief/</loc>
+    <loc>https://thefirstwater.co/sessions/grief/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/healing-from-breakups/</loc>
+    <loc>https://thefirstwater.co/sessions/healing-from-breakups/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/</loc>
+    <loc>https://thefirstwater.co/sessions/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/laid-off/</loc>
+    <loc>https://thefirstwater.co/sessions/laid-off/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/new-to-denver/</loc>
+    <loc>https://thefirstwater.co/sessions/new-to-denver/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/quiet-new-years/</loc>
+    <loc>https://thefirstwater.co/sessions/quiet-new-years/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/singles/</loc>
+    <loc>https://thefirstwater.co/sessions/singles/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/sleep/</loc>
+    <loc>https://thefirstwater.co/sessions/sleep/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-DOMAIN.example/sessions/sunday-downshift/</loc>
+    <loc>https://thefirstwater.co/sessions/sunday-downshift/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

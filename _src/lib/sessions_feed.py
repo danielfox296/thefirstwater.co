@@ -373,7 +373,7 @@ def event_schema(s, event_title, page_url, site_url, description='', image=''):
         'eventStatus': 'https://schema.org/EventScheduled',
         'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
         'location': place,
-        'organizer': {'@type': 'LocalBusiness', 'name': 'Sound Sessions', 'url': site_url},
+        'organizer': {'@type': 'LocalBusiness', 'name': 'Firstwater', 'url': site_url},
         'url': page_url,
     }
     if description:

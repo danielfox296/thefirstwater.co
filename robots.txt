@@ -10,4 +10,4 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
-Sitemap: https://REPLACE-WITH-DOMAIN.example/sitemap.xml
+Sitemap: https://thefirstwater.co/sitemap.xml

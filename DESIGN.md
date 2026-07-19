@@ -1,4 +1,4 @@
-# Sound Sessions — Design System v1 (2026-07-15)
+# Firstwater — Design System v1 (2026-07-15)
 Ratified calls: ICE BLUE accent · DUOTONE stock interim · email = placeholder until Daniel sets up provider.
 
 ## Tokens
