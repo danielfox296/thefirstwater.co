@@ -1,0 +1,42 @@
+/* /calendar/ — Front Range sound calendar. Light ground; design tokens from
+   styles.css. The only styled rows are Firstwater's own (.cal-row--firstwater). */
+
+.cal-updated { color: rgba(10,11,13,0.55); font-size: 0.85rem; letter-spacing: 0.03em; margin: 0 0 2.4rem; }
+
+.cal-jump { display: flex; flex-wrap: wrap; gap: 1.1rem 1.6rem; margin: 2.4rem 0 3.5rem; padding-bottom: 1.6rem; border-bottom: 1px solid rgba(10,11,13,0.14); }
+.cal-jump a { color: var(--accent-on-light); text-decoration: none; font: 600 0.78rem var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; }
+.cal-jump a:hover { text-decoration: underline; }
+
+.cal-weekend { margin-bottom: 4.5rem; scroll-margin-top: 90px; }
+.cal-weekend__h2, .cal-area__h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); margin: 0 0 1.6rem; }
+.cal-area { margin-bottom: 4.5rem; scroll-margin-top: 90px; }
+.cal-area:last-of-type { margin-bottom: 2rem; }
+
+.cal-rows { border-top: 1px solid rgba(10,11,13,0.14); }
+.cal-row { display: grid; grid-template-columns: 150px 1fr; gap: 1.4rem 2rem; padding: 1.8rem 0; border-bottom: 1px solid rgba(10,11,13,0.14); align-items: start; }
+.cal-row__when { display: flex; flex-direction: column; gap: 0.15rem; }
+.cal-row__date { font: 600 1rem var(--font-display); color: var(--ink); }
+.cal-row__time { color: rgba(10,11,13,0.55); font-size: 0.9rem; }
+.cal-row__body { min-width: 0; }
+.cal-row__name { font-size: 1.25rem; font-weight: 500; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+.cal-row__meta { color: rgba(10,11,13,0.62); font-size: 0.95rem; margin: 0; max-width: 42rem; }
+/* Daniel's one line — the moat — reads as editorial, set in the display face. */
+.cal-row__note { font: 500 1.08rem var(--font-display); color: var(--ink); margin: 0.7rem 0 0; max-width: 38rem; line-height: 1.4; }
+.cal-row__cta { margin: 0.8rem 0 0; }
+.cal-row__cta a { color: var(--accent-on-light); font: 600 0.9rem var(--font-body); text-decoration: none; }
+.cal-row__cta a:hover { text-decoration: underline; }
+
+/* Firstwater's own nights — the only styled rows, never crowded out. */
+.cal-row--firstwater { border-left: 3px solid var(--accent); padding-left: 1.4rem; background: rgba(98,182,232,0.06); }
+.cal-row--firstwater .cal-row__when { padding-left: 0; }
+.cal-row__tag { display: inline-block; font: 600 0.66rem var(--font-body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-on-light); margin-bottom: 0.5rem; }
+
+.cal-empty { color: rgba(10,11,13,0.55); font-size: 1rem; margin: 0; padding: 1.6rem 0; }
+
+.cal-submit { margin: 3.5rem 0 0; padding-top: 2.4rem; border-top: 1px solid rgba(10,11,13,0.14); color: rgba(10,11,13,0.7); }
+.cal-submit a { color: var(--accent-on-light); }
+
+@media (max-width: 640px) {
+  .cal-row { grid-template-columns: 1fr; gap: 0.5rem; }
+  .cal-row__when { flex-direction: row; gap: 0.8rem; align-items: baseline; }
+}
