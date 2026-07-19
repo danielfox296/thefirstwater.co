@@ -366,6 +366,27 @@ def auto_extract_faqs(post_data, max_answer_chars=600, min_answer_chars=40):
     return faqs
 
 
+def _ldjson(obj):
+    """Serialize `obj` for embedding inside a <script type="application/ld+json">
+    block, safe against markup breakout.
+
+    json.dumps leaves '<', '>', '&' and the U+2028/U+2029 line separators raw, so
+    a string field containing '</script>' would close the script element and let
+    any following markup execute as HTML (stored XSS). Unicode-escape those
+    characters: the JSON stays valid and semantically identical for consumers
+    (a parser reads \\u003c as '<'), but no literal '</script>' can appear in the
+    emitted page. HTML-entity escaping ('&lt;') is WRONG here — a <script>
+    raw-text element does not decode entities, so consumers would read the
+    literal entity.
+    """
+    return (json.dumps(obj, indent=2)
+            .replace('<', '\\u003c')
+            .replace('>', '\\u003e')
+            .replace('&', '\\u0026')
+            .replace('\u2028', '\\u2028')
+            .replace('\u2029', '\\u2029'))
+
+
 def build():
     # Load shared pieces
     base   = read(os.path.join(LAYOUTS,  'base.html'))
@@ -954,7 +975,12 @@ def build():
         if output == 'calendar/index.html' and _cal_rows:
             _il = external_events.calendar_itemlist(_cal_rows, canonical_url, SITE_URL)
             if _il:
-                schema_json += f'\n  <script type="application/ld+json">\n{json.dumps(_il, indent=2)}\n  </script>'
+                # _ldjson (not raw json.dumps): the ItemList carries
+                # external-operator-controlled strings, so it must be escaped
+                # against '</script>' breakout. The other schema blocks above
+                # carry only trusted internal data and are left byte-for-byte
+                # unchanged.
+                schema_json += f'\n  <script type="application/ld+json">\n{_ldjson(_il)}\n  </script>'
 
         # Substitute into base layout
         html = base
