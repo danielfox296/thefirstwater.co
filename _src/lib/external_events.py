@@ -391,8 +391,28 @@ def build_rows(cal_feed, sessions_feed_data, now=None):
             continue
         rows.append(_firstwater_row(s))
 
-    # Defensive de-dup (server already dedups; this guards a hand-edited feed):
-    # first occurrence by dedup_key, then by ticket_url, wins.
+    # Defensive de-dup within the external feed (server already dedups; this
+    # guards a hand-edited feed): first occurrence by dedup_key, then by
+    # ticket_url, wins.
+    #
+    # Cross-feed guard: external and Firstwater rows use structurally disjoint
+    # dedup_keys (content-based vs 'firstwater|slug|date') and disjoint
+    # ticket_urls (Eventbrite vs internal session path), so the two guards above
+    # never catch the SAME real event surfacing in both feeds — e.g. a Firstwater
+    # session an operator also cross-posts to Eventbrite. Firstwater is
+    # authoritative for its own sessions, so drop any external row whose canonical
+    # normalize(name)+date+normalize(venue) matches a Firstwater row. Best-effort:
+    # a scraped listing whose title/venue text differs from the session's curated
+    # title/venue won't match — source-level exclusion in the pull agent is the
+    # primary guard; this only catches the clean, identical cross-post.
+    def _content_key(r):
+        day = _denver(r['starts_at']).strftime('%Y-%m-%d')
+        return make_dedup_key(r['name'], day, r['venue'])
+
+    firstwater_content = {
+        _content_key(r) for r in rows if r['kind'] == 'firstwater'
+    }
+
     seen_keys, seen_urls, deduped = set(), set(), []
     for r in rows:
         k = r.get('dedup_key') or ''
@@ -400,6 +420,8 @@ def build_rows(cal_feed, sessions_feed_data, now=None):
         if k and k in seen_keys:
             continue
         if u and r['kind'] == 'external' and u in seen_urls:
+            continue
+        if r['kind'] == 'external' and _content_key(r) in firstwater_content:
             continue
         if k:
             seen_keys.add(k)
@@ -550,6 +572,13 @@ def render_calendar_body(rows, nav_prefix='', now=None):
 # ---------------------------------------------------------------------------
 
 _PRICE_NUM_RE = re.compile(r'\d+(?:\.\d+)?')
+# "free" as a standalone word — NOT the "free" buried in "freewill".
+_FREE_RE = re.compile(r'\bfree\b', re.I)
+# Pay-what-you-can / donation intent. When any of these appear, a bare "free"
+# does NOT mean $0 ("Freewill donation", "free-will offering", "free, sliding
+# scale"): the true price is unknown, so emit no price rather than a false 0
+# (spec: "accurate or absent, never padded").
+_DONATION_RE = re.compile(r'donat|offering|free[- ]will|sliding|suggested|pay[- ]?what', re.I)
 
 
 def _parse_price(price):
@@ -557,9 +586,9 @@ def _parse_price(price):
     if not price:
         return (None,)
     nums = [float(x) for x in _PRICE_NUM_RE.findall(price)]
-    low = 'free' in price.lower()
     if not nums:
-        return ('free',) if low else (None,)
+        is_free = bool(_FREE_RE.search(price)) and not _DONATION_RE.search(price)
+        return ('free',) if is_free else (None,)
     if len(nums) == 1:
         return ('fixed', nums[0])
     return ('range', min(nums), max(nums))
