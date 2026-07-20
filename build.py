@@ -410,13 +410,11 @@ def build():
 
     # Load the external-events (calendar) feed, same never-break-the-build
     # discipline: /feeds/calendar.json > committed data/external-events.json >
-    # empty. Only /calendar/ consumes it; every other page is unaffected.
+    # empty. Since the 2026-07 brand split the calendar LIVES at
+    # soundbathcalendar.com; this feed is only used to emit a redirect stub
+    # per old /calendar/event/<slug>/ URL. Every other page is unaffected.
     print('Loading calendar feed...')
     cal_feed = external_events.load_feed(REPO)
-    # One build-time 'now' shared by the calendar page (weekend window, past-event
-    # drop, Last-updated stamp, summary) and the per-event permalink pages
-    # (past/future gate) so every calendar surface agrees within a build.
-    cal_now = external_events.current_now()
     print()
 
     # Find all page directories (supports nested: pages/blog-posts/slug/)
@@ -577,7 +575,6 @@ def build():
         # state) both branches are no-ops and output is byte-identical.
         # ---------------------------------------------------------------
         page_sessions = []
-        _cal_rows = None  # set for the calendar page; drives its ItemList JSON-LD
         _sess_match = re.fullmatch(r'sessions/([^/]+)/index\.html', output)
         if _sess_match and use_new_renderer:
             page_sessions = sessions_feed.sessions_for_slug(feed, _sess_match.group(1))
@@ -619,27 +616,6 @@ def build():
                     lambda m: m.group(1) + _hero_label + m.group(2),
                     content, count=1, flags=re.DOTALL,
                 )
-
-        # ---------------------------------------------------------------
-        # CALENDAR PAGE INJECTION (/calendar/)
-        # The section file carries the static scaffold (hero, digest signup,
-        # jump nav, submission line) plus two markers. Fill them from the feed:
-        # the this-weekend strip + four area sections, and the build-date stamp.
-        # One shared `now` keeps the weekend window, past-event drop, and the
-        # stamp consistent. Rows are reused below for the ItemList JSON-LD.
-        # ---------------------------------------------------------------
-        if output == 'calendar/index.html':
-            _cal_rows = external_events.build_rows(cal_feed, feed, now=cal_now)
-            _cal_body = external_events.render_calendar_body(
-                _cal_rows, nav_prefix, now=cal_now)
-            content = content.replace('<!-- CALENDAR_BODY -->', _cal_body)
-            content = content.replace(
-                '<!-- CALENDAR_SUMMARY -->',
-                html_mod.escape(
-                    external_events.build_summary_sentence(_cal_rows, now=cal_now)))
-            content = content.replace(
-                '<!-- CALENDAR_LAST_UPDATED -->',
-                html_mod.escape(external_events.fmt_stamp_date(cal_now)))
 
         # ---------------------------------------------------------------
         # SHARED LAYOUT ASSEMBLY (both old and new pipelines converge)
@@ -975,33 +951,6 @@ def build():
                 )
                 schema_json += f'\n  <script type="application/ld+json">\n{json.dumps(_ev, indent=2)}\n  </script>'
 
-        # ItemList of per-row Events (WP-calendar) — one ItemList wrapping an
-        # Event per rendered /calendar/ row (external approved + Firstwater).
-        # Only accurate fields are emitted; missing data is never padded. None
-        # when the calendar is empty (no script tag written).
-        if output == 'calendar/index.html' and _cal_rows:
-            _il = external_events.calendar_itemlist(_cal_rows, canonical_url, SITE_URL)
-            if _il:
-                # _ldjson (not raw json.dumps): the ItemList carries
-                # external-operator-controlled strings, so it must be escaped
-                # against '</script>' breakout. The other schema blocks above
-                # carry only trusted internal data and are left byte-for-byte
-                # unchanged.
-                schema_json += f'\n  <script type="application/ld+json">\n{_ldjson(_il)}\n  </script>'
-
-        # CollectionPage (with a speakable summary selector) + FAQPage for
-        # /calendar/ — the GEO/AIO citation surfaces. Rendered whether or not the
-        # list is empty (the FAQ and summary block always exist). dateModified
-        # matches the visible 'Last updated' stamp. Routed through _ldjson for
-        # uniform breakout-safety even though the copy is our own.
-        if output == 'calendar/index.html':
-            _cp = external_events.collectionpage_schema(
-                canonical_url, SITE_URL, description,
-                external_events.stamp_date_iso(cal_now))
-            schema_json += f'\n  <script type="application/ld+json">\n{_ldjson(_cp)}\n  </script>'
-            _faq = external_events.faqpage_schema()
-            schema_json += f'\n  <script type="application/ld+json">\n{_ldjson(_faq)}\n  </script>'
-
         # Substitute into base layout
         html = base
         html = html.replace('{{title}}',            title)
@@ -1035,12 +984,11 @@ def build():
         pages_built.append(output)
         print(f'  ✓ {output}')
 
-    # --- Per-event permalink pages (/calendar/event/<slug>/) ---
-    # Emitted from the calendar feed data, not from _src/pages dirs. Upcoming
-    # pages are indexed and returned for the sitemap; past pages stay live but
-    # noindex and out of the sitemap.
-    _event_outputs, _event_sitemap = build_event_pages(
-        base, header, footer, cal_feed, cal_now)
+    # --- Per-event redirect stubs (/calendar/event/<slug>/) ---
+    # The calendar moved to soundbathcalendar.com (2026-07 brand split). Every
+    # old permalink URL gets a meta-refresh + canonical + noindex stub pointing
+    # at its new home, so links and rankings transfer. No sitemap entries.
+    _event_outputs = build_event_redirects(cal_feed)
     pages_built.extend(_event_outputs)
 
     print(f'\nBuilt {len(pages_built)} pages.')
@@ -1156,139 +1104,71 @@ def build():
         f.write(rss_xml)
     print('  ✓ rss.xml')
 
-    # --- Generate sitemap.xml (with upcoming event permalink pages) ---
-    generate_sitemap(page_dirs, extra_urls=_event_sitemap)
+    # --- Generate sitemap.xml (calendar URLs no longer listed) ---
+    generate_sitemap(page_dirs)
 
     # --- Generate llms.txt ---
     generate_llms()
 
 
-def build_event_pages(base, header, footer, cal_feed, now):
-    """Emit one permalink page per approved external event at
-    /calendar/event/<slug>/index.html, from the feed data (not a _src/pages dir).
+NEW_CALENDAR_URL = 'https://soundbathcalendar.com'
 
-    Mirrors the main loop's <head>/schema/layout assembly so event pages sit
-    consonant with the rest of the site. Upcoming pages are indexed; PAST pages
-    stay live (no 404) but carry robots=noindex, a 'this session has passed'
-    banner (rendered in the body), and are omitted from the sitemap.
 
-    Returns (built_outputs, sitemap_entries) where each sitemap entry is
-    (loc, lastmod) for an UPCOMING page only.
+def build_event_redirects(cal_feed):
+    """Emit a redirect stub per approved external event at the OLD permalink
+    path /calendar/event/<slug>/index.html, pointing at the same slug on
+    soundbathcalendar.com (the calendar's home since the 2026-07 brand split).
+
+    Same stub anatomy as the config-driven `redirect_to` pages (journal.html
+    pattern): canonical to the new URL, meta refresh, noindex, JS fallback.
+    Slugs are deterministic from the dedup_key, so old and new sites agree.
+    Returns the built output paths (never sitemap entries — stubs stay out).
     """
-    print('\nGenerating calendar event pages...')
-    # Clear stale event pages from a previous build first: an event that drops
-    # out of the feed (past its date, renamed, un-approved, or fabricated seed
-    # data replaced by a real pull) must not leave an orphaned page behind to
-    # ship to production. The directory is regenerated to reflect ONLY the
-    # current feed on every build.
+    print('\nGenerating calendar redirect stubs...')
+    # Clear the old rendered pages first: the whole /calendar/event/ tree is
+    # regenerated as stubs for exactly the current feed's slugs.
     import shutil
     shutil.rmtree(os.path.join(REPO, 'calendar', 'event'), ignore_errors=True)
-    rows = external_events.approved_event_rows(cal_feed, now=now)
+    rows = external_events.approved_event_rows(cal_feed)
     if not rows:
         print('  (none)')
-        return [], []
+        return []
 
-    import datetime as _dt
-    # lastmod = the feed's own generated_at date (when the listing data was last
-    # refreshed), falling back to today.
-    gen = (cal_feed or {}).get('generated_at')
-    try:
-        lastmod = sessions_feed.parse_iso(gen).astimezone(
-            sessions_feed.DENVER).date().isoformat()
-    except Exception:
-        lastmod = _dt.date.today().isoformat()
-
-    built, sitemap_entries = [], []
+    built = []
     for row in rows:
         slug = external_events.event_slug(row)
         if not slug:
             continue
         output = f'calendar/event/{slug}/index.html'
-        nav_prefix = '../../../'
-        css_path = nav_prefix
-        is_past = sessions_feed.parse_iso(row['starts_at']) <= now
-        robots_value = 'noindex, follow' if is_past else 'index, follow'
-        canonical_url = external_events.event_permalink_url(row, SITE_URL)
-
-        name = row['name']
-        title = f'{html_mod.escape(name)} — {row["city"]} | Firstwater'
-        description = external_events.factual_description(row)
-        meta_desc = (f'<meta name="description" '
-                     f'content="{html_mod.escape(description, quote=True)}">')
-
-        og_image = row.get('image_url') or f'{SITE_URL}/img/og-default.png'
-        safe_og_title = html_mod.escape(name, quote=True)
-        safe_og_desc = html_mod.escape(description, quote=True)
-        safe_og_image = html_mod.escape(og_image, quote=True)
-        og_tags = '\n  '.join([
-            f'<meta property="og:title" content="{safe_og_title}">',
-            f'<meta property="og:description" content="{safe_og_desc}">',
-            f'<meta property="og:url" content="{canonical_url}">',
-            f'<meta property="og:type" content="website">',
-            f'<meta property="og:image" content="{safe_og_image}">',
-            f'<meta property="og:site_name" content="Firstwater">',
-            f'<meta property="og:locale" content="en_US">',
-        ])
-        og_tags = (f'<link rel="alternate" type="application/rss+xml" '
-                   f'title="Firstwater Blog" href="{css_path}rss.xml">\n  ' + og_tags)
-        twitter_tags = '\n  '.join([
-            f'<meta name="twitter:card" content="summary_large_image">',
-            f'<meta name="twitter:title" content="{safe_og_title}">',
-            f'<meta name="twitter:description" content="{safe_og_desc}">',
-            f'<meta name="twitter:image" content="{safe_og_image}">',
-        ])
-
-        # Event + BreadcrumbList JSON-LD. The Event carries external-operator
-        # strings, so both blocks route through _ldjson (breakout-safe).
-        _ev = external_events.event_jsonld(row, SITE_URL)
-        schema_json = (f'<script type="application/ld+json">\n'
-                       f'{_ldjson(_ev)}\n  </script>')
-        breadcrumb_schema = {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {"@type": "ListItem", "position": 1, "name": "Home",
-                 "item": SITE_URL + "/"},
-                {"@type": "ListItem", "position": 2, "name": "Calendar",
-                 "item": SITE_URL + "/calendar/"},
-                {"@type": "ListItem", "position": 3, "name": name},
-            ],
-        }
-        schema_json += (f'\n  <script type="application/ld+json">\n'
-                        f'{_ldjson(breadcrumb_schema)}\n  </script>')
-
-        content = external_events.render_event_page(row, nav_prefix, SITE_URL, now=now)
-        page_header = header.strip().replace('{{nav_prefix}}', nav_prefix)
-        page_footer = footer.strip().replace('{{nav_prefix}}', nav_prefix)
-
-        html = base
-        html = html.replace('{{title}}',            title)
-        html = html.replace('{{robots}}',           robots_value)
-        html = html.replace('{{meta_description}}', meta_desc)
-        html = html.replace('{{canonical_url}}',    canonical_url)
-        html = html.replace('{{css_path}}',         css_path)
-        html = html.replace('{{page_style}}',       external_events.EVENT_PAGE_STYLE)
-        html = html.replace('{{og_tags}}',          og_tags)
-        html = html.replace('{{twitter_tags}}',     twitter_tags)
-        html = html.replace('{{schema_json}}',      schema_json)
-        html = html.replace('{{header}}',           page_header)
-        html = html.replace('{{content}}',          content)
-        html = html.replace('{{footer}}',           page_footer)
-        html = html.replace('{{css_path}}',         css_path)
-
+        target = f'{NEW_CALENDAR_URL}/event/{slug}/'
+        safe_target = html_mod.escape(target, quote=True)
+        stub = (
+            '<!DOCTYPE html>\n'
+            '<html lang="en">\n'
+            '<head>\n'
+            '<meta charset="utf-8">\n'
+            '<title>This page has moved | Firstwater</title>\n'
+            f'<link rel="canonical" href="{safe_target}">\n'
+            f'<meta http-equiv="refresh" content="0; url={safe_target}">\n'
+            '<meta name="robots" content="noindex">\n'
+            '</head>\n'
+            '<body>\n'
+            f'<p>This page has moved. Redirecting to <a href="{safe_target}">{safe_target}</a>.</p>\n'
+            f'<script>window.location.replace("{safe_target}");</script>\n'
+            '</body>\n'
+            '</html>\n'
+        )
         out_path = os.path.join(REPO, output)
         if not os.path.abspath(out_path).startswith(os.path.abspath(REPO)):
             print(f'  ✗ SKIPPED {output} — path escapes repo root')
             continue
         os.makedirs(os.path.dirname(out_path), exist_ok=True)
         with open(out_path, 'w', encoding='utf-8') as f:
-            f.write(html)
+            f.write(stub)
         built.append(output)
-        print(f'  ✓ {output} ({"past/noindex" if is_past else "upcoming"})')
-        if not is_past:
-            sitemap_entries.append((canonical_url, lastmod))
+        print(f'  ↪ {output} → {target}')
 
-    return built, sitemap_entries
+    return built
 
 
 def _sitemap_url_entry(loc, lastmod):

@@ -744,6 +744,12 @@ _SAFE_URL_PROBE_RE = re.compile(r'[\x00-\x20]')
 
 
 def _safe_ext_url(v):
+    # Scheme guard ONLY — never a URL normalizer. Return the input verbatim
+    # (stripped) for http(s); do NOT re-parse/re-serialize (e.g. urlsplit ->
+    # urlunsplit dropping the query, or origin+path). Signed image CDN URLs
+    # (img.evbuc.com / imgix) 403 without their `?...&s=<signature>` query, so
+    # dropping the query silently breaks the image. Mirrors safeHttpUrl in
+    # service/src/lib/externalEvents.ts (2026-07-19 regression).
     if not v:
         return ''
     s = str(v).strip()
