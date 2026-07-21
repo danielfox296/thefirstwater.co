@@ -137,11 +137,7 @@
     <div class="hear-first" id="hear-first">
       <span class="eyebrow">Hear first</span>
       <p class="form-note">Leave your email and you will hear when the next session goes up.</p>
-      <form class="contact-form hear-first-form" action="https://formspree.io/f/xgopwepl" method="POST">
-        <input type="hidden" name="_subject" value="FIRSTWATER list join">
-        <input type="hidden" name="_next" value="https://thefirstwater.co/thanks/">
-        <input type="hidden" name="venture" value="firstwater">
-        <input type="hidden" name="list_join" value="yes">
+      <form class="contact-form hear-first-form" action="https://events.thefirstwater.co/subscribe" method="POST">
         <label class="form-field">
           <span>Email</span>
           <input type="email" name="email" autocomplete="email" required>
@@ -150,13 +146,10 @@
       </form>
     </div>
 
-    <form class="contact-form" action="https://formspree.io/f/xgopwepl" method="POST">
-      <input type="hidden" name="_subject" value="FIRSTWATER contact form">
-      <input type="hidden" name="_next" value="https://thefirstwater.co/thanks/">
-      <input type="hidden" name="venture" value="firstwater">
+    <form class="contact-form" action="https://events.thefirstwater.co/inquiries" method="POST">
       <label class="form-field">
         <span>What is this about</span>
-        <select name="topic">
+        <select name="event_type">
           <option>Booking a team or group</option>
           <option>A question</option>
           <option>Press or venues</option>
@@ -172,7 +165,7 @@
       </label>
       <label class="form-field">
         <span>Message</span>
-        <textarea name="message" rows="6"></textarea>
+        <textarea name="message" rows="6" required></textarea>
       </label>
       <label class="form-check">
         <input type="checkbox" name="notify_next_session" value="yes">
