@@ -1,9 +1,6 @@
-{% set variant = block.variant|default('pilot') %}
+{% set variant = block.variant|default('default') %}
 <aside class="blog-cta blog-cta--{{ variant }}">
   <div class="blog-cta__headline">{{ block.headline|safe }}</div>
   <div class="blog-cta__body">{{ block.body|safe }}</div>
   <a href="{{ block.link }}" class="blog-cta__link">{{ block.link_text }} &rarr;</a>
-  {% if 'pilot' not in block.link %}
-  <p class="blog-cta__fork">Running 5&ndash;50 locations? <a href="{{ ctx.nav_prefix }}pilot.html">Start a measured pilot &rarr;</a></p>
-  {% endif %}
 </aside>
