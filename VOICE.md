@@ -2,13 +2,35 @@
 *A drafting guide for copy written on Daniel's behalf: site, event pages, ads,
 clips, email. Its job is keeping agent drafts on-voice. It does not govern
 Daniel; his call always wins, and nothing here restricts what he chooses to
-say or do. Last updated 2026-07-15.*
+say or do. Last updated 2026-07-22. Reconciled with the 2026-07-21 personal
+reframe.*
+
+*Scope: this doc governs the service's transactional emails and
+attendee-facing pages (checkout, ticket, intake) with full force — they are
+Firstwater's voice.*
 
 ## Register
-Plain-ceremonial. Ceremony over explanation: the copy enacts the room, it does
-not explain the mechanism. Say less. No borrowed shamanism (chakra/frequency
-lore, costume language). No clinical or whitepaper voice. The journal may go
-deeper than event copy, but it obeys every law below.
+Plain-ceremonial. Ceremony over explanation: the copy enacts the session, it
+does not explain the mechanism. Say less. No borrowed shamanism
+(chakra/frequency lore, costume language). No clinical or whitepaper voice.
+The blog may go deeper than event copy, but it obeys every law below.
+
+The site speaks as Daniel — first person singular ("I", "Write to me"). Two
+exceptions: the corporate page (institutional we, deliberate) and the
+ratified entity block (communal we, verbatim).
+
+"Never explain the evening" stands. The FAQ and the home "night, plainly"
+block are the single sanctioned plain description of the night; positioning
+copy everywhere else enacts, never explains.
+
+## Naming law (2026-07-21 reframe)
+Daniel, also known as Firstwater. Never "D. Fox" (retired 2026-07-21), never
+a faceless brand persona, never third-person self-reference ("the producer
+behind").
+
+## Vocabulary law
+A session is never a "room." The physical venue is a "space"; the gathering
+is a "session." ("Control room" as a literal studio term survives.)
 
 ## The agent rule (deepest law)
 The reader and the facilitator are the only agents in any sentence.
@@ -16,11 +38,11 @@ Abstractions never take verbs. "Your body" and "your mind" are not characters.
 Sound may act only as literal physics (pressure in a chest), never as a guide
 with intentions.
 - BAD:  Sound arrives in the body before the mind can argue.
-- GOOD: You feel it before you can explain it.
+- GOOD: You cannot talk your way out of something you feel in your chest.
 - BAD:  The sound takes you down, then brings you back up.
 - GOOD: You drop further than you can get on your own. You come back up.
 - BAD:  This room works on the other part of you.
-- GOOD: In this room you don't have to talk at all.
+- GOOD: In a session you don't have to talk at all.
 
 ## The AI-compression kill list
 Run every draft against these before it ships:
@@ -57,11 +79,13 @@ Nothing is out of bounds for Daniel. Drafts default to the register above;
 he departs from it whenever it serves.
 
 ## Canonical lines (use verbatim, do not paraphrase into new variants)
-- "A dark room. One light. Sound you feel before you hear." (headline register:
-  fragments are permitted ONLY in display headlines, never in body copy)
+- "Sound sessions in Denver." (home hero, Daniel's pick)
+- "Come lie down. Leave moving forward." (footer + OG share cards; conveys
+  the sessions' purpose without referencing Daniel)
 - "Each night is built around something worth putting down."
-- "You feel it in your chest before you hear it."
 - "If you'd rather stay on the floor, that's what the floor is for."
+- Headline register note: fragments are permitted ONLY in display headlines,
+  never in body copy.
 - "Say so and your ticket comes back."
 - Entity block (Daniel's own words, ratified 2026-07-18; supersedes the
   site-plan draft): "The sessions that we hold at Firstwater in Denver gather
@@ -78,9 +102,18 @@ he departs from it whenever it serves.
 
 ## Banned lines (Daniel, 2026-07-19 — permanent, no variants)
 - "Doors close at start time and stay closed." Removed from canon by Daniel.
-  Door and lateness policy never appears in copy in any form; the step-out
-  reassurance ("the door is beside you and nobody will make it a moment")
-  stands on its own.
+  Door and lateness policy never appears in copy in any form — including
+  transactional email and service-rendered pages (checkout, ticket, intake);
+  the step-out reassurance ("the door is beside you and nobody will make it
+  a moment") stands on its own.
+
+## Killed lines (2026-07-21 reframe — do not reintroduce, no variants)
+- "A dark room. One light. Sound you feel before you hear."
+- "Sound you feel before you hear it. A feeling you leave knowing how to
+  find." (the retired footer tagline)
+- "You feel it in your chest before you hear it."
+- The entire "you feel it before you hear/explain it" construction family.
+  Agents keep reinventing these; they are dead, not paraphrasable.
 - The "How loud does it get?" FAQ answer ("strong in the chest and easy on
   the ear...") — rejected by Daniel. Do not answer volume questions with
   reassurance mechanics; if volume copy is ever needed, Daniel writes it.
@@ -102,7 +135,7 @@ life. Copy enacts this; it never explains it.
 
 ### The named anti-model
 "Isolated together" — people on yoga mats who don't talk. This venture is
-together. The phrase is approved for journal use; in event copy the contrast
+together. The phrase is approved for blog use; in event copy the contrast
 is shown, not named.
 
 ### Source phrases (Daniel verbatim — draw from these before inventing)
@@ -113,7 +146,7 @@ Tier 1, event-copy eligible (subject to all laws above):
 - "people who just looked normal" (attendee-voice, testimonial register)
 - "embrace the coping mechanisms" / "don't take things head-on faster than
   you can handle"
-Tier 2, journal only (owned as his view, first person):
+Tier 2, blog only (owned as his view, first person):
 - "the sound is just time"
 - "sound is language"
 - "isolated together"
@@ -124,8 +157,8 @@ Tier 3, room-speech and private docs only — never written copy:
 field, coherence, energy, God, the veil, shamanic, Leela, oneness,
 super intelligence, Dispenza/Wheal/Spiral Dynamics citations.
 
-### Epistemic rule (from the interview, governs the journal)
-A metaphor is a metaphor. Metaphysical language may appear in the journal
+### Epistemic rule (from the interview, governs the blog)
+A metaphor is a metaphor. Metaphysical language may appear in the blog
 only when owned as faith or play in the same breath ("I say that on faith,
 not having any reason to really believe it"). It never appears as mechanism
 claim. This is the house version of the claims frame: he rejects unproven
@@ -177,7 +210,7 @@ with this doc, the resolution is stated inline and this doc wins.
 - The hard stop: end on a concrete behavior or noun and stop. If the last
   sentence could be followed by "and that matters," cut "and that matters."
   This is the founder-voice version of ceremony over explanation, and it is
-  the preferred ending for every selling page and journal piece.
+  the preferred ending for every selling page and blog piece.
 
 ### Litmus (run with the kill list before shipping)
 1. Does the paragraph describe a mechanism, pattern, or cost?

@@ -1,7 +1,7 @@
 title: "Sunday Downshift"
 slug: "sunday-downshift"
 eyebrow: "A SOUND SESSION"
-dek: "This is the weekly anchor for Sunday evenings in Denver, and we are building it now."
+dek: "This is the weekly anchor for Sunday evenings in Denver, and I am building it now."
 hero:
   src: "../../img/hero/session-sunday-downshift.jpg"
   alt: "A mug on a dark table"
@@ -43,7 +43,7 @@ sections:
 
   - type: prose
     body: |
-      This one becomes weekly once its space is set. [Write to us](../../contact/)
+      This one becomes weekly once its space is set. [Write to me](../../contact/)
       and check the box, and you will hear when the first Sunday goes up.
 
       [All sessions](../../sessions/)

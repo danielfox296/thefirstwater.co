@@ -14,7 +14,7 @@ INK = (10, 11, 13)
 ICE = (98, 182, 232)
 PAPER = (245, 247, 250)
 GRAY = (152, 161, 171)
-CANONICAL_SUB = 'A dark room. One light. Sound you feel before you hear.'
+CANONICAL_SUB = 'Come lie down. Leave moving forward.'
 
 
 def _fonts(title_size):
