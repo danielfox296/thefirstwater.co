@@ -551,6 +551,11 @@ def build():
             depth = output.count('/')
             nav_prefix = '../' * depth
             css_path = nav_prefix
+            if output == '404.html':
+                # GH Pages serves 404.html at every missing path, so its
+                # links must be root-absolute, not depth-relative.
+                nav_prefix = '/'
+                css_path = '/'
 
             # Assemble content from sections in order
             sections_dir  = os.path.join(page_path, 'sections')

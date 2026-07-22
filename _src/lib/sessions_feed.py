@@ -38,7 +38,7 @@ import urllib.request
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
-DEFAULT_FEED_URL = 'https://ss-service-production.up.railway.app/feeds/sessions.json'
+DEFAULT_FEED_URL = 'https://events.thefirstwater.co/feeds/sessions.json'
 CACHE_REL_PATH = os.path.join('data', 'sessions-cache.json')
 FETCH_TIMEOUT_S = 10
 DENVER = ZoneInfo('America/Denver')
