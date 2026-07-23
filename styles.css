@@ -160,6 +160,11 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .js .accordion[data-open="false"] .accordion-panel { display: none; }
 .section--light .accordion-panel { color: rgba(10,11,13,0.65); }
 
+/* ---- sessions hub: next-date seam (FW-UX-6) ---- */
+/* Muted date chip on the light-ground catalog cards; feed-driven, only
+   rendered when a session has a real date (sessions_feed.annotate_hub_dates). */
+.hub-date { font: 600 0.78rem var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(10,11,13,0.62); margin-left: 0.55rem; white-space: nowrap; }
+
 /* ---- email placeholder / logistics ---- */
 .list-block { border: 1px solid var(--line); padding: 2.5rem; max-width: 34rem; margin-top: 2.5rem; }
 .list-block .btn { margin-top: 1.2rem; }

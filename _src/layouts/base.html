@@ -294,6 +294,26 @@
         btn.textContent = 'Sending…'; // HUMAN REVIEW — in-flight button label
       });
     });
+    // GA4 begin_checkout when a session checkout form submits (delegated:
+    // the form is feed-injected). Progressive only — the POST proceeds
+    // identically without gtag or with JS off; gtag.js sends via beacon so
+    // the navigation doesn't lose the event.
+    document.addEventListener('submit', (e) => {
+      const form = e.target;
+      if (!form.classList || !form.classList.contains('session-checkout')) return;
+      if (typeof window.gtag !== 'function') return;
+      const card = form.closest('[data-session-id]');
+      const tier = form.querySelector('input[name="tier_id"]:checked') ||
+                   form.querySelector('input[name="tier_id"]');
+      window.gtag('event', 'begin_checkout', {
+        items: [{
+          item_id: card ? card.getAttribute('data-session-id') : '',
+          item_name: document.title.split('|')[0].trim(),
+          item_variant: tier ? tier.value : ''
+        }]
+      });
+    });
+
     // Coming back from /thanks/ via the back button can restore the disabled
     // state from the bfcache; put the button back the way it was.
     window.addEventListener('pageshow', (e) => {

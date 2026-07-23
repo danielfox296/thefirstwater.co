@@ -54,9 +54,6 @@ PAGES    = os.path.join(SRC, 'pages')
 if REPO not in sys.path:
     sys.path.insert(0, REPO)
 from _src.lib import sessions_feed
-# External-events feed (Front Range /calendar/): same graceful-fallback seam
-# as sessions_feed. Stdlib-only, safe to import unconditionally.
-from _src.lib import external_events
 SITE_URL = 'https://thefirstwater.co'
 
 # Sitewide description used in LocalBusiness + WebSite JSON-LD.
@@ -576,15 +573,6 @@ def build():
     feed = sessions_feed.load_feed(REPO)
     print()
 
-    # Load the external-events (calendar) feed, same never-break-the-build
-    # discipline: /feeds/calendar.json > committed data/external-events.json >
-    # empty. Since the 2026-07 brand split the calendar LIVES at
-    # soundbathcalendar.com; this feed is only used to emit a redirect stub
-    # per old /calendar/event/<slug>/ URL. Every other page is unaffected.
-    print('Loading calendar feed...')
-    cal_feed = external_events.load_feed(REPO)
-    print()
-
     # Find all page directories (supports nested: pages/blog-posts/slug/)
     page_dirs = []
     for root, dirs, files in os.walk(PAGES):
@@ -775,6 +763,11 @@ def build():
                     content = content.replace('</article>', _block + '\n\n</article>', 1)
                 else:
                     content += '\n\n' + _block
+
+        # Sessions hub (FW-UX-6): stamp each catalog card with its next date
+        # from the feed ('Aug 25', muted). No dated sessions -> no-op.
+        if output == 'sessions/index.html':
+            content = sessions_feed.annotate_hub_dates(content, feed)
 
         if output == 'index.html':
             _next = sessions_feed.next_session(feed)
@@ -1184,13 +1177,6 @@ def build():
         pages_built.append(output)
         print(f'  ✓ {output}')
 
-    # --- Per-event redirect stubs (/calendar/event/<slug>/) ---
-    # The calendar moved to soundbathcalendar.com (2026-07 brand split). Every
-    # old permalink URL gets a meta-refresh + canonical + noindex stub pointing
-    # at its new home, so links and rankings transfer. No sitemap entries.
-    _event_outputs = build_event_redirects(cal_feed)
-    pages_built.extend(_event_outputs)
-
     print(f'\nBuilt {len(pages_built)} pages.')
 
     # --- Generate RSS Feed ---
@@ -1308,71 +1294,11 @@ def build():
         f.write(rss_xml)
     print('  ✓ rss.xml')
 
-    # --- Generate sitemap.xml (calendar URLs no longer listed) ---
+    # --- Generate sitemap.xml ---
     generate_sitemap(page_dirs)
 
     # --- Generate llms.txt ---
     generate_llms()
-
-
-NEW_CALENDAR_URL = 'https://soundbathcalendar.com'
-
-
-def build_event_redirects(cal_feed):
-    """Emit a redirect stub per approved external event at the OLD permalink
-    path /calendar/event/<slug>/index.html, pointing at the same slug on
-    soundbathcalendar.com (the calendar's home since the 2026-07 brand split).
-
-    Same stub anatomy as the config-driven `redirect_to` pages (journal.html
-    pattern): canonical to the new URL, meta refresh, noindex, JS fallback.
-    Slugs are deterministic from the dedup_key, so old and new sites agree.
-    Returns the built output paths (never sitemap entries — stubs stay out).
-    """
-    print('\nGenerating calendar redirect stubs...')
-    # Clear the old rendered pages first: the whole /calendar/event/ tree is
-    # regenerated as stubs for exactly the current feed's slugs.
-    import shutil
-    shutil.rmtree(os.path.join(REPO, 'calendar', 'event'), ignore_errors=True)
-    rows = external_events.approved_event_rows(cal_feed)
-    if not rows:
-        print('  (none)')
-        return []
-
-    built = []
-    for row in rows:
-        slug = external_events.event_slug(row)
-        if not slug:
-            continue
-        output = f'calendar/event/{slug}/index.html'
-        target = f'{NEW_CALENDAR_URL}/event/{slug}/'
-        safe_target = html_mod.escape(target, quote=True)
-        stub = (
-            '<!DOCTYPE html>\n'
-            '<html lang="en">\n'
-            '<head>\n'
-            '<meta charset="utf-8">\n'
-            '<title>This page has moved | Firstwater</title>\n'
-            f'<link rel="canonical" href="{safe_target}">\n'
-            f'<meta http-equiv="refresh" content="0; url={safe_target}">\n'
-            '<meta name="robots" content="noindex">\n'
-            '</head>\n'
-            '<body>\n'
-            f'<p>This page has moved. Redirecting to <a href="{safe_target}">{safe_target}</a>.</p>\n'
-            f'<script>window.location.replace("{safe_target}");</script>\n'
-            '</body>\n'
-            '</html>\n'
-        )
-        out_path = os.path.join(REPO, output)
-        if not os.path.abspath(out_path).startswith(os.path.abspath(REPO)):
-            print(f'  ✗ SKIPPED {output} — path escapes repo root')
-            continue
-        os.makedirs(os.path.dirname(out_path), exist_ok=True)
-        with open(out_path, 'w', encoding='utf-8') as f:
-            f.write(stub)
-        built.append(output)
-        print(f'  ↪ {output} → {target}')
-
-    return built
 
 
 def _sitemap_url_entry(loc, lastmod):
@@ -1431,7 +1357,7 @@ def _page_lastmod(page_path):
     return datetime.date.fromtimestamp(max(mtimes)).isoformat()
 
 
-def generate_sitemap(page_dirs, extra_urls=None):
+def generate_sitemap(page_dirs):
     """Generate sitemap.xml from page configs. Each <url> carries only <loc>
     and <lastmod> (changefreq/priority dropped — Google ignores them). lastmod
     comes from config `lastmod`, new-format blog YAML `last_updated`/`date`, or
@@ -1444,12 +1370,8 @@ def generate_sitemap(page_dirs, extra_urls=None):
     consolidated onto a hub page and shouldn't compete with it in the
     sitemap).
 
-    `extra_urls` is an iterable of (loc, lastmod) for pages emitted outside the
-    _src/pages pipeline (the UPCOMING per-event calendar permalink pages); past
-    event pages are already filtered out by the caller.
-
-    Order: homepage, then root pages alphabetical by output, then the event
-    permalink pages by loc, then blog posts by lastmod descending.
+    Order: homepage, then root pages alphabetical by output, then blog posts
+    by lastmod descending.
     """
     print('\nGenerating sitemap...')
 
@@ -1519,18 +1441,11 @@ def generate_sitemap(page_dirs, extra_urls=None):
     # Newest lastmod first; fall back to output name for determinism on ties.
     blog_entries.sort(key=lambda x: (x[0], x[1]), reverse=True)
 
-    # Upcoming event permalink pages, sorted by loc for a stable ordering.
-    event_entries = sorted(
-        ((loc, _sitemap_url_entry(loc, lastmod)) for loc, lastmod in (extra_urls or [])),
-        key=lambda x: x[0],
-    )
-
     parts = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     if homepage_entry:
         parts.append(homepage_entry.rstrip('\n'))
     parts.extend(xml.rstrip('\n') for _, xml in root_entries)
-    parts.extend(xml.rstrip('\n') for _, xml in event_entries)
     parts.extend(xml.rstrip('\n') for _, _, xml in blog_entries)
     parts.append('</urlset>')
     sitemap_xml = '\n'.join(parts) + '\n'
@@ -1538,7 +1453,7 @@ def generate_sitemap(page_dirs, extra_urls=None):
     with open(os.path.join(REPO, 'sitemap.xml'), 'w', encoding='utf-8') as f:
         f.write(sitemap_xml)
     print(f'  ✓ sitemap.xml ({1 if homepage_entry else 0}+{len(root_entries)} root, '
-          f'{len(event_entries)} event, {len(blog_entries)} blog)')
+          f'{len(blog_entries)} blog)')
 
 
 def generate_llms():

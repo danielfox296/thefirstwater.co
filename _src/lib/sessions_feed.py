@@ -211,6 +211,12 @@ def fmt_date_short(ts):
     return f'{d.strftime("%B")} {_day(d.strftime("%d"))}'
 
 
+def fmt_date_tiny(ts):
+    """'Aug 25' — the sessions-hub card seam (FW-UX-6)."""
+    d = _denver(ts)
+    return f'{d.strftime("%b")} {_day(d.strftime("%d"))}'
+
+
 def fmt_time(ts):
     d = _denver(ts)
     hour = _day(d.strftime("%I"))
@@ -244,10 +250,29 @@ def tier_label(tier):
 
 _BLOCK_STYLE = (
     '<style>\n'
+    '    .session-dates { scroll-margin-top: 90px; }\n'
     '    .session-checkout .btn { margin-top: 1.2rem; }\n'
     '    .session-checkout .btn[disabled] { opacity: 0.45; cursor: not-allowed; filter: none; }\n'
     '    .session-tiers { border: 0; padding: 0; margin: 1rem 0 0; }\n'
     '    .session-tiers label, .session-tier { display: block; margin-top: 0.5rem; }\n'
+    # Waitlist form (FW-UX-1): dark-ground field, so the border is the dark
+    # hairline and the focus ring stays ice (light-ground conversion N/A).
+    '    .session-waitlist-form { margin-top: 1.2rem; }\n'
+    '    .session-waitlist-label { display: block; font: 600 0.75rem var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.5rem; }\n'
+    '    .session-waitlist-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }\n'
+    '    .session-waitlist-row input { flex: 1 1 12rem; min-width: 0; background: transparent; border: 1px solid var(--line); color: var(--paper); padding: 0.7rem 0.9rem; font: 400 1rem var(--font-body); }\n'
+    '    .session-waitlist-row input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }\n'
+    '    .session-waitlist-row .btn { margin: 0; }\n'
+    '    .session-waitlist-alt { margin-top: 0.7rem; font-size: 0.9rem; }\n'
+    # Sticky mobile buy bar (FW-DES-5): thin, bottom-pinned, phones only.
+    # Ink ground + hairline top mirrors the sticky header; safe-area inset
+    # keeps it clear of home-indicator bezels. Fixed position is the zero-JS
+    # baseline; a tiny script hides it while the dates block is in view.
+    '    .session-buybar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--ink); border-top: 1px solid var(--line); padding: 0.55rem 20px calc(0.55rem + env(safe-area-inset-bottom)); }\n'
+    '    .session-buybar[hidden] { display: none; }\n'
+    '    .session-buybar-date { font: 600 0.92rem var(--font-body); color: var(--paper); }\n'
+    '    .session-buybar .btn { margin: 0; padding: 0.55rem 1.15rem; font-size: 0.9rem; min-height: 44px; display: inline-flex; align-items: center; }\n'
+    '    @media (min-width: 900px) { .session-buybar { display: none; } }\n'
     '  </style>'
 )
 
@@ -307,30 +332,117 @@ def _render_one(s):
             parts.append(f'  <p class="session-tier">{_esc(tier_label(t))}</p>')
         parts.append('  <p class="session-tier">On sale soon.</p>')
 
-    # Waitlist link — rendered whenever the service gave us a URL, hidden
-    # unless sold out with the waitlist open, so the client overlay can
-    # toggle it without inventing DOM.
+    # Waitlist join (FW-UX-1): a one-field email form POSTing straight to the
+    # service's waitlist endpoint, with the plain GET page kept as a fallback
+    # link. The wrapper keeps the .session-waitlist class + hidden contract so
+    # js/sessions.js can toggle it live without inventing DOM. Rendered
+    # whenever the service gave us a URL, hidden unless sold out with the
+    # waitlist open.
     if s.get('waitlist_url'):
         hide = '' if (status == 'sold_out' and s.get('waitlist_open')) else ' hidden'
-        parts.append(f'  <p class="session-waitlist"{hide}><a href="{_esc(s["waitlist_url"])}" data-session-waitlist>Join the waitlist</a></p>')
+        wurl = _esc(s['waitlist_url'])
+        parts.append(f'  <div class="session-waitlist"{hide}>')
+        parts.append(f'    <form class="session-waitlist-form" method="post" action="{wurl}">')
+        parts.append(f'      <label class="session-waitlist-label" for="waitlist-email-{sid}">Email</label>')
+        parts.append('      <div class="session-waitlist-row">')
+        # maxlength mirrors the service's zod caps (capture.ts)
+        parts.append(f'        <input type="email" id="waitlist-email-{sid}" name="email" autocomplete="email" maxlength="320" required>')
+        parts.append('        <button type="submit" class="btn btn-primary">Join the waitlist</button>')
+        parts.append('      </div>')
+        parts.append('    </form>')
+        # HUMAN REVIEW — waitlist fallback-link line (new copy)
+        parts.append(f'    <p class="session-waitlist-alt"><a href="{wurl}" data-session-waitlist>Or use the waitlist page.</a></p>')
+        parts.append('  </div>')
 
     parts.append('</div>')
     return '\n'.join(parts)
 
 
+def _render_buybar(s):
+    """Sticky mobile buy bar (FW-DES-5): a thin bottom-pinned bar, phones only
+    (<900px, CSS-gated), showing the next date plus an anchor into the dates
+    block. Only ever called with a display-status session (the caller's gate),
+    so it can never appear on a dateless page. It sits on its own ink ground,
+    so btn-primary keeps the ice fill (the light-ground conversion is N/A)."""
+    status = s.get('status')
+    date = _esc(fmt_date_short(s['starts_at']))
+    if status == 'sold_out':
+        # Sold-out variant: the waitlist line replaces the seat CTA
+        # ("Sold out." / "Join the waitlist" are the block's existing lines).
+        label = f'{date} · Sold out'
+        cta = ('<a class="btn btn-primary" href="#dates">Join the waitlist</a>'
+               if s.get('waitlist_url') else '')
+    else:
+        label = date
+        # HUMAN REVIEW — buy-bar CTA label (Daniel's wording from the spec)
+        cta = '<a class="btn btn-primary" href="#dates">Get a seat</a>'
+    parts = ['<div class="session-buybar">',
+             f'  <span class="session-buybar-date">{label}</span>']
+    if cta:
+        parts.append(f'  {cta}')
+    parts.append('</div>')
+    return '\n'.join(parts)
+
+
+# Hides the buy bar while the dates block itself is on screen (the bar would
+# only point at what the reader is already looking at). Progressive: with no
+# JS the fixed bar simply stays, which is the zero-JS baseline.
+_BUYBAR_JS = (
+    '<script>\n'
+    '(function () {\n'
+    "  'use strict';\n"
+    "  var bar = document.querySelector('.session-buybar');\n"
+    "  var dates = document.getElementById('dates');\n"
+    "  if (!bar || !dates || !('IntersectionObserver' in window)) return;\n"
+    '  new IntersectionObserver(function (entries) {\n'
+    '    // last entry = latest state (rapid transitions batch into one call)\n'
+    '    bar.hidden = entries[entries.length - 1].isIntersecting;\n'
+    '  }).observe(dates);\n'
+    '})();\n'
+    '</script>'
+)
+
+
 def render_sessions_block(sessions, nav_prefix):
-    """The dates/tickets section injected into a session page. '' if none."""
+    """The dates/tickets section injected into a session page. '' if none.
+    Also emits the sticky mobile buy bar for the soonest session (fixed
+    position pulls it out of the article flow)."""
     if not sessions:
         return ''
     inner = '\n\n'.join(_render_one(s) for s in sessions)
     return (
-        f'<section class="session-dates" data-sessions-feed="{_esc(client_feed_url())}">\n'
+        f'<section class="session-dates" id="dates" data-sessions-feed="{_esc(client_feed_url())}">\n'
         f'  {_BLOCK_STYLE}\n'
         f'  <h2 class="blog-subhead blog-subhead--h2">Dates</h2>\n'
         f'{inner}\n'
         f'</section>\n'
-        f'<script src="{_esc(nav_prefix)}js/sessions.js" defer></script>'
+        f'{_render_buybar(sessions[0])}\n'
+        f'<script src="{_esc(nav_prefix)}js/sessions.js" defer></script>\n'
+        f'{_BUYBAR_JS}'
     )
+
+
+# ---------------------------------------------------------------------------
+# Sessions hub date seam (FW-UX-6)
+# ---------------------------------------------------------------------------
+
+# A hub catalog card: '<h2 ...><a href="<slug>/">Name</a>' (relative link at
+# /sessions/ depth, so the path segment IS the event_slug).
+_HUB_CARD_RE = re.compile(r'<h2[^>]*><a href="([a-z0-9-]+)/"[^>]*>.*?</a>')
+
+
+def annotate_hub_dates(content, feed, now=None):
+    """Stamp each /sessions/ catalog card with its next dated session
+    ('Aug 25' style, muted .hub-date span) when the feed holds a displayable
+    future session for that slug. Cards without one are untouched, so the
+    empty-feed hub stays byte-identical."""
+    def _stamp(m):
+        ss = sessions_for_slug(feed, m.group(1), now=now)
+        if not ss:
+            return m.group(0)
+        return (f'{m.group(0)} <span class="hub-date">'
+                f'{html.escape(fmt_date_tiny(ss[0]["starts_at"]))}</span>')
+    return _HUB_CARD_RE.sub(_stamp, content)
 
 
 # ---------------------------------------------------------------------------
