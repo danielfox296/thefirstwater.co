@@ -27,7 +27,7 @@ behind all content, drawn in ice/paper hairlines on the ink ground. Modes climb 
 you scroll; visible through dark/transparent sections (hero edges, home interlude
 band, footer, article margins). Line alphas ≤ .16 — it is a ground, not a graphic.
 Replaced v1 waveform.svg underlay/divider and the generated-art photo band (removed).
-(og.py still draws its own waveform on share cards; unrelated to the site element.)
+(og.py share cards carry the favicon ripple mark + Space Grotesk type — the v1 waveform is retired there too.)
 
 ## Photography
 Interim: Unsplash stock, duotone-processed to ink/ice (scripts/duotone.py).
