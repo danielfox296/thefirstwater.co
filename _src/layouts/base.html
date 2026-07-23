@@ -43,12 +43,16 @@
   {{page_style}}
 </head>
 <body>
+  <!-- Skip link (FW-UX-9): first focusable element, visually hidden until
+       keyboard focus. HUMAN REVIEW — mechanical a11y label -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <!-- CYMATICS — Chladni nodal lines, fixed behind all content, scroll-driven -->
   <canvas id="cymaticsCanvas" aria-hidden="true"></canvas>
 
   {{header}}
 
-  <main>
+  <main id="main" tabindex="-1">
   {{content}}
   </main>
 
@@ -240,14 +244,8 @@
   </script>
 
   <script>
-    // Navigation active state
-    const navLinks = document.querySelectorAll('.nav-links a');
-    navLinks.forEach(link => {
-      if (link.href === window.location.href) {
-        link.classList.add('active');
-        link.setAttribute('aria-current', 'page');
-      }
-    });
+    // Nav active state is baked at build time (FW-UX-11, build.py
+    // mark_active_nav): child pages light their section, no JS needed.
 
     // Intersection Observer for fade-up animations
     const observer = new IntersectionObserver((entries) => {

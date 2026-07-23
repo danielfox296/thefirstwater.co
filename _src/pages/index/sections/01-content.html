@@ -1,6 +1,6 @@
 <section class="section section--dark hero-section">
   <div class="hero-media" aria-hidden="true">
-    <img src="img/hero/home.jpg" alt="">
+    <img src="img/hero/home.jpg" alt="" loading="eager" fetchpriority="high">
   </div>
   <div class="container">
     <span class="hero-date fade-up">Denver &middot; first dates being set</span>
@@ -85,18 +85,18 @@
     <div class="faq-list">
 
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">What do I wear? What do I bring?</button>
-        <div class="accordion-panel">Wear something soft. The mats and blankets are already there,
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="home-faq-panel-1">What do I wear? What do I bring?</button>
+        <div class="accordion-panel" id="home-faq-panel-1">Wear something soft. The mats and blankets are already there,
         so you come as you are.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">Do I have to talk?</button>
-        <div class="accordion-panel">No. You will not be asked to share, to speak, or to be
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="home-faq-panel-2">Do I have to talk?</button>
+        <div class="accordion-panel" id="home-faq-panel-2">No. You will not be asked to share, to speak, or to be
         anywhere but on the floor.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">What if it wasn't for me?</button>
-        <div class="accordion-panel">Say so and your ticket comes back.</div>
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="home-faq-panel-3">What if it wasn't for me?</button>
+        <div class="accordion-panel" id="home-faq-panel-3">Say so and your ticket comes back.</div>
       </div>
     </div>
     <p style="margin-top:2rem;"><a href="faq/">All questions &rarr;</a></p>

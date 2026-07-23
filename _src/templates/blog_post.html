@@ -34,10 +34,11 @@
     </div>
   </header>
 
-  <!-- Hero image -->
+  <!-- Hero image — the LCP candidate on session pages: eager + high priority
+       (FW-UX-8); width/height are stamped at build from the actual file -->
   {% if hero %}
   <figure class="blog-hero fade-up">
-    <img src="{{ hero.src }}" alt="{{ hero.alt }}" class="blog-hero__img" loading="lazy">
+    <img src="{{ hero.src }}" alt="{{ hero.alt }}" class="blog-hero__img" loading="eager" fetchpriority="high">
     {% if hero.caption %}
     <figcaption class="blog-hero__caption">{{ hero.caption }}</figcaption>
     {% endif %}

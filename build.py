@@ -72,8 +72,10 @@ SITE_DESCRIPTION = (
 # schema.org sameAs on the LocalBusiness and publisher entities — the
 # cross-source entity stitching the site-plan calls for. Add each URL to
 # data/profiles.json as the account goes live; an empty list emits no key.
+# Repo-relative path (FW-SEO-7): a CWD-relative open silently dropped every
+# sameAs URL whenever the build ran from outside the repo root.
 try:
-    with open(os.path.join('data', 'profiles.json'), encoding='utf-8') as _f:
+    with open(os.path.join(REPO, 'data', 'profiles.json'), encoding='utf-8') as _f:
         SAME_AS = [u for u in json.load(_f).get('sameAs', []) if u]
 except (FileNotFoundError, json.JSONDecodeError):
     SAME_AS = []
@@ -388,14 +390,179 @@ def _ldjson(obj):
             .replace('\u2029', '\\u2029'))
 
 
+# ---------------------------------------------------------------------------
+# Image intrinsic dimensions (FW-UX-8 / FW-SEO-9)
+# ---------------------------------------------------------------------------
+
+def _image_size(path):
+    """(width, height) in pixels read from a PNG/JPEG/GIF/WebP file header,
+    or None when the format is unknown or the file unreadable. Stdlib-only,
+    keeping the build's no-dependency guarantee."""
+    try:
+        with open(path, 'rb') as f:
+            head = f.read(32)
+            if head.startswith(b'\x89PNG\r\n\x1a\n') and head[12:16] == b'IHDR':
+                return (int.from_bytes(head[16:20], 'big'),
+                        int.from_bytes(head[20:24], 'big'))
+            if head[:6] in (b'GIF87a', b'GIF89a'):
+                return (int.from_bytes(head[6:8], 'little'),
+                        int.from_bytes(head[8:10], 'little'))
+            if head.startswith(b'RIFF') and head[8:12] == b'WEBP':
+                fmt = head[12:16]
+                if fmt == b'VP8X':
+                    return (int.from_bytes(head[24:27], 'little') + 1,
+                            int.from_bytes(head[27:30], 'little') + 1)
+                if fmt == b'VP8L':
+                    bits = int.from_bytes(head[21:25], 'little')
+                    return ((bits & 0x3FFF) + 1, ((bits >> 14) & 0x3FFF) + 1)
+                if fmt == b'VP8 ':
+                    return (int.from_bytes(head[26:28], 'little') & 0x3FFF,
+                            int.from_bytes(head[28:30], 'little') & 0x3FFF)
+                return None
+            if head.startswith(b'\xff\xd8'):
+                # JPEG: walk the marker chain to the first SOF segment.
+                f.seek(2)
+                while True:
+                    b = f.read(1)
+                    if not b:
+                        return None
+                    if b[0] != 0xFF:
+                        return None
+                    code = f.read(1)
+                    while code == b'\xff':  # fill bytes
+                        code = f.read(1)
+                    if not code:
+                        return None
+                    code = code[0]
+                    if code in (0xD8, 0x01) or 0xD0 <= code <= 0xD7:
+                        continue          # standalone markers, no payload
+                    if code in (0xD9, 0xDA):
+                        return None       # end of image / entropy data: no SOF found
+                    seg = f.read(2)
+                    if len(seg) < 2:
+                        return None
+                    seg_len = int.from_bytes(seg, 'big')
+                    if 0xC0 <= code <= 0xCF and code not in (0xC4, 0xC8, 0xCC):
+                        data = f.read(5)
+                        if len(data) < 5:
+                            return None
+                        return (int.from_bytes(data[3:5], 'big'),
+                                int.from_bytes(data[1:3], 'big'))
+                    f.seek(seg_len - 2, 1)
+    except OSError:
+        return None
+    return None
+
+
+_IMG_TAG_RE = re.compile(r'<img\b[^>]*>')
+_IMG_SRC_RE = re.compile(r'\bsrc="([^"]+)"')
+
+
+def _resolve_img_path(src, output):
+    """Local filesystem path for an <img src> in a built page, or None for
+    external/data: sources. Relative srcs resolve against the page's own
+    output directory; root-absolute ones against the repo root."""
+    if src.startswith(('http://', 'https://', '//', 'data:')):
+        return None
+    src = src.split('?')[0].split('#')[0]
+    if src.startswith('/'):
+        path = os.path.join(REPO, src.lstrip('/'))
+    else:
+        path = os.path.join(REPO, os.path.dirname(output), src)
+    path = os.path.normpath(path)
+    if not path.startswith(REPO + os.sep):
+        return None
+    return path
+
+
+def add_img_dimensions(html, output):
+    """Stamp intrinsic width/height attributes on every <img> that lacks them,
+    reading the actual pixels from the file at build time (FW-UX-8: the
+    browser can reserve layout space before the image arrives \u2014 no CLS).
+    CSS `img { max-width:100%; height:auto }` keeps rendering responsive.
+    Tags that already carry either attribute are left untouched."""
+    def _stamp(m):
+        tag = m.group(0)
+        if 'width=' in tag or 'height=' in tag:
+            return tag
+        src_m = _IMG_SRC_RE.search(tag)
+        if not src_m:
+            return tag
+        path = _resolve_img_path(html_mod.unescape(src_m.group(1)), output)
+        if not path:
+            return tag
+        size = _image_size(path)
+        if not size:
+            return tag
+        return f'{tag[:-1].rstrip()} width="{size[0]}" height="{size[1]}">'
+    return _IMG_TAG_RE.sub(_stamp, html)
+
+
+# ---------------------------------------------------------------------------
+# FAQPage JSON-LD from visible markup (FW-SEO-6)
+# ---------------------------------------------------------------------------
+
+_ACCORDION_QA_RE = re.compile(
+    r'<button[^>]*\bclass="[^"]*\baccordion-trigger\b[^"]*"[^>]*>(.*?)</button>'
+    r'\s*<div[^>]*\bclass="[^"]*\baccordion-panel\b[^"]*"[^>]*>(.*?)</div>',
+    re.DOTALL)
+
+
+def extract_faqs_from_content(content):
+    """Q-A pairs parsed from the page's own visible accordion markup: the
+    FAQPage JSON-LD is generated from exactly the HTML the reader sees, so
+    schema and page can never drift again (FW-SEO-6 \u2014 the hand-written block
+    it replaces had already drifted). Inline tags are stripped and whitespace
+    collapsed; the words themselves are untouched."""
+    faqs = []
+    for q_html, a_html in _ACCORDION_QA_RE.findall(content):
+        q = html_mod.unescape(_strip_inline_markup(q_html))
+        a = html_mod.unescape(_strip_inline_markup(a_html))
+        if q and a:
+            faqs.append({'q': q, 'a': a})
+    return faqs
+
+
+# ---------------------------------------------------------------------------
+# Build-time nav active state (FW-UX-11)
+# ---------------------------------------------------------------------------
+
+# Nav sections keyed by their href prefix under the site root. The contact
+# CTA is deliberately absent: it's a button-styled link whose .active recolor
+# would fight its fill (and the old client-side exact-URL match never lit its
+# fragment href either).
+_NAV_SECTION_PREFIXES = ('sessions', 'about', 'faq', 'blog', 'corporate')
+
+
+def mark_active_nav(page_header, output, nav_prefix):
+    """Mark the header link for the current page's section at build time.
+    The exact section page gets aria-current="page"; a child page (blog post,
+    session page) gets aria-current="true" so its section stays lit. Replaces
+    the old client-side exact-URL match, which left child pages with no
+    highlighted section and did nothing with JS off."""
+    for sec in _NAV_SECTION_PREFIXES:
+        if output == f'{sec}/index.html':
+            current = 'page'
+        elif output.startswith(f'{sec}/'):
+            current = 'true'
+        else:
+            continue
+        needle = f'<a href="{nav_prefix}{sec}/">'
+        repl = f'<a href="{nav_prefix}{sec}/" class="active" aria-current="{current}">'
+        return page_header.replace(needle, repl, 1)
+    return page_header
+
+
 def build():
     # Load shared pieces
     base   = read(os.path.join(LAYOUTS,  'base.html'))
     header = read(os.path.join(PARTIALS, 'header.html'))
     footer = read(os.path.join(PARTIALS, 'footer.html'))
 
-    # Cache-bust styles.css with a content fingerprint so Cloudflare CDN
-    # serves the new file immediately after each deploy without a manual purge.
+    # Cache-bust styles.css with a content fingerprint so the GitHub Pages
+    # CDN (Fastly) serves the new file immediately after each deploy without
+    # a manual purge (FW-SEO-8: the old comment claimed Cloudflare; the actual
+    # stack is GH Pages fronted by Fastly).
     with open(os.path.join(REPO, 'styles.css'), 'rb') as _f:
         _styles_ver = hashlib.md5(_f.read()).hexdigest()[:8]
     base = base.replace('styles.css"', f'styles.css?v={_styles_ver}"')
@@ -651,6 +818,8 @@ def build():
         # Apply nav_prefix to header and footer
         page_header = header.strip().replace('{{nav_prefix}}', nav_prefix)
         page_footer = footer.strip().replace('{{nav_prefix}}', nav_prefix)
+        # Build-time nav active state (FW-UX-11): child pages light their section
+        page_header = mark_active_nav(page_header, output, nav_prefix)
         if config.get('no_chrome'):
             page_header = ''
             page_footer = ''
@@ -703,15 +872,32 @@ def build():
         # Build OG tags (escape user-provided strings)
         safe_og_title = html_mod.escape(og_title, quote=True)
         safe_og_desc  = html_mod.escape(description, quote=True)
-        og_tags = '\n  '.join([
+        # og:image intrinsic size read from the actual file for local images
+        # (FW-SEO-9). og:image:alt reuses the OG title verbatim — the cards
+        # are text cards of exactly that identity (scripts/og.py), so no new
+        # copy is introduced. HUMAN REVIEW — og:image:alt pattern (title as alt).
+        og_image_size = None
+        if og_image.startswith(f'{SITE_URL}/'):
+            og_image_size = _image_size(
+                os.path.join(REPO, og_image[len(SITE_URL) + 1:]))
+        og_lines = [
             f'<meta property="og:title" content="{safe_og_title}">',
             f'<meta property="og:description" content="{safe_og_desc}">',
             f'<meta property="og:url" content="{canonical_url}">',
             f'<meta property="og:type" content="{og_type}">',
             f'<meta property="og:image" content="{og_image}">',
+        ]
+        if og_image_size:
+            og_lines.append(f'<meta property="og:image:width" content="{og_image_size[0]}">')
+            og_lines.append(f'<meta property="og:image:height" content="{og_image_size[1]}">')
+        og_lines += [
+            f'<meta property="og:image:alt" content="{safe_og_title}">',
             f'<meta property="og:site_name" content="Firstwater">',
             f'<meta property="og:locale" content="en_US">',
-        ])
+        ]
+        # No twitter:site tag: no Twitter/X handle exists in any config or
+        # data file (checked repo-wide) — never invent one.
+        og_tags = '\n  '.join(og_lines)
 
         if is_blog:
             # For new-format posts, dates come from YAML; for old, from config.json
@@ -862,9 +1048,14 @@ def build():
                 website_schema["publisher"]["sameAs"] = SAME_AS
             schema_json += f'\n  <script type="application/ld+json">\n{json.dumps(website_schema, indent=2)}\n  </script>'
 
-        # FAQPage schema — manual `faq` in config.json wins; otherwise
-        # auto-extract Q-A pairs from question H2s in YAML-format blog posts.
+        # FAQPage schema — manual `faq` in config.json wins; a page can opt in
+        # (config `faq_schema_from_content`) to generating it from its own
+        # visible accordion markup so schema and page text can never drift
+        # (FW-SEO-6); otherwise auto-extract Q-A pairs from question H2s in
+        # YAML-format blog posts.
         faq_items = config.get('faq', [])
+        if not faq_items and config.get('faq_schema_from_content'):
+            faq_items = extract_faqs_from_content(content)
         if not faq_items and is_blog and use_new_renderer:
             faq_items = auto_extract_faqs(post_data)
         if faq_items:
@@ -977,6 +1168,9 @@ def build():
         # Second pass: content/header/footer may themselves use {{css_path}}
         # for depth-correct asset links (e.g. hero images in section files).
         html = html.replace('{{css_path}}',         css_path)
+
+        # Intrinsic width/height on every local <img> lacking them (FW-UX-8)
+        html = add_img_dimensions(html, output)
 
         # Write output file (validate path stays within repo)
         out_path = os.path.join(REPO, output)

@@ -3,5 +3,6 @@
   "meta_description": "What a sound session is, what happens at a session, what to wear, and where nights happen in Denver.",
   "output": "faq/index.html",
   "breadcrumb": "FAQ",
-  "og_image": "img/og/faq.png"
+  "og_image": "img/og/faq.png",
+  "faq_schema_from_content": true
 }

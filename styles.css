@@ -32,7 +32,10 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
-img { max-width: 100%; display: block; }
+/* height:auto so build-stamped width/height attrs (FW-UX-8) set the aspect
+   ratio for layout reservation without distorting a width-constrained image.
+   .hero-media img (0-1-1) still wins its explicit height:100%. */
+img { max-width: 100%; height: auto; display: block; }
 a { color: var(--accent); }
 h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.08; letter-spacing: -0.015em; }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
@@ -55,6 +58,16 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.
 .section h2 { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 1.6rem; }
 .section p { max-width: 42rem; }
 .section p + p { margin-top: 1.1rem; }
+
+/* ---- skip link (FW-UX-9) ---- */
+/* First focusable element, moved off-canvas until keyboard focus lands on it.
+   The chip itself is paper — a light ground — so the visible ring takes
+   --accent-on-light per the FW-DES-3 rule, not ice. */
+.skip-link { position: absolute; top: 0; left: 0; z-index: 100; background: var(--paper); color: var(--ink); font: 600 0.9rem var(--font-body); padding: 0.85rem 1.4rem; text-decoration: none; transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+.skip-link:focus-visible { outline: 2px solid var(--accent-on-light); outline-offset: -4px; }
+/* The skip target: no ring around the whole content column on arrival */
+main:focus { outline: none; }
 
 /* ---- header ---- */
 .site-header { position: sticky; top: 0; z-index: 50; background: var(--ink); border-bottom: 1px solid var(--line); }
@@ -137,12 +150,15 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .accordion { border-bottom: 1px solid var(--line); }
 .section--light .accordion { border-color: rgba(10,11,13,0.14); }
 .accordion-trigger { width: 100%; text-align: left; background: none; border: none; cursor: pointer; font: 600 1.25rem var(--font-display); color: inherit; padding: 1.4rem 0; display: flex; justify-content: space-between; align-items: center; }
-.accordion-trigger::after { content: "+"; font-size: 1.4rem; color: var(--accent); }
+/* +/– indicator and collapsed state exist only when JS is driving the toggle
+   (html.js is set synchronously in <head>): with scripts off every answer
+   stays readable and no dead control is advertised (FW-UX-9). */
+.js .accordion-trigger::after { content: "+"; font-size: 1.4rem; color: var(--accent); }
 .section--light .accordion-trigger::after { color: var(--accent-on-light); } /* FW-DES-3 */
-.accordion[data-open="true"] .accordion-trigger::after { content: "–"; }
-.accordion-panel { display: none; padding: 0 0 1.4rem; color: var(--gray); max-width: 40rem; }
+.js .accordion[data-open="true"] .accordion-trigger::after { content: "–"; }
+.accordion-panel { padding: 0 0 1.4rem; color: var(--gray); max-width: 40rem; }
+.js .accordion[data-open="false"] .accordion-panel { display: none; }
 .section--light .accordion-panel { color: rgba(10,11,13,0.65); }
-.accordion[data-open="true"] .accordion-panel { display: block; }
 
 /* ---- email placeholder / logistics ---- */
 .list-block { border: 1px solid var(--line); padding: 2.5rem; max-width: 34rem; margin-top: 2.5rem; }
