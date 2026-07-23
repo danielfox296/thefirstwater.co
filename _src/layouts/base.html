@@ -32,6 +32,10 @@
   {{schema_json}}
 
   <link rel="icon" type="image/svg+xml" href="{{css_path}}img/favicon.svg">
+  <!-- PNG fallbacks for clients that skip SVG favicons (Safari, iOS home screen) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="{{css_path}}img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{css_path}}img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{css_path}}img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap">
@@ -275,6 +279,33 @@
         const isOpen = accordion.getAttribute('data-open') === 'true';
         accordion.setAttribute('data-open', isOpen ? 'false' : 'true');
         trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      });
+    });
+
+    // Double-submit guard on the capture forms (contact + hear first).
+    // Progressive enhancement only: it runs at submit time, so with JS off
+    // the forms post and redirect exactly as before.
+    const captureForms = document.querySelectorAll('form.contact-form');
+    captureForms.forEach(form => {
+      form.addEventListener('submit', () => {
+        const btn = form.querySelector('button[type="submit"]');
+        if (!btn || btn.disabled) return;
+        btn.dataset.restingLabel = btn.textContent;
+        btn.disabled = true;
+        btn.setAttribute('aria-busy', 'true');
+        btn.textContent = 'Sending…'; // HUMAN REVIEW — in-flight button label
+      });
+    });
+    // Coming back from /thanks/ via the back button can restore the disabled
+    // state from the bfcache; put the button back the way it was.
+    window.addEventListener('pageshow', (e) => {
+      if (!e.persisted) return;
+      captureForms.forEach(form => {
+        const btn = form.querySelector('button[type="submit"]');
+        if (!btn || !btn.disabled) return;
+        btn.disabled = false;
+        btn.removeAttribute('aria-busy');
+        if (btn.dataset.restingLabel) btn.textContent = btn.dataset.restingLabel;
       });
     });
   </script>

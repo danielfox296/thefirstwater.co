@@ -17,7 +17,8 @@
       <form class="contact-form hear-first-form" action="https://events.thefirstwater.co/subscribe" method="POST">
         <label class="form-field">
           <span>Email</span>
-          <input type="email" name="email" autocomplete="email" required>
+          <!-- maxlengths mirror the service's zod caps (capture.ts) -->
+          <input type="email" name="email" autocomplete="email" maxlength="320" required>
         </label>
         <button type="submit" class="btn btn-primary">Hear first</button>
       </form>
@@ -26,23 +27,27 @@
     <form class="contact-form" action="https://events.thefirstwater.co/inquiries" method="POST">
       <label class="form-field">
         <span>What is this about</span>
+        <!-- Neutral first option so a casual note isn't misfiled as a booking. -->
+        <!-- HUMAN REVIEW -->
         <select name="event_type">
+          <option>A note</option>
           <option>Booking a team or group</option>
           <option>A question</option>
           <option>Press or venues</option>
         </select>
       </label>
+      <!-- maxlengths mirror the service's zod caps (capture.ts) -->
       <label class="form-field">
         <span>Name</span>
-        <input type="text" name="name" autocomplete="name" required>
+        <input type="text" name="name" autocomplete="name" maxlength="200" required>
       </label>
       <label class="form-field">
         <span>Email</span>
-        <input type="email" name="email" autocomplete="email" required>
+        <input type="email" name="email" autocomplete="email" maxlength="320" required>
       </label>
       <label class="form-field">
         <span>Message</span>
-        <textarea name="message" rows="6" required></textarea>
+        <textarea name="message" rows="6" maxlength="5000" required></textarea>
       </label>
       <label class="form-check">
         <input type="checkbox" name="notify_next_session" value="yes">
