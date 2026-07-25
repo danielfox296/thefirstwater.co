@@ -1473,27 +1473,33 @@ def generate_llms():
 
     br, _ = _ensure_blog_renderer()
 
+    # Same nested-dir discovery as build()/generate_sitemap (os.walk for
+    # config.json) — posts live at pages/blog-posts/<slug>/, not top-level.
+    page_dirs = []
+    for root, dirs, files in os.walk(PAGES):
+        if 'config.json' in files:
+            page_dirs.append(root)
+
     entries = []  # (sort_key, line)
-    for entry in sorted(os.listdir(PAGES)):
-        if not entry.startswith('blog-'):
-            continue
-        page_path = os.path.join(PAGES, entry)
-        config_path = os.path.join(page_path, 'config.json')
-        yaml_path = os.path.join(page_path, 'content.yaml')
-        if not os.path.exists(config_path) or not os.path.exists(yaml_path):
-            continue
-        config = json.loads(read(config_path))
+    for page_path in sorted(page_dirs):
+        page_name = os.path.relpath(page_path, PAGES)
+        config = json.loads(read(os.path.join(page_path, 'config.json')))
         if config.get('skip') or config.get('redirect_to'):
             continue
-        if not br.is_new_format(yaml_path):
+
+        # Blog posts only — same identification gate as the sitemap.
+        output = config.get('output', f'{page_name}.html')
+        if not output.startswith('blog/') or output == 'blog/index.html':
+            continue
+
+        yaml_path = os.path.join(page_path, 'content.yaml')
+        if not os.path.exists(yaml_path) or not br.is_new_format(yaml_path):
             continue  # old-format posts: none exist today
 
         data = br.load_post(yaml_path)
         robots_value = data.get('robots') or config.get('robots', 'index, follow')
         if 'noindex' in robots_value:
             continue
-
-        output = config.get('output', f'{entry}.html')
         # Mirror the sitemap gate: a post whose canonical points at a different
         # page (a slug shared with a distinct root asset) is consolidated away —
         # list only the canonical URL, not this duplicate. (WEB-F1/F2, 2026-07-12)
@@ -1503,8 +1509,7 @@ def generate_llms():
             print(f'  ↷ llms: excluding {output} (canonical → {canonical})')
             continue
 
-        slug = data.get('slug', entry.replace('blog-', '', 1))
-        url = f'{SITE_URL}/blog/{slug}.html'
+        url = own_url
         title = data.get('title', 'Firstwater')
         description = data.get('llms_description') or data.get('meta_description', '')
         lastmod = data.get('last_updated') or data.get('date') or ''
