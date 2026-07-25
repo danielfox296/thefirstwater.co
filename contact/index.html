@@ -29,6 +29,9 @@
   <meta property="og:url" content="https://thefirstwater.co/contact/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://thefirstwater.co/img/og/contact.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Contact | Firstwater">
   <meta property="og:site_name" content="Firstwater">
   <meta property="og:locale" content="en_US">
 
@@ -93,13 +96,21 @@
   </script>
 
   <link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
+  <!-- PNG fallbacks for clients that skip SVG favicons (Safari, iOS home screen) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap">
-  <link rel="stylesheet" href="../styles.css?v=846fc9c5">
+  <link rel="stylesheet" href="../styles.css?v=247ecbfd">
   
 </head>
 <body>
+  <!-- Skip link (FW-UX-9): first focusable element, visually hidden until
+       keyboard focus. HUMAN REVIEW — mechanical a11y label -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <!-- CYMATICS — Chladni nodal lines, fixed behind all content, scroll-driven -->
   <canvas id="cymaticsCanvas" aria-hidden="true"></canvas>
 
@@ -120,10 +131,10 @@
   </nav>
 </header>
 
-  <main>
+  <main id="main" tabindex="-1">
   <section class="section section--dark hero-section page-hero">
   <div class="hero-media" aria-hidden="true">
-    <img src="../img/hero/contact.jpg" alt="">
+    <img src="../img/hero/contact.jpg" alt="" loading="eager" fetchpriority="high" width="1600" height="1067">
   </div>
   <div class="container">
     <span class="eyebrow">Contact</span>
@@ -140,7 +151,8 @@
       <form class="contact-form hear-first-form" action="https://events.thefirstwater.co/subscribe" method="POST">
         <label class="form-field">
           <span>Email</span>
-          <input type="email" name="email" autocomplete="email" required>
+          <!-- maxlengths mirror the service's zod caps (capture.ts) -->
+          <input type="email" name="email" autocomplete="email" maxlength="320" required>
         </label>
         <button type="submit" class="btn btn-primary">Hear first</button>
       </form>
@@ -149,23 +161,27 @@
     <form class="contact-form" action="https://events.thefirstwater.co/inquiries" method="POST">
       <label class="form-field">
         <span>What is this about</span>
+        <!-- Neutral first option so a casual note isn't misfiled as a booking. -->
+        <!-- HUMAN REVIEW -->
         <select name="event_type">
+          <option>A note</option>
           <option>Booking a team or group</option>
           <option>A question</option>
           <option>Press or venues</option>
         </select>
       </label>
+      <!-- maxlengths mirror the service's zod caps (capture.ts) -->
       <label class="form-field">
         <span>Name</span>
-        <input type="text" name="name" autocomplete="name" required>
+        <input type="text" name="name" autocomplete="name" maxlength="200" required>
       </label>
       <label class="form-field">
         <span>Email</span>
-        <input type="email" name="email" autocomplete="email" required>
+        <input type="email" name="email" autocomplete="email" maxlength="320" required>
       </label>
       <label class="form-field">
         <span>Message</span>
-        <textarea name="message" rows="6" required></textarea>
+        <textarea name="message" rows="6" maxlength="5000" required></textarea>
       </label>
       <label class="form-check">
         <input type="checkbox" name="notify_next_session" value="yes">
@@ -187,6 +203,8 @@
       <li><a href="../faq/">FAQ</a></li>
       <li><a href="../blog/">Blog</a></li>
       <li><a href="../contact/">Contact</a></li>
+      <li><a href="../refunds/">Tickets and refunds</a></li>
+      <li><a href="../privacy/">Privacy</a></li>
     </ul>
     <p class="footer-fine">Denver, Colorado.</p>
     <p class="footer-fine"><a href="https://www.eventbrite.com/o/firstwater-121563830593">Tickets live on Eventbrite</a></p>
@@ -379,14 +397,8 @@
   </script>
 
   <script>
-    // Navigation active state
-    const navLinks = document.querySelectorAll('.nav-links a');
-    navLinks.forEach(link => {
-      if (link.href === window.location.href) {
-        link.classList.add('active');
-        link.setAttribute('aria-current', 'page');
-      }
-    });
+    // Nav active state is baked at build time (FW-UX-11, build.py
+    // mark_active_nav): child pages light their section, no JS needed.
 
     // Intersection Observer for fade-up animations
     const observer = new IntersectionObserver((entries) => {
@@ -418,6 +430,53 @@
         const isOpen = accordion.getAttribute('data-open') === 'true';
         accordion.setAttribute('data-open', isOpen ? 'false' : 'true');
         trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      });
+    });
+
+    // Double-submit guard on the capture forms (contact + hear first).
+    // Progressive enhancement only: it runs at submit time, so with JS off
+    // the forms post and redirect exactly as before.
+    const captureForms = document.querySelectorAll('form.contact-form');
+    captureForms.forEach(form => {
+      form.addEventListener('submit', () => {
+        const btn = form.querySelector('button[type="submit"]');
+        if (!btn || btn.disabled) return;
+        btn.dataset.restingLabel = btn.textContent;
+        btn.disabled = true;
+        btn.setAttribute('aria-busy', 'true');
+        btn.textContent = 'Sending…'; // HUMAN REVIEW — in-flight button label
+      });
+    });
+    // GA4 begin_checkout when a session checkout form submits (delegated:
+    // the form is feed-injected). Progressive only — the POST proceeds
+    // identically without gtag or with JS off; gtag.js sends via beacon so
+    // the navigation doesn't lose the event.
+    document.addEventListener('submit', (e) => {
+      const form = e.target;
+      if (!form.classList || !form.classList.contains('session-checkout')) return;
+      if (typeof window.gtag !== 'function') return;
+      const card = form.closest('[data-session-id]');
+      const tier = form.querySelector('input[name="tier_id"]:checked') ||
+                   form.querySelector('input[name="tier_id"]');
+      window.gtag('event', 'begin_checkout', {
+        items: [{
+          item_id: card ? card.getAttribute('data-session-id') : '',
+          item_name: document.title.split('|')[0].trim(),
+          item_variant: tier ? tier.value : ''
+        }]
+      });
+    });
+
+    // Coming back from /thanks/ via the back button can restore the disabled
+    // state from the bfcache; put the button back the way it was.
+    window.addEventListener('pageshow', (e) => {
+      if (!e.persisted) return;
+      captureForms.forEach(form => {
+        const btn = form.querySelector('button[type="submit"]');
+        if (!btn || !btn.disabled) return;
+        btn.disabled = false;
+        btn.removeAttribute('aria-busy');
+        if (btn.dataset.restingLabel) btn.textContent = btn.dataset.restingLabel;
       });
     });
   </script>

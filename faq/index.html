@@ -29,6 +29,9 @@
   <meta property="og:url" content="https://thefirstwater.co/faq/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://thefirstwater.co/img/og/faq.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FAQ: What Happens at a Sound Session in Denver | Firstwater">
   <meta property="og:site_name" content="Firstwater">
   <meta property="og:locale" content="en_US">
 
@@ -75,6 +78,94 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this a sound bath?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It's the nearest familiar name, and if you've been to one you already know how to arrive: lie down, get warm, and rest. A Firstwater session runs seventy-five minutes over a composed bed with live instruments, opened and closed with ceremony, and I tune the rig the way a studio tunes a control room."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this a meditation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "I open the night and close it, and offer a nudge here and there along the way, so it is guided in that sense. There is nothing to follow and nothing to get right; you lie down and rest, and that is the whole of it. If you have never meditated, that changes nothing about how you arrive."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens at a session?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You lie down under blankets in low light. There is a formal opening, seventy-five minutes of engineered sound played live over a composed bed, and a formal close. The sound is strong enough to feel in your chest and soft enough to rest inside. On the way in you draw a card with one line on it, and it is yours to keep. Some nights I offer one invitation, like a moment of meeting another person's eyes, and you hear about it beforehand, never as a surprise. Every invitation is optional. After, there is tea for anyone who wants to stay and an open door for anyone who doesn't."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I have to do anything?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You lie down. Everything else is optional. Some people follow the guidance closely, some drift, and some sleep, and each of those is a fine way to spend the hour."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I have to talk?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. You will not be asked to share, to speak, or to be anywhere but on the floor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if I feel a lot? What if I feel nothing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You might feel a lot, and you might feel almost nothing, and both are normal. If you feel very little, that tells you where you are too. If you find yourself crying, it is welcome here, and nobody will make it a moment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do I wear and bring?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Wear something soft. The mats and blankets are already there, so you bring only yourself, and your phone stays in your bag. If you need to step out during the night, the door is beside you and nobody will make it a moment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there alcohol?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is tea after, and you can stay awhile or slip out as you please."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where do sessions happen?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Partner spaces around the Denver metro and the Front Range: studios, sanctuaries, and a few spaces worth traveling for. Each event page lists its space and date."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if it wasn't for me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Say so and your ticket comes back."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
     {
@@ -93,13 +184,21 @@
   </script>
 
   <link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
+  <!-- PNG fallbacks for clients that skip SVG favicons (Safari, iOS home screen) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap">
-  <link rel="stylesheet" href="../styles.css?v=846fc9c5">
+  <link rel="stylesheet" href="../styles.css?v=247ecbfd">
   
 </head>
 <body>
+  <!-- Skip link (FW-UX-9): first focusable element, visually hidden until
+       keyboard focus. HUMAN REVIEW — mechanical a11y label -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <!-- CYMATICS — Chladni nodal lines, fixed behind all content, scroll-driven -->
   <canvas id="cymaticsCanvas" aria-hidden="true"></canvas>
 
@@ -112,7 +211,7 @@
     <ul class="nav-links">
       <li><a href="../sessions/">Sessions</a></li>
       <li><a href="../about/">About</a></li>
-      <li><a href="../faq/">FAQ</a></li>
+      <li><a href="../faq/" class="active" aria-current="page">FAQ</a></li>
       <li><a href="../blog/">Blog</a></li>
       <li><a href="../corporate/">Corporate</a></li>
       <li><a class="nav-cta" href="../contact/#hear-first">Hear first</a></li>
@@ -120,10 +219,10 @@
   </nav>
 </header>
 
-  <main>
+  <main id="main" tabindex="-1">
   <section class="section section--dark hero-section page-hero">
   <div class="hero-media" aria-hidden="true">
-    <img src="../img/hero/faq.jpg" alt="">
+    <img src="../img/hero/faq.jpg" alt="" loading="eager" fetchpriority="high" width="1600" height="1067">
   </div>
   <div class="container">
     <span class="eyebrow">FAQ</span>
@@ -138,22 +237,22 @@
 
 
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">Is this a sound bath?</button>
-        <div class="accordion-panel">It's the nearest familiar name, and if you've been to one
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-1">Is this a sound bath?</button>
+        <div class="accordion-panel" id="faq-panel-1">It's the nearest familiar name, and if you've been to one
         you already know how to arrive: lie down, get warm, and rest. A Firstwater session runs
         seventy-five minutes over a composed bed with live instruments, opened and closed with
         ceremony, and I tune the rig the way a studio tunes a control room.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">Is this a meditation?</button>
-        <div class="accordion-panel">I open the night and close it, and offer a
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-2">Is this a meditation?</button>
+        <div class="accordion-panel" id="faq-panel-2">I open the night and close it, and offer a
         nudge here and there along the way, so it is guided in that sense. There is nothing to
         follow and nothing to get right; you lie down and rest, and that is the whole of it. If
         you have never meditated, that changes nothing about how you arrive.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">What happens at a session?</button>
-        <div class="accordion-panel">You lie down under blankets in low light. There is a
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-3">What happens at a session?</button>
+        <div class="accordion-panel" id="faq-panel-3">You lie down under blankets in low light. There is a
         formal opening, seventy-five minutes of engineered sound played live over a composed
         bed, and a formal close. The sound is strong enough to feel in your chest and soft
         enough to rest inside. On the way in you draw a card with one line on it, and it is
@@ -163,43 +262,43 @@
         anyone who doesn't.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">Do I have to do anything?</button>
-        <div class="accordion-panel">You lie down. Everything else is optional. Some people
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-4">Do I have to do anything?</button>
+        <div class="accordion-panel" id="faq-panel-4">You lie down. Everything else is optional. Some people
         follow the guidance closely, some drift, and some sleep, and each of those is a fine way
         to spend the hour.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">Do I have to talk?</button>
-        <div class="accordion-panel">No. You will not be asked to share, to speak, or to be
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-5">Do I have to talk?</button>
+        <div class="accordion-panel" id="faq-panel-5">No. You will not be asked to share, to speak, or to be
         anywhere but on the floor.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">What if I feel a lot? What if I feel nothing?</button>
-        <div class="accordion-panel">You might feel a lot, and you might feel almost nothing,
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-6">What if I feel a lot? What if I feel nothing?</button>
+        <div class="accordion-panel" id="faq-panel-6">You might feel a lot, and you might feel almost nothing,
         and both are normal. If you feel very little, that tells you where you are too. If you
         find yourself crying, it is welcome here, and nobody will make it a moment.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">What do I wear and bring?</button>
-        <div class="accordion-panel">Wear something soft. The mats and blankets are already
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-7">What do I wear and bring?</button>
+        <div class="accordion-panel" id="faq-panel-7">Wear something soft. The mats and blankets are already
         there, so you bring only yourself, and your phone stays in your bag. If you need to
         step out during the night, the door is beside you and nobody will make it a
         moment.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">Is there alcohol?</button>
-        <div class="accordion-panel">No. There is tea after, and you can stay awhile or slip
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-8">Is there alcohol?</button>
+        <div class="accordion-panel" id="faq-panel-8">No. There is tea after, and you can stay awhile or slip
         out as you please.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">Where do sessions happen?</button>
-        <div class="accordion-panel">Partner spaces around the Denver metro and the Front Range:
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-9">Where do sessions happen?</button>
+        <div class="accordion-panel" id="faq-panel-9">Partner spaces around the Denver metro and the Front Range:
         studios, sanctuaries, and a few spaces worth traveling for. Each event page lists its
         space and date.</div>
       </div>
       <div class="accordion" data-open="false">
-        <button class="accordion-trigger" aria-expanded="false">What if it wasn't for me?</button>
-        <div class="accordion-panel">Say so and your ticket comes back.</div>
+        <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="faq-panel-10">What if it wasn't for me?</button>
+        <div class="accordion-panel" id="faq-panel-10">Say so and your ticket comes back.</div>
       </div>
     </div>
 
@@ -211,20 +310,9 @@
   </div>
 </section>
 
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Is this a sound bath?","acceptedAnswer":{"@type":"Answer","text":"It's the nearest familiar name, and if you've been to one you already know how to arrive: lie down, get warm, and rest. A Firstwater session runs seventy-five minutes over a composed bed with live instruments, opened and closed with ceremony, and I tune the rig the way a studio tunes a control room."}},
-{"@type":"Question","name":"Is this a meditation?","acceptedAnswer":{"@type":"Answer","text":"I open the night and close it, and offer a nudge here and there along the way, so it is guided in that sense. There is nothing to follow and nothing to get right; you lie down and rest, and that is the whole of it. If you have never meditated, that changes nothing about how you arrive."}},
-{"@type":"Question","name":"What happens at a session?","acceptedAnswer":{"@type":"Answer","text":"You lie down under blankets in low light. There is a formal opening, seventy-five minutes of engineered sound played live over a composed bed, and a formal close. On the way in you draw a card with one line on it. Some nights I offer one invitation, like a moment of meeting another person's eyes, and you hear about it beforehand, never as a surprise; every invitation is optional. After, there is tea for anyone who wants to stay."}},
-{"@type":"Question","name":"Do I have to do anything?","acceptedAnswer":{"@type":"Answer","text":"You lie down. Everything else is optional. Some people follow the guidance closely, some drift, and some sleep, and each of those is a fine way to spend the hour."}},
-{"@type":"Question","name":"Do I have to talk?","acceptedAnswer":{"@type":"Answer","text":"No. You will not be asked to share, to speak, or to be anywhere but on the floor."}},
-{"@type":"Question","name":"What if I feel a lot? What if I feel nothing?","acceptedAnswer":{"@type":"Answer","text":"You might feel a lot, and you might feel almost nothing, and both are normal. If you feel very little, that tells you where you are too. If you find yourself crying, it is welcome here, and nobody will make it a moment."}},
-{"@type":"Question","name":"What do I wear and bring?","acceptedAnswer":{"@type":"Answer","text":"Wear something soft. The mats and blankets are already there, so you bring only yourself, and your phone stays in your bag. If you need to step out during the night, the door is beside you and nobody will make it a moment."}},
-{"@type":"Question","name":"Is there alcohol?","acceptedAnswer":{"@type":"Answer","text":"No. There is tea after, and you can stay awhile or slip out as you please."}},
-{"@type":"Question","name":"Where do sessions happen?","acceptedAnswer":{"@type":"Answer","text":"Partner spaces around the Denver metro and the Colorado Front Range: studios, sanctuaries, and a few spaces worth traveling for. Each event page lists its space and date."}},
-{"@type":"Question","name":"What if it wasn't for me?","acceptedAnswer":{"@type":"Answer","text":"Say so and your ticket comes back."}}
-]}
-</script>
+<!-- FAQPage JSON-LD is generated at build time from the accordion markup
+     above (FW-SEO-6, build.py extract_faqs_from_content) — the hand-written
+     block that lived here had already drifted from the visible text. -->
   </main>
 
   <footer class="site-footer">
@@ -237,6 +325,8 @@
       <li><a href="../faq/">FAQ</a></li>
       <li><a href="../blog/">Blog</a></li>
       <li><a href="../contact/">Contact</a></li>
+      <li><a href="../refunds/">Tickets and refunds</a></li>
+      <li><a href="../privacy/">Privacy</a></li>
     </ul>
     <p class="footer-fine">Denver, Colorado.</p>
     <p class="footer-fine"><a href="https://www.eventbrite.com/o/firstwater-121563830593">Tickets live on Eventbrite</a></p>
@@ -429,14 +519,8 @@
   </script>
 
   <script>
-    // Navigation active state
-    const navLinks = document.querySelectorAll('.nav-links a');
-    navLinks.forEach(link => {
-      if (link.href === window.location.href) {
-        link.classList.add('active');
-        link.setAttribute('aria-current', 'page');
-      }
-    });
+    // Nav active state is baked at build time (FW-UX-11, build.py
+    // mark_active_nav): child pages light their section, no JS needed.
 
     // Intersection Observer for fade-up animations
     const observer = new IntersectionObserver((entries) => {
@@ -468,6 +552,53 @@
         const isOpen = accordion.getAttribute('data-open') === 'true';
         accordion.setAttribute('data-open', isOpen ? 'false' : 'true');
         trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      });
+    });
+
+    // Double-submit guard on the capture forms (contact + hear first).
+    // Progressive enhancement only: it runs at submit time, so with JS off
+    // the forms post and redirect exactly as before.
+    const captureForms = document.querySelectorAll('form.contact-form');
+    captureForms.forEach(form => {
+      form.addEventListener('submit', () => {
+        const btn = form.querySelector('button[type="submit"]');
+        if (!btn || btn.disabled) return;
+        btn.dataset.restingLabel = btn.textContent;
+        btn.disabled = true;
+        btn.setAttribute('aria-busy', 'true');
+        btn.textContent = 'Sending…'; // HUMAN REVIEW — in-flight button label
+      });
+    });
+    // GA4 begin_checkout when a session checkout form submits (delegated:
+    // the form is feed-injected). Progressive only — the POST proceeds
+    // identically without gtag or with JS off; gtag.js sends via beacon so
+    // the navigation doesn't lose the event.
+    document.addEventListener('submit', (e) => {
+      const form = e.target;
+      if (!form.classList || !form.classList.contains('session-checkout')) return;
+      if (typeof window.gtag !== 'function') return;
+      const card = form.closest('[data-session-id]');
+      const tier = form.querySelector('input[name="tier_id"]:checked') ||
+                   form.querySelector('input[name="tier_id"]');
+      window.gtag('event', 'begin_checkout', {
+        items: [{
+          item_id: card ? card.getAttribute('data-session-id') : '',
+          item_name: document.title.split('|')[0].trim(),
+          item_variant: tier ? tier.value : ''
+        }]
+      });
+    });
+
+    // Coming back from /thanks/ via the back button can restore the disabled
+    // state from the bfcache; put the button back the way it was.
+    window.addEventListener('pageshow', (e) => {
+      if (!e.persisted) return;
+      captureForms.forEach(form => {
+        const btn = form.querySelector('button[type="submit"]');
+        if (!btn || !btn.disabled) return;
+        btn.disabled = false;
+        btn.removeAttribute('aria-busy');
+        if (btn.dataset.restingLabel) btn.textContent = btn.dataset.restingLabel;
       });
     });
   </script>

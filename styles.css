@@ -57,6 +57,11 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.
 .section--panel { background: var(--panel); color: var(--paper); }
 .section h2 { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 1.6rem; }
 .section p { max-width: 42rem; }
+/* Policy pages (/refunds/): a list of short terms, not an argument — the
+   heads step down to labels and the column narrows to a reading measure. */
+.policy h2 { font-size: clamp(1.2rem, 2.1vw, 1.5rem); margin: 2.8rem 0 0.7rem; }
+.policy h2 + p { margin-top: 0; }
+.policy p { max-width: 38rem; }
 .section p + p { margin-top: 1.1rem; }
 
 /* ---- skip link (FW-UX-9) ---- */

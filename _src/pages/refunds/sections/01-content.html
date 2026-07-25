@@ -1,0 +1,73 @@
+<!-- HUMAN REVIEW: ticket terms — commerce-adjacent copy, Daniel reads this
+     before it is treated as settled. Every line below describes what the
+     service ACTUALLY does today, not an aspiration:
+       · self-serve cancel → CREDIT (never an automatic card refund), allowed
+         while start − now >= cancel_window_hours (Setting, default 24) —
+         service/src/lib/credits.ts + routes/ticketView.ts
+       · a Credit is dollars, partially redeemable, and carries no expiry
+         unless one is set on the row (pack credits can; cancel credits don't)
+       · card refunds exist but are OPERATOR-run (admin Orders → Refund, full
+         order, via Stripe; the charge.refunded webhook frees the seats and
+         offers the waitlist)
+       · waitlist offers hold a seat for waitlist_offer_hours (default 24)
+     If any of those settings change, this page changes in the same commit.
+     OPEN DECISION (D-7): the default when *I* cancel a session — this page
+     says the buyer chooses refund-or-credit, which the system supports either
+     way. Change the line if you'd rather default to one.
+     NOTE: the footer still carries "Tickets live on Eventbrite" while the
+     Aug 25 checkout runs through Stripe here — the Eventbrite line below
+     covers people who bought through that channel. -->
+<section class="section section--dark page-hero policy">
+  <div class="container">
+    <h1>Tickets and refunds</h1>
+    <p class="hero-sub">The room is small. A seat you can't use is a seat nobody gets, so it's easy to give it back.</p>
+
+    <!-- HUMAN REVIEW -->
+    <h2>Change your mind, up to 24 hours before</h2>
+    <p>Your confirmation email has a link to your ticket, and that page has a
+    cancel link. Use it any time up to 24 hours before we start and the ticket
+    comes back to you as a credit for what you paid. No reason needed, and you
+    don't have to write to me. The seat goes back into the room, usually to
+    someone waiting for it.</p>
+
+    <!-- HUMAN REVIEW -->
+    <h2>What a credit is</h2>
+    <p>Money, not a particular seat. Spend it on any future session, all at
+    once or across a few, and it doesn't expire. The link to spend it is in the
+    email that arrives when the credit is issued.</p>
+
+    <!-- HUMAN REVIEW -->
+    <h2>Inside the last 24 hours</h2>
+    <p>The cancel link closes and the seat stays yours. If something real
+    happened, write to me — I'd rather hear from you than watch a mat sit
+    empty. I can't promise it in advance, which is why it isn't a rule.</p>
+
+    <!-- HUMAN REVIEW -->
+    <h2>If I cancel or move a session</h2>
+    <p>Your money comes back to the card you paid with, or stays as a credit
+    for a later night — your choice, and I'll ask which. A refund takes a few
+    days to show up on your statement. That part is the bank, not me.</p>
+
+    <!-- HUMAN REVIEW -->
+    <h2>Sold out</h2>
+    <p>Join the waitlist and I'll email you the moment a seat opens. The link
+    in that email holds it for you for 24 hours; after that it goes to the next
+    person.</p>
+
+    <!-- HUMAN REVIEW -->
+    <h2>Sending someone else instead</h2>
+    <p>Write to me and I'll put the seat in their name. The list at the door is
+    by name, so I need to know before you send them.</p>
+
+    <!-- HUMAN REVIEW -->
+    <h2>How the money moves</h2>
+    <p>Payment runs through Stripe. Your card details go to them, never to me.
+    Anything refunded goes back to the card that paid.</p>
+
+    <!-- HUMAN REVIEW -->
+    <p>If you bought a ticket through Eventbrite, the same terms hold — write
+    to me and I'll sort it out. Anything else about a ticket you're holding,
+    the fastest answer is a reply to your confirmation email, or the
+    <a href="{{css_path}}contact/">contact form</a>.</p>
+  </div>
+</section>
