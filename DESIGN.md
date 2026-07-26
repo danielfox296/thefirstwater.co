@@ -99,13 +99,15 @@ the post-pilot shot list and re-grade then. The answer binds the calendar's imag
 
 ## IA + naming (down the middle)
 Nav (shipped): Sessions · About · FAQ · Blog · Corporate · [Hear first → /contact/#hear-first].
-Footer adds Contact and the Eventbrite tickets link.
+Footer adds Contact, Tickets and refunds, Privacy, and the Eventbrite line.
 [OPEN — Daniel, FW-DES-4] Corporate's placement: top-level header item (shipped today) or
 footer-only. The corporate channel itself is a decided keep; only its nav placement is open.
 URLs: directory style — /sessions/healing-from-breakups/ · /about/ · /faq/ · /blog/ · /corporate/ · /contact/
 Renames: Journal → Blog everywhere. CTA verbs (2026-07-21 reframe): "Hear first" (capture), "See the
-sessions", "Send" (contact), "What happens" (ghost). Retired: "Get tickets", "Join the list" —
-tickets live on Eventbrite (footer link; logistics card once a date exists).
+sessions", "Send" (contact), "What happens" (ghost). Retired: "Join the list". "Get tickets" was
+retired in that reframe and is back as of the on-site checkout — it's the buy-bar and session-card
+CTA, posting to the service's Stripe checkout. Eventbrite is a secondary channel for some listings,
+not the buy path; the footer says so, and /refunds/ covers buyers who came through it.
 Redirect stubs: journal.html → /blog/ ; sessions/breakups.html → /sessions/healing-from-breakups/ ;
 /calendar/ and /calendar/event/* → soundbathcalendar.com (noindex, per-page canonicals).
 Utility pages: /thanks/ is for actual list joins only ("You're on the list"); /thanks/inquiry/
