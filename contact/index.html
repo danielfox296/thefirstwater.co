@@ -103,7 +103,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap">
-  <link rel="stylesheet" href="../styles.css?v=247ecbfd">
+  <link rel="stylesheet" href="../styles.css?v=70c21f49">
   
 </head>
 <body>
@@ -154,6 +154,13 @@
           <!-- maxlengths mirror the service's zod caps (capture.ts) -->
           <input type="email" name="email" autocomplete="email" maxlength="320" required>
         </label>
+        <!-- Honeypot. Off-canvas via .hp-field, so anything arriving in it was
+             typed by a bot matching field names; the service drops those posts
+             with an ordinary success (capture.ts). Never remove the empty
+             submission path — a real browser always sends website="". -->
+        <div class="hp-field" aria-hidden="true">
+          <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        </div>
         <button type="submit" class="btn btn-primary">Hear first</button>
       </form>
     </div>
@@ -187,6 +194,10 @@
         <input type="checkbox" name="notify_next_session" value="yes">
         <span>Tell me when the next session goes up</span>
       </label>
+      <!-- Honeypot — see the note on the hear-first form above. -->
+      <div class="hp-field" aria-hidden="true">
+        <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
       <button type="submit" class="btn btn-primary">Send</button>
     </form>
   </div>

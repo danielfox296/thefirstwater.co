@@ -250,6 +250,11 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .form-field input:focus, .form-field textarea:focus, .form-field select:focus { outline: 2px solid var(--accent-on-light); outline-offset: 1px; border-color: transparent; }
 .form-check { display: flex; align-items: center; gap: 0.7rem; margin: 0 0 2rem; font-size: 0.95rem; color: rgba(10,11,13,0.75); }
 .form-check input { width: 18px; height: 18px; accent-color: var(--accent-on-light); }
+/* Honeypot: a decoy field only a bot fills (the service drops those posts —
+   see capture.ts). Moved off-canvas rather than display:none, since a bot
+   that reads computed style and skips hidden inputs would sail past it;
+   aria-hidden + tabindex="-1" on the markup keep it away from people. */
+.hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* ---- hear-first capture (contact) ---- */
 #hear-first { scroll-margin-top: 90px; }
