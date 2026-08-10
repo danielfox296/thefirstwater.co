@@ -1,0 +1,109 @@
+# Published 2026-08-10 via the site-ops weekly pipeline; Daniel approved the draft in chat.
+# Provenance: the tiered outcomes, the offer stated plainly, the Tier 1 and Tier 2 source
+# phrases, and the floor line verbatim all trace to VOICE.md. The opening line about the
+# earlier post traces to /blog/isolated-together/. TWO passages were written for Daniel
+# rather than recorded anywhere: what people say to him while he packs bowls (first block)
+# and how people come back up at the end (third block). He approved them as written; if he
+# wants his own phrasing there, those are the two to swap.
+title: "A nap is a legitimate outcome"
+seo_title: "Is It OK to Fall Asleep During a Sound Bath?"
+slug: "a-nap-is-a-legitimate-outcome"
+eyebrow: "JOURNAL"
+dek: "People go under in these sessions all the time, and then ask me afterward whether they missed the point. Here is what the hour is actually for."
+date: "2026-08-10"
+last_updated: "2026-08-10"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "People fall asleep in sound baths all the time and ask afterward whether they missed it. A Denver facilitator on what the hour is actually for, and why sleep is one of the outcomes it was built to allow."
+llms_description: "First-person essay from the Firstwater facilitator on falling asleep during a sound bath. Explains what the hour is offered as, the time, the space, and a practice, and describes the range of honest outcomes: a window for some people, an hour of real sleep for others, something further for a few. Written for anyone who went under and wondered whether they did it wrong."
+tags: [journal, practice]
+sections:
+  - type: prose
+    body: |
+      In an [earlier post](./isolated-together.html) I put down that a nap in a
+      warm, dark place with good sound is a legitimate outcome, and I meant it,
+      and then I moved on to the thing I was actually writing about. It was the
+      wrong line to leave as an aside. It is the question I get more than any
+      other, and it deserves a page of its own.
+
+      Somebody catches me while I am packing bowls and tells me they went out
+      about fifteen minutes in and woke up when everyone started moving. Then
+      they ask, in a slightly apologetic voice, whether they missed it.
+
+  - type: subhead
+    text: "Is it okay to fall asleep during a sound bath?"
+
+  - type: prose
+    body: |
+      Yes, and it happens often enough that I plan for it. On any given night a
+      decent share of the space is asleep for part of the hour, and I have no
+      way of knowing which part or who. From where I sit, a person deeply
+      settled and a person genuinely asleep look about the same, and I have
+      stopped trying to tell them apart.
+
+      What I do notice is the end. People come back up at very different
+      speeds. Some sit up while the last sound is still in the space. Some take
+      several minutes, and a few of those look like they have surfaced from
+      somewhere further down than sleep. Nobody in either group did the hour
+      wrong.
+
+  - type: subhead
+    text: "What the hour is actually for"
+
+  - type: prose
+    body: |
+      Here is the whole offer, plainly. You get the time, you get the space,
+      and you get a practice. That is what I can hand you at the door, and it
+      is enough.
+
+      An hour where nothing is asked of you is genuinely scarce, and most
+      people, most weeks, cannot make one at home. If your body takes that hour
+      and spends it on sleep, your body made a reasonable call about what it
+      needed most, and I would rather it get what it came for than perform
+      attention for me.
+
+  - type: subhead
+    text: "The tiers, honestly"
+
+  - type: prose
+    body: |
+      People leave these sessions with different things, and I would rather
+      name the range than sell you the top of it.
+
+      For some people it is a window. Something they had been carrying gets set
+      down for a stretch, and they can tell you afterward roughly what it was.
+      For some people it is an hour of real sleep, the kind they had not been
+      getting, and they drive home tired in a better way than they arrived. For
+      a few it goes further than either of those, and those nights are the ones
+      people write to me about. I cannot promise you which of the three you
+      get. Anyone who tells you they can is selling.
+
+  - type: subhead
+    text: "What I do when someone sleeps through it"
+
+  - type: prose
+    body: |
+      Nothing. I keep playing.
+
+      If you'd rather stay on the floor, that's what the floor is for. I am
+      playing the same hour either way, and I stopped counting who was with me
+      years ago.
+
+      What I think is happening, and I hold this as my own view rather than as
+      a fact about you, is that the time is a practice for creating a state.
+      You get into something on a Wednesday night with thirty people around
+      you, and then on some ordinary Tuesday afternoon you find you can get
+      most of the way back there on your own, faster than you could before. If
+      the way you got there the first time was by falling asleep in a dark
+      space full of sound, that still counts. You were still in it.
+
+      Come next month, sleep through the whole thing again, and see what your
+      Tuesday looks like.
+
+  - type: cta
+    variant: "default"
+    headline: "Come lie down"
+    body: "Sessions run in Denver. You get the time, the space, and a floor, and what you do with the hour is yours."
+    link: "../sessions/"
+    link_text: "See the sessions"
