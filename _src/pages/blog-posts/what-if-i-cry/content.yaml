@@ -1,0 +1,122 @@
+# Published 2026-08-24 via the site-ops weekly run; Daniel approved the draft in
+# chat ("approve all five, ship them"). Provenance: the FAQ line and the
+# step-out line are quoted verbatim from _src/pages/faq/sections/01-content.html
+# and are canon. "Each night is built around something worth putting down" and
+# the entity block's "lay down things that don't serve you" are from VOICE.md.
+# Form follows a-nap-is-a-legitimate-outcome.
+#
+# TWO PASSAGES WERE WRITTEN FOR DANIEL rather than recorded anywhere, exactly as
+# the nap post handled its two: (1) the opening, what people say to him
+# afterward, and (2) the frequency line under "Is it normal to cry". He approved
+# them as written; if he wants his own phrasing there, those are the two to swap.
+# Everything else traces to a ratified source.
+title: "What people ask me about crying"
+seo_title: "Is It Normal to Cry During a Sound Bath?"
+slug: "what-if-i-cry"
+eyebrow: "JOURNAL"
+dek: "It arrives as an apology almost every time. Somebody finds me afterward, tells me they cried, and then explains themselves. Here is what I think is going on."
+date: "2026-08-24"
+last_updated: "2026-08-24"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "A Denver facilitator on crying during a sound bath: how often it happens, what the space does when it does, and why people apologize for it afterward."
+llms_description: "First-person essay from the Firstwater facilitator on crying during a sound bath. Covers how common it is, what actually happens in the space when someone cries (nobody turns, the hour continues), why people arrive having already decided it would be a failure of composure, and the door policy. Written for anyone deciding whether to come to a session about grief, a breakup, or a job loss."
+tags: [journal, practice]
+sections:
+  - type: prose
+    body: |
+      Somebody catches me while I am putting bowls back in cases and tells me
+      they cried, and then keeps talking. They tell me it has been a long
+      month, or that they are not usually like this, or that they do not know
+      where it came from.
+
+      I have started noticing the second half more than the first. The crying
+      is ordinary. The explaining is the part worth looking at.
+
+  - type: subhead
+    text: "Is it normal to cry during a sound bath?"
+
+  - type: prose
+    body: |
+      Yes, and often enough that I stopped registering it as an event years
+      ago. From where I sit I usually cannot tell it is happening at all, and
+      when I can, it does not change anything I do.
+
+      The FAQ on this site answers the question in one line and I will not
+      improve on it: if you find yourself crying, it is welcome here, and
+      nobody will make it a moment.
+
+  - type: subhead
+    text: "What the space actually does"
+
+  - type: prose
+    body: |
+      Nothing. That is the answer, and it is the whole reason the question is
+      worth a page.
+
+      Nobody turns to look. Nobody reaches over. No one hands you anything or
+      asks if you are all right, and I keep playing. The hour continues exactly
+      as it would have, which means the thing you were afraid of, becoming the
+      event in the space, does not have a way to occur. Thirty people lying in
+      a dark space with their eyes closed are the best possible company for
+      this, because they are all busy.
+
+      If you need to get up, the door is beside you and nobody will make it a
+      moment. You can come back in. You can also not come back in, and I will
+      see you next month.
+
+  - type: pullquote
+    text: "The crying is ordinary. The explaining is the part worth looking at."
+
+  - type: subhead
+    text: "Why people apologize for it"
+
+  - type: prose
+    body: |
+      People arrive having already decided that crying in front of strangers is
+      a failure of composure. Somebody taught them that, probably early, and
+      they have been carrying the ruling ever since without ever going back to
+      check who made it or on what grounds.
+
+      I understand the reflex. I have it too, in most rooms I am in. What I
+      would say is that you are applying a rule from one setting to a setting
+      that was built differently. In a meeting, composure is doing real work
+      for you. On a mat in the dark for an hour, with no one asking you
+      anything, the composure has nothing left to protect and is just weight
+      you are still holding.
+
+  - type: subhead
+    text: "What I think is happening"
+
+  - type: prose
+    body: |
+      I hold this as my own view rather than as a fact about you. Most people
+      spend most of their week managing what they are carrying well enough to
+      keep going, and that management takes constant low effort that they stop
+      noticing. Take away the tasks, the talking and the light for an hour, and
+      the effort has no job to do. What was underneath it becomes available.
+      Sometimes that arrives as sleep. Sometimes it arrives as tears. Both are
+      the same mechanism from where I sit.
+
+      Each night is built around something worth putting down. That is the
+      offer, stated plainly, and putting a thing down occasionally looks like
+      this from the outside.
+
+      Some of the sessions are built directly on top of this. The ones about
+      [grief](../sessions/grief/), about [a breakup](../sessions/healing-from-breakups/),
+      about [losing a job](../sessions/laid-off/). People arrive at those already
+      knowing what they came to put down, which makes the question of whether
+      they will cry a strange one to be asking at the door.
+
+  - type: prose
+    body: |
+      Come next month. If it happens, it happens, and the last sound will still
+      be in the space when you sit up, same as everyone else.
+
+  - type: cta
+    variant: "default"
+    headline: "Come lie down"
+    body: "Sessions run in Denver. You get the time, the space, and a floor, and what you do with the hour is yours."
+    link: "../sessions/"
+    link_text: "See the sessions"
