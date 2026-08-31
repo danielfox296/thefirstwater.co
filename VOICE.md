@@ -5,7 +5,7 @@ Daniel; his call always wins, and nothing here restricts what he chooses to
 say or do. Last updated 2026-07-22. Reconciled with the 2026-07-21 personal
 reframe.*
 
-*Sits on the estate base at ~/Desktop/site-ops/BASE-VOICE.md (in force 2026-08-03); where this doc speaks, this doc wins — including the imported founder-voice rules below.*
+*Sits on the estate base at ~/Desktop/site-ops/BASE-VOICE.md (in force 2026-08-03; rule 9 adopted 2026-08-27: the AI-tell catalog at ~/Desktop/site-ops/AI-TELLS-2026.md governs all drafted prose); where this doc speaks, this doc wins — including the imported founder-voice rules below.*
 
 *Scope: this doc governs the service's transactional emails and
 attendee-facing pages (checkout, ticket, intake) with full force — they are
