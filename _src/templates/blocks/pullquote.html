@@ -1,0 +1,7 @@
+{% set accent = block.accent|default('teal') %}
+<figure class="blog-pullquote blog-pullquote--{{ accent }}">
+  <blockquote>{{ block.text }}</blockquote>
+  {% if block.attribution %}
+  <figcaption>&mdash; {{ block.attribution }}</figcaption>
+  {% endif %}
+</figure>

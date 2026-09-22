@@ -1,0 +1,13 @@
+{# References block — peer-reviewed citations rendered as on-page text.
+   block.items: list of citation strings (already cleaned of leading
+   numbers/bullets by the generator). block.heading optional. #}
+{% if block['items'] %}
+<div class="blog-references fade-up">
+  <h2 class="blog-references__heading" id="references">{{ block.heading or 'References' }}</h2>
+  <ol class="blog-references__list">
+    {% for item in block['items'] %}
+    <li>{{ item }}</li>
+    {% endfor %}
+  </ol>
+</div>
+{% endif %}

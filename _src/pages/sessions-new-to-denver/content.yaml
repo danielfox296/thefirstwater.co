@@ -1,0 +1,30 @@
+title: "New to Denver"
+slug: "new-to-denver"
+eyebrow: "A SOUND SESSION"
+dek: "This one is for people who just moved to Denver, and it's social on purpose."
+hero:
+  src: "../../img/hero/session-new-to-denver.jpg"
+  alt: "The Denver skyline at night under heavy cloud"
+date: "2026-07-16"
+last_updated: "2026-07-16"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "A sound session for people who just moved to Denver. Seventy-five minutes of engineered sound, then time to meet others who came for the same reason."
+llms_description: "A sound session for people who just moved to Denver. Seventy-five minutes of engineered sound, then time to meet others who came for the same reason."
+tags: [sessions, denver]
+sections:
+  - type: prose
+    body: |
+      This is a session for people who just moved here and know three people, two
+      of them coworkers. The sound comes first, seventy-five minutes of it, and
+      then there's time to meet the others who came for the same reason. This
+      night is social on purpose and labeled that way.
+
+  - type: prose
+    body: |
+      You come alone to this one, and so does almost everyone else. [Write to
+      me](../../contact/) and check the box, and you'll hear when the next one
+      goes up.
+
+      [All sessions](../../sessions/)

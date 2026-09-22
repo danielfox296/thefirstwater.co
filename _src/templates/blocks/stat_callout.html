@@ -1,0 +1,6 @@
+{% set accent = block.accent|default('gold') %}
+<div class="blog-stat blog-stat--{{ accent }}">
+  <div class="blog-stat__number">{{ block.number }}</div>
+  <div class="blog-stat__label">{{ block.label }}</div>
+  <div class="blog-stat__source">{{ block.source }}</div>
+</div>

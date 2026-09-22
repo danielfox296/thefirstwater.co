@@ -1,0 +1,84 @@
+<section class="section section--dark hero-section page-hero">
+  <div class="hero-media" aria-hidden="true">
+    <img src="{{css_path}}img/hero/contact.jpg" alt="" loading="eager" fetchpriority="high">
+  </div>
+  <div class="container">
+    <span class="eyebrow">Contact</span>
+    <h1 class="fade-up">Write to me</h1>
+    <p class="hero-sub fade-up">Questions, venues, press, or a note, and you'll hear back from me.</p>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container">
+    <div class="hear-first" id="hear-first">
+      <span class="eyebrow">Hear first</span>
+      <p class="form-note">Leave your email and you'll hear when the next session goes up.</p>
+      <form class="contact-form hear-first-form" action="https://events.thefirstwater.co/subscribe" method="POST">
+        <label class="form-field">
+          <span>Email</span>
+          <!-- maxlengths mirror the service's zod caps (capture.ts) -->
+          <input type="email" name="email" autocomplete="email" maxlength="320" required>
+        </label>
+        <!-- Honeypot. Off-canvas via .hp-field, so anything arriving in it was
+             typed by a bot matching field names; the service drops those posts
+             with an ordinary success (capture.ts). Never remove the empty
+             submission path — a real browser always sends website="".
+             The visible label must never name a real autofill category:
+             profile autofill can classify hidden fields by label and fill
+             them (it ignores autocomplete="off"), and a non-empty honeypot
+             makes the service drop a real signup silently. A "Company" label
+             cost signetartists.com a live enquiry the week of 2026-08-24.
+             The name="website" attribute is the capture.ts contract — bots
+             key on it — and stays.
+             signetartists.com removed its honeypot outright (325220e there);
+             this one stays deliberately: trips are logged server-side
+             (honeypot_tripped in capture.ts), it has a real catch on record
+             (2026-08-05 — crawlers seeding the announce list with junk
+             addresses, which burns the sending domain's reputation), and
+             there is no third-party spam filter behind these endpoints. -->
+        <div class="hp-field" aria-hidden="true">
+          <label>Leave this field empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <button type="submit" class="btn btn-primary">Hear first</button>
+      </form>
+    </div>
+
+    <form class="contact-form" action="https://events.thefirstwater.co/inquiries" method="POST">
+      <label class="form-field">
+        <span>What is this about</span>
+        <!-- Neutral first option so a casual note isn't misfiled as a booking. -->
+        <!-- HUMAN REVIEW -->
+        <select name="event_type">
+          <option>A note</option>
+          <option>Booking a team or group</option>
+          <option>Booking a wedding or bachelorette</option>
+          <option>A question</option>
+          <option>Press or venues</option>
+        </select>
+      </label>
+      <!-- maxlengths mirror the service's zod caps (capture.ts) -->
+      <label class="form-field">
+        <span>Name</span>
+        <input type="text" name="name" autocomplete="name" maxlength="200" required>
+      </label>
+      <label class="form-field">
+        <span>Email</span>
+        <input type="email" name="email" autocomplete="email" maxlength="320" required>
+      </label>
+      <label class="form-field">
+        <span>Message</span>
+        <textarea name="message" rows="6" maxlength="5000" required></textarea>
+      </label>
+      <label class="form-check">
+        <input type="checkbox" name="notify_next_session" value="yes">
+        <span>Tell me when the next session goes up</span>
+      </label>
+      <!-- Honeypot — see the note on the hear-first form above. -->
+      <div class="hp-field" aria-hidden="true">
+        <label>Leave this field empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+{# Video embed block — responsive 16:9 privacy-enhanced YouTube embed.
+   Reads the video id from post frontmatter (ctx.post.video.id). #}
+{% set v = ctx.post.video %}
+{% if v and v.id %}
+<div class="blog-video fade-up">
+  <div class="blog-video__frame">
+    <iframe
+      src="https://www.youtube-nocookie.com/embed/{{ v.id }}?rel=0"
+      title="{{ v.title or ctx.post.title }}"
+      loading="lazy"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen></iframe>
+  </div>
+  {% if block.caption %}
+  <p class="blog-video__caption">{{ block.caption }}</p>
+  {% endif %}
+</div>
+{% endif %}

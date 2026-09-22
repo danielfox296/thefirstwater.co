@@ -1,0 +1,71 @@
+name: Deploy Firstwater site
+
+on:
+  push:
+    branches: [main]
+  # The events service fires this when sessions change, so the static site
+  # rebuilds with fresh dates without a code push:
+  #   POST /repos/<owner>/<repo>/dispatches  {"event_type": "sessions-updated"}
+  repository_dispatch:
+    types: [sessions-updated]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Full history: build.py derives each page's sitemap <lastmod> from
+          # git (a shallow checkout would date every page at the deploy commit).
+          fetch-depth: 0
+
+      # BEFORE build/deploy — after the deploy the live sitemap already equals
+      # the new one, so a post-deploy fetch would always diff empty. This
+      # snapshot is what makes the changed-only IndexNow ping meaningful.
+      - name: Snapshot live sitemap (IndexNow baseline)
+        run: |
+          curl -fsS --max-time 30 https://thefirstwater.co/sitemap.xml \
+            -o /tmp/live-sitemap.xml \
+            || echo "live sitemap unavailable — IndexNow will submit all URLs"
+
+      - name: Install Python dependencies
+        run: pip install jinja2 markdown Pillow pyyaml
+
+      - name: Build site
+        run: python3 build.py
+
+      - name: Stage site
+        run: |
+          mkdir -p _site
+          rsync -a \
+            --exclude '_site' --exclude '_src' --exclude '.git' --exclude '.github' \
+            --exclude 'scripts' --exclude '__pycache__' --exclude 'build.py' \
+            --exclude '.claude' \
+            --exclude '.gitignore' \
+            --exclude 'data/fixtures' \
+            --exclude '.gitkeep' \
+            --exclude '*.md' ./ _site/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      # Tell IndexNow-participating engines (Bing, etc.) what changed — only
+      # URLs that are new or whose lastmod moved vs the pre-deploy snapshot;
+      # skips the ping entirely when nothing did. The script swallows its own
+      # errors, so a dead endpoint never fails a deploy.
+      - name: Ping IndexNow (changed URLs only)
+        run: python3 scripts/indexnow.py --baseline /tmp/live-sitemap.xml

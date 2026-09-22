@@ -1,0 +1,6 @@
+{
+  "title": "Redirecting\u2026",
+  "output": "journal.html",
+  "redirect_to": "blog/",
+  "robots": "noindex"
+}

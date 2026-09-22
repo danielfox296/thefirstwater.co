@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-07-18T12:00:00-06:00",
+  "sessions": [
+    {
+      "id": "ses-fixture-0001",
+      "event_slug": "healing-from-breakups",
+      "starts_at": "2026-09-18T19:00:00-06:00",
+      "ends_at": "2026-09-18T20:15:00-06:00",
+      "doors_at": "2026-09-18T18:30:00-06:00",
+      "status": "on_sale",
+      "remaining": 12,
+      "waitlist_open": false,
+      "venue": {
+        "name": "TBD Studio",
+        "address": "Denver",
+        "lat": 0,
+        "lng": 0
+      },
+      "tiers": [
+        {
+          "id": "tier-fixture-standard",
+          "name": "Standard",
+          "mode": "fixed",
+          "amount": 4500,
+          "min_amount": null,
+          "suggested_amount": null
+        }
+      ],
+      "checkout_url": "https://ss-service-production.up.railway.app/checkout/ses-fixture-0001",
+      "waitlist_url": "https://ss-service-production.up.railway.app/waitlist/ses-fixture-0001"
+    }
+  ]
+}

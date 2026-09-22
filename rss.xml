@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Firstwater Blog</title>
+  <link>https://thefirstwater.co/blog/</link>
+  <description>Writing on sound, sessions, and what people put down in them. From Daniel, also known as Firstwater.</description>
+  <language>en-us</language>
+  <atom:link href="https://thefirstwater.co/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Should I bring someone?</title>
+    <link>https://thefirstwater.co/blog/should-i-bring-someone.html</link>
+    <description>A Denver facilitator on whether to come to a sound session alone or with someone: what each one changes, what the seventy-five minutes does either way, and the one night where it matters.</description>
+    <pubDate>Mon, 07 Sep 2026 00:00:00 +0000</pubDate>
+    <guid>https://thefirstwater.co/blog/should-i-bring-someone.html</guid>
+  </item>
+  <item>
+    <title>What people ask me about crying</title>
+    <link>https://thefirstwater.co/blog/what-if-i-cry.html</link>
+    <description>A Denver facilitator on crying during a sound bath: how often it happens, what the space does when it does, and why people apologize for it afterward.</description>
+    <pubDate>Mon, 24 Aug 2026 00:00:00 +0000</pubDate>
+    <guid>https://thefirstwater.co/blog/what-if-i-cry.html</guid>
+  </item>
+  <item>
+    <title>A nap is a legitimate outcome</title>
+    <link>https://thefirstwater.co/blog/a-nap-is-a-legitimate-outcome.html</link>
+    <description>People fall asleep in sound baths all the time and ask afterward whether they missed it. A Denver facilitator on what the hour is actually for, and why sleep is one of the outcomes it was built to allow.</description>
+    <pubDate>Mon, 10 Aug 2026 00:00:00 +0000</pubDate>
+    <guid>https://thefirstwater.co/blog/a-nap-is-a-legitimate-outcome.html</guid>
+  </item>
+  <item>
+    <title>I'm not a skeptic, and I'm not a believer</title>
+    <link>https://thefirstwater.co/blog/does-sound-healing-work.html</link>
+    <description>A Denver sound-session facilitator on whether sound healing works: which claims are false, what the real science says, and why the hour can still be worth having.</description>
+    <pubDate>Wed, 22 Jul 2026 00:00:00 +0000</pubDate>
+    <guid>https://thefirstwater.co/blog/does-sound-healing-work.html</guid>
+  </item>
+  <item>
+    <title>Isolated together</title>
+    <link>https://thefirstwater.co/blog/isolated-together.html</link>
+    <description>A group sound bath and the same sound alone at home are different practices. A Denver facilitator on what most sound baths miss about the group, and what changes when people practice side by side.</description>
+    <pubDate>Wed, 22 Jul 2026 00:00:00 +0000</pubDate>
+    <guid>https://thefirstwater.co/blog/isolated-together.html</guid>
+  </item>
+</channel>
+</rss>

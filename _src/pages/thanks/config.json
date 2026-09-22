@@ -1,0 +1,7 @@
+{
+  "title": "You're on the list | Firstwater",
+  "meta_description": "You're on the Firstwater list. When the next session goes up, you'll hear first.",
+  "output": "thanks/index.html",
+  "robots": "noindex, follow",
+  "breadcrumb": "Thanks"
+}

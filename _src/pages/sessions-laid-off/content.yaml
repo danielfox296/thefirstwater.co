@@ -1,0 +1,31 @@
+title: "Laid Off"
+slug: "laid-off"
+eyebrow: "A SOUND SESSION"
+dek: "This session is for people leaving a company, and for the teams they leave behind."
+hero:
+  src: "../../img/hero/session-laid-off.jpg"
+  alt: "Morning sun through blinds behind a plant on the windowsill"
+date: "2026-07-16"
+last_updated: "2026-07-16"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "A sound session for people leaving a company and the teams they leave behind. Usually booked by the employer as part of a decent goodbye."
+llms_description: "A sound session for people leaving a company and the teams they leave behind. Usually booked by the employer as part of a decent goodbye."
+tags: [sessions, denver, corporate]
+sections:
+  - type: prose
+    body: |
+      A session for people leaving a company, and for the teams they leave
+      behind. You feel a layoff the way you feel any other ending, and most people
+      go straight from the news to updating a resume without an hour in between.
+      This is the hour in between.
+
+  - type: prose
+    body: |
+      Usually an employer books this as part of a decent goodbye. If that could
+      be your company, see [Corporate](../../corporate/). You don't have to have
+      your next move ready to be in this session. Occasionally I run it as a public
+      night, so [write to me](../../contact/) and check the box to hear when.
+
+      [All sessions](../../sessions/)

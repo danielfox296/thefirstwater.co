@@ -1,0 +1,28 @@
+title: "Singles"
+slug: "singles"
+eyebrow: "A SOCIAL NIGHT"
+dek: "This is the social night, with the sound at the center of it, and it's labeled exactly what it is."
+hero:
+  src: "../../img/hero/session-singles.jpg"
+  alt: "People gathered among candles at night"
+date: "2026-07-16"
+last_updated: "2026-07-16"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "A social night in Denver with sound at the center, for single people who would rather meet someone in a calm space than a loud one."
+llms_description: "A social night in Denver with sound at the center, for single people who would rather meet someone in a calm space than a loud one."
+tags: [sessions, denver, social]
+sections:
+  - type: prose
+    body: |
+      This is a social night with the sound at the center of it, for single people
+      who'd rather meet someone in a calm space than a loud one. It runs on its
+      own, separate from every other session, and it's labeled exactly what it is.
+
+  - type: prose
+    body: |
+      You leave having actually met the people you spent the hour with. [Write to
+      me](../../contact/) and check the box to hear when tickets go up.
+
+      [All sessions](../../sessions/)

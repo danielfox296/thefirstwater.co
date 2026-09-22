@@ -1,0 +1,49 @@
+title: "Sunday Downshift"
+slug: "sunday-downshift"
+eyebrow: "A SOUND SESSION"
+dek: "This is the weekly anchor for Sunday evenings in Denver."
+hero:
+  src: "../../img/hero/session-sunday-downshift.jpg"
+  alt: "A mug on a dark table"
+date: "2026-07-16"
+last_updated: "2026-07-16"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "A recurring Sunday evening sound session in Denver for closing the week on purpose. Seventy-five minutes of engineered sound and guided rest."
+llms_description: "A recurring Sunday evening sound session in Denver for closing the week on purpose. Seventy-five minutes of engineered sound and guided rest."
+tags: [sessions, denver]
+sections:
+  - type: prose
+    body: |
+      By Sunday evening you can already feel Monday. It starts around four or
+      five: you notice the pull toward the week ahead, you run the list in your
+      head, and you spend the last of the weekend bracing instead of resting.
+      Maybe someone who loves you sent you this link, because they watch you do
+      this every Sunday.
+
+  - type: subhead
+    text: "The night, plainly"
+
+  - type: prose
+    body: |
+      This one is built for Sunday evenings: seventy-five minutes of engineered
+      sound in a space in Denver, low light, a formal opening and a formal close.
+      You lie down under blankets and you do nothing with the coming week for the
+      length of it. You start Monday from a different floor than the one you'd
+      have started it from.
+
+  - type: prose
+    body: |
+      Most people leave having actually stopped, some for the first time all week,
+      and they carry a little of that stillness into Monday morning.
+
+  - type: subhead
+    text: "Sundays"
+
+  - type: prose
+    body: |
+      [Write to me](../../contact/) and check the box, and you'll hear when the
+      next Sunday goes up.
+
+      [All sessions](../../sessions/)

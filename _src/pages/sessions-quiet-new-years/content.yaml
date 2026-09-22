@@ -1,0 +1,29 @@
+title: "Quiet New Year's"
+slug: "quiet-new-years"
+eyebrow: "A SOUND SESSION"
+dek: "This is the alternative to the New Year's party in Denver, and it runs one night a year."
+hero:
+  src: "../../img/hero/session-quiet-new-years.jpg"
+  alt: "Two candles burning in the dark"
+date: "2026-07-16"
+last_updated: "2026-07-16"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "An alternative to the New Year's party in Denver. One night at the turn of the year for entering it rested and clear."
+llms_description: "An alternative to the New Year's party in Denver. One night at the turn of the year for entering it rested and clear."
+tags: [sessions, denver]
+sections:
+  - type: prose
+    body: |
+      This is the alternative to the party: one night at the turn of the year, for
+      anyone who'd rather enter it rested. You wake up on the first of January with
+      the whole year ahead of you and nothing to recover from.
+
+  - type: prose
+    body: |
+      It runs one night only, each year, and you spend the turn of the year on the
+      floor instead of in the noise. [Write to me](../../contact/) and check the
+      box, and you'll hear when tickets go up.
+
+      [All sessions](../../sessions/)

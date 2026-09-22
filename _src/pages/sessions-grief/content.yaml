@@ -1,0 +1,31 @@
+title: "Grief"
+slug: "grief"
+eyebrow: "A SOUND SESSION"
+dek: "This one is for people in Denver carrying a death, and it runs in a smaller space with fewer seats."
+hero:
+  src: "../../img/hero/session-grief.jpg"
+  alt: "A knit blanket, an open book, and a lit candle on a chair"
+date: "2026-07-16"
+last_updated: "2026-07-16"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "A facilitated sound session in Denver for people carrying a death. A smaller space, fewer seats, more time held at the quiet end."
+llms_description: "A facilitated sound session in Denver for people carrying a death. A smaller space, fewer seats, more time held at the quiet end."
+tags: [sessions, grief, denver]
+sections:
+  - type: prose
+    body: |
+      This is a session for people carrying a death, in a smaller space with fewer
+      seats and more time held at the quiet end of the night. You won't be asked
+      to share, to speak, or to be anywhere but on the floor.
+
+  - type: prose
+    body: |
+      I take more care with this one than with anything else on this site. If
+      what you're carrying is the end of a relationship rather than a
+      death, [Healing from Breakups](../healing-from-breakups/) is built for that.
+      [Write to me](../../contact/) and check the box, and you'll hear when the
+      next one goes up.
+
+      [All sessions](../../sessions/)

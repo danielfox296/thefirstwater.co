@@ -1,0 +1,29 @@
+title: "Sleep Descent"
+slug: "sleep"
+eyebrow: "A RECORDED SESSION"
+dek: "This one is for the end of the day, and it goes out free to the email list first."
+hero:
+  src: "../../img/hero/session-sleep.jpg"
+  alt: "A lamp glowing beside a made bed"
+date: "2026-07-16"
+last_updated: "2026-07-16"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "A recording for the end of the day, made with the same care as the live sessions. Free for the email list first."
+llms_description: "A recording for the end of the day, made with the same care as the live sessions. Free for the email list first."
+tags: [sessions, recorded]
+sections:
+  - type: prose
+    body: |
+      This is a recording for the end of the day, made with the same care as the
+      live sessions: bass you feel in your chest, a shape built the way a song is
+      built, and an ending made to be slept through.
+
+  - type: prose
+    body: |
+      It comes free to people on the email list, and it comes to them first. You
+      listen to this one at home, in the dark, at the end of your own day.
+      [Write to me](../../contact/) and check the box, and I send it to you.
+
+      [All sessions](../../sessions/)

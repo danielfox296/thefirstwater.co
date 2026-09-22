@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Set a .js flag so CSS only hides hero content (opacity:0) when JS runs;
+       without it the hero stays visible if scripts are blocked or fail. -->
+  <script>document.documentElement.className += ' js';</script>
+  <meta name="msvalidate.01" content="9C97AFC25A8EE199FF51C4C6D7C46F2E" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BEEHEWEEYC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BEEHEWEEYC');
+  </script>
+  <link rel="canonical" href="{{canonical_url}}">
+  <meta name="robots" content="{{robots}}">
+  <title>{{title}}</title>
+  {{meta_description}}
+  <meta name="theme-color" content="#0A0B0D">
+
+  <!-- Open Graph -->
+  {{og_tags}}
+
+  <!-- Twitter Card -->
+  {{twitter_tags}}
+
+  <!-- Structured Data -->
+  {{schema_json}}
+
+  <link rel="icon" type="image/svg+xml" href="{{css_path}}img/favicon.svg">
+  <!-- PNG fallbacks for clients that skip SVG favicons (Safari, iOS home screen) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="{{css_path}}img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{css_path}}img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{css_path}}img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap">
+  <link rel="stylesheet" href="{{css_path}}styles.css">
+  {{page_style}}
+</head>
+<body>
+  <!-- Skip link (FW-UX-9): first focusable element, visually hidden until
+       keyboard focus. HUMAN REVIEW — mechanical a11y label -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- CYMATICS — Chladni nodal lines, fixed behind all content, scroll-driven -->
+  <canvas id="cymaticsCanvas" aria-hidden="true"></canvas>
+
+  {{header}}
+
+  <main id="main" tabindex="-1">
+  {{content}}
+  </main>
+
+  {{footer}}
+
+  <script>
+  // Cymatics ground — ported from entuned.co, recolored to the ink/ice palette.
+  // Chladni plate modes advance with scroll; marching squares traces the nodal lines.
+  (function() {
+    const canvas = document.getElementById('cymaticsCanvas');
+    if (!canvas) return;
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ctx = canvas.getContext('2d');
+
+    let W, H;
+    let mouseX = 0.5, mouseSmX = 0.5;
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+    // Lower grid + 30fps cap vs. the entuned original: this canvas is a ground
+    // under real content, so it must never contend with the page for the main thread.
+    const isMobile = window.innerWidth < 768;
+    const GRID = isMobile ? 120 : 180;
+    const field = new Float32Array(GRID * GRID);
+
+    function resize() {
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width = W * DPR; canvas.height = H * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      if (reduceMotion) draw();
+    }
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', function(e) { mouseX = e.clientX / W; });
+
+    function chladni(x, y, n, m, mix) {
+      var PI = Math.PI;
+      var a = Math.sin(n * PI * x) * Math.sin(m * PI * y);
+      var b = Math.sin(m * PI * x) * Math.sin(n * PI * y);
+      return a * mix + b * (1 - mix);
+    }
+
+    function chladniBlend(x, y, n1, m1, n2, m2, blend, mix) {
+      return chladni(x, y, n1, m1, mix) * (1 - blend) + chladni(x, y, n2, m2, mix) * blend;
+    }
+
+    function marchingSquares(field, cols, rows, threshold) {
+      var segments = [];
+      for (var j = 0; j < rows - 1; j++) {
+        for (var i = 0; i < cols - 1; i++) {
+          var tl = field[j * cols + i];
+          var tr = field[j * cols + i + 1];
+          var br = field[(j+1) * cols + i + 1];
+          var bl = field[(j+1) * cols + i];
+          var idx = 0;
+          if (tl > threshold) idx |= 8;
+          if (tr > threshold) idx |= 4;
+          if (br > threshold) idx |= 2;
+          if (bl > threshold) idx |= 1;
+          if (idx === 0 || idx === 15) continue;
+
+          var t = threshold;
+          function lerp(v1, v2) {
+            if (Math.abs(v2 - v1) < 0.0001) return 0.5;
+            return (t - v1) / (v2 - v1);
+          }
+          var top    = { x: i + lerp(tl, tr), y: j };
+          var right  = { x: i + 1, y: j + lerp(tr, br) };
+          var bottom = { x: i + lerp(bl, br), y: j + 1 };
+          var left   = { x: i, y: j + lerp(tl, bl) };
+
+          switch (idx) {
+            case 1: case 14: segments.push(left, bottom); break;
+            case 2: case 13: segments.push(bottom, right); break;
+            case 3: case 12: segments.push(left, right); break;
+            case 4: case 11: segments.push(top, right); break;
+            case 5: segments.push(top, left); segments.push(bottom, right); break;
+            case 6: case 9: segments.push(top, bottom); break;
+            case 7: case 8: segments.push(top, left); break;
+            case 10: segments.push(top, right); segments.push(bottom, left); break;
+          }
+        }
+      }
+      return segments;
+    }
+
+    var modes = [
+      [1, 1], [1, 2], [2, 2], [2, 3], [3, 3], [3, 4],
+      [4, 4], [4, 5], [5, 5], [5, 6], [6, 6], [6, 7],
+      [7, 7], [7, 8], [8, 8], [8, 9], [9, 9], [9, 10],
+      [10, 10], [10, 12], [12, 12], [12, 14], [14, 14],
+      [14, 16], [16, 16], [16, 18], [18, 20], [20, 22],
+      [22, 25], [25, 28]
+    ];
+
+    // Ice carries the primary nodal lines; paper sits underneath them
+    var ICE = 'rgba(98, 182, 232,';
+    var PAPER = 'rgba(245, 247, 250,';
+
+    var smoothScroll = 0;
+    var time = 0;
+
+    function draw() {
+      if (!reduceMotion) time += 0.032;
+
+      var scrollMax = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      var rawScroll = window.scrollY / scrollMax;
+      if (reduceMotion) {
+        smoothScroll = 0.3;
+      } else {
+        smoothScroll += (rawScroll - smoothScroll) * 0.08;
+      }
+
+      mouseSmX += (mouseX - mouseSmX) * 0.03;
+
+      var modeProgress = smoothScroll * (modes.length - 1);
+      var modeIdx = Math.floor(modeProgress);
+      var modeFrac = modeProgress - modeIdx;
+      modeIdx = Math.min(modeIdx, modes.length - 2);
+
+      var n1 = modes[modeIdx][0], m1 = modes[modeIdx][1];
+      var n2 = modes[modeIdx + 1][0], m2 = modes[modeIdx + 1][1];
+
+      var mix = 0.35 + mouseSmX * 0.3;
+      var timeDrift = Math.sin(time * 0.15) * 0.02;
+
+      for (var j = 0; j < GRID; j++) {
+        for (var i = 0; i < GRID; i++) {
+          var x = (i / (GRID - 1)) * 2 - 1;
+          var y = (j / (GRID - 1)) * 2 - 1;
+          var dist = Math.sqrt(x * x + y * y);
+          if (dist > 1.0) {
+            field[j * GRID + i] = 999;
+            continue;
+          }
+          var val = chladniBlend(x, y, n1 + timeDrift, m1, n2 + timeDrift, m2, modeFrac, mix);
+          if (dist > 0.85) {
+            var edge = (dist - 0.85) / 0.15;
+            val *= (1 - edge * edge);
+          }
+          field[j * GRID + i] = val;
+        }
+      }
+
+      // Transparent clear — the ink page ground stays visible beneath the lines
+      ctx.clearRect(0, 0, W, H);
+
+      var plateSize = Math.min(W, H) * 1.8;
+      var offX = (W - plateSize) / 2;
+      var offY = (H - plateSize) / 2;
+      var cellW = plateSize / (GRID - 1);
+      var cellH = plateSize / (GRID - 1);
+
+      drawSegs(marchingSquares(field, GRID, GRID, 0), ICE, 0.16, 0.7, offX, offY, cellW, cellH);
+      drawSegs(marchingSquares(field, GRID, GRID, 0.12), PAPER, 0.05, 0.4, offX, offY, cellW, cellH);
+      drawSegs(marchingSquares(field, GRID, GRID, -0.12), PAPER, 0.05, 0.4, offX, offY, cellW, cellH);
+    }
+
+    // Adaptive cadence — start at 30fps, back off when draw() is expensive
+    // (slow devices, software rendering) so the page never fights the canvas.
+    var frameTick = 0, frameDiv = 2, emaMs = 0;
+    function loop() {
+      frameTick++;
+      if (frameTick % frameDiv === 0) {
+        var t0 = performance.now();
+        draw();
+        var dt = performance.now() - t0;
+        emaMs = emaMs ? emaMs * 0.9 + dt * 0.1 : dt;
+        frameDiv = Math.min(10, Math.max(2, Math.round(emaMs / 7) + 1));
+      }
+      requestAnimationFrame(loop);
+    }
+
+    function drawSegs(segs, colorStr, alpha, lineWidth, offX, offY, cellW, cellH) {
+      if (segs.length < 2) return;
+      ctx.strokeStyle = colorStr + alpha + ')';
+      ctx.lineWidth = lineWidth;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      for (var i = 0; i < segs.length; i += 2) {
+        var a = segs[i], b = segs[i + 1];
+        ctx.moveTo(offX + a.x * cellW, offY + a.y * cellH);
+        ctx.lineTo(offX + b.x * cellW, offY + b.y * cellH);
+      }
+      ctx.stroke();
+    }
+
+    resize();
+    if (reduceMotion) { draw(); } else { requestAnimationFrame(loop); }
+  })();
+  </script>
+
+  <script>
+    // Nav active state is baked at build time (FW-UX-11, build.py
+    // mark_active_nav): child pages light their section, no JS needed.
+
+    // Intersection Observer for fade-up animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.fade-up, .fade-in').forEach(el => observer.observe(el));
+
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinksEl = document.querySelector('.nav-links');
+    if (menuToggle && navLinksEl) {
+      menuToggle.addEventListener('click', () => {
+        const isOpen = navLinksEl.classList.toggle('mobile-open');
+        menuToggle.textContent = isOpen ? '✕' : '☰';
+        menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+    }
+
+    // Accordion toggle
+    document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const accordion = trigger.parentElement;
+        const isOpen = accordion.getAttribute('data-open') === 'true';
+        accordion.setAttribute('data-open', isOpen ? 'false' : 'true');
+        trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      });
+    });
+
+    // Double-submit guard on the capture forms (contact + hear first).
+    // Progressive enhancement only: it runs at submit time, so with JS off
+    // the forms post and redirect exactly as before.
+    const captureForms = document.querySelectorAll('form.contact-form');
+    captureForms.forEach(form => {
+      form.addEventListener('submit', () => {
+        const btn = form.querySelector('button[type="submit"]');
+        if (!btn || btn.disabled) return;
+        btn.dataset.restingLabel = btn.textContent;
+        btn.disabled = true;
+        btn.setAttribute('aria-busy', 'true');
+        btn.textContent = 'Sending…'; // HUMAN REVIEW — in-flight button label
+      });
+    });
+    // GA4 begin_checkout when a session checkout form submits (delegated:
+    // the form is feed-injected). Progressive only — the POST proceeds
+    // identically without gtag or with JS off; gtag.js sends via beacon so
+    // the navigation doesn't lose the event.
+    document.addEventListener('submit', (e) => {
+      const form = e.target;
+      if (!form.classList || !form.classList.contains('session-checkout')) return;
+      if (typeof window.gtag !== 'function') return;
+      const card = form.closest('[data-session-id]');
+      const tier = form.querySelector('input[name="tier_id"]:checked') ||
+                   form.querySelector('input[name="tier_id"]');
+      window.gtag('event', 'begin_checkout', {
+        items: [{
+          item_id: card ? card.getAttribute('data-session-id') : '',
+          item_name: document.title.split('|')[0].trim(),
+          item_variant: tier ? tier.value : ''
+        }]
+      });
+    });
+
+    // Coming back from /thanks/ via the back button can restore the disabled
+    // state from the bfcache; put the button back the way it was.
+    window.addEventListener('pageshow', (e) => {
+      if (!e.persisted) return;
+      captureForms.forEach(form => {
+        const btn = form.querySelector('button[type="submit"]');
+        if (!btn || !btn.disabled) return;
+        btn.disabled = false;
+        btn.removeAttribute('aria-busy');
+        if (btn.dataset.restingLabel) btn.textContent = btn.dataset.restingLabel;
+      });
+    });
+  </script>
+</body>
+</html>

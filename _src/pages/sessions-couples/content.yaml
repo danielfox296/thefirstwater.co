@@ -1,0 +1,30 @@
+title: "Couples Reconnection"
+slug: "couples"
+eyebrow: "A SOUND SESSION"
+dek: "This is a date night in Denver, built for two people who want to sit side by side."
+hero:
+  src: "../../img/hero/session-couples.jpg"
+  alt: "Two hands held"
+date: "2026-07-16"
+last_updated: "2026-07-16"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "A date-night sound session in Denver for two people who want an evening side by side. Shared sound, low light, somewhere to start talking after."
+llms_description: "A date-night sound session in Denver for two people who want an evening side by side. Shared sound, low light, somewhere to start talking after."
+tags: [sessions, couples, denver]
+sections:
+  - type: prose
+    body: |
+      This is a session for two people who want an evening side by side with no
+      screen and no task between them. You share the same seventy-five minutes of
+      sound, and you leave with somewhere to start talking. It's a date night,
+      built to be still.
+
+  - type: prose
+    body: |
+      You spend the whole night beside each other and no one else. [Write to
+      me](../../contact/) and check the box, and you'll hear when the next one
+      goes up.
+
+      [All sessions](../../sessions/)

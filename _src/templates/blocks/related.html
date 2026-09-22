@@ -1,0 +1,19 @@
+<section class="blog-related" aria-label="Related posts">
+  <h2 class="blog-related__title">Keep reading</h2>
+  <div class="blog-related__grid">
+    {% for post in block.posts %}
+    <a href="{{ ctx.nav_prefix }}blog/{{ post.slug }}.html" class="blog-related__card">
+      {% if post.hero_img %}
+      <img src="{{ post.hero_img }}" alt="{{ post.title }}" class="blog-related__img" loading="lazy">
+      {% endif %}
+      {% if post.eyebrow %}
+      <span class="blog-related__eyebrow">{{ post.eyebrow }}</span>
+      {% endif %}
+      <span class="blog-related__card-title">{{ post.title }}</span>
+      {% if post.dek %}
+      <span class="blog-related__dek">{{ post.dek }}</span>
+      {% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</section>
