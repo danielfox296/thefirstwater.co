@@ -1,0 +1,97 @@
+# Drafted 2026-09-21 by the site-ops weekly run; revised the same day after the
+# adversarial pass (REVISE, 14 items). Provenance: every fact about the night is
+# drawn from _src/pages/faq/sections/01-content.html (the sanctioned plain
+# description): "Is this a meditation?" (I open and close, a nudge here and there,
+# nothing to follow and nothing to get right, never meditated changes nothing), "Do
+# I have to do anything?" (some follow closely, some drift, some sleep; each a fine
+# way to spend the hour), "What happens at a session?" (blankets, low light,
+# seventy-five minutes, the card, the optional invitation announced beforehand, the
+# tea, the open door), "What do I wear and bring?" (phone in the bag, the door
+# beside you), "What if it wasn't for me?". The three-way split is attributed to the
+# FAQ, not to what Daniel can see (the nap post says he can't tell settled from
+# asleep). No volume line. No frequency claim about who writes in. ONE passage was
+# written for Daniel rather than recorded anywhere: the paragraph about people who
+# have meditated for years. Daniel confirmed it as written and approved the post
+# (Daniel, 2026-09-28: "the rest are good"). Published 2026-09-28.
+title: "If you've never meditated"
+seo_title: "Never Meditated? What That Changes at a Sound Session in Denver"
+slug: "ive-never-meditated"
+eyebrow: "JOURNAL"
+dek: "Some of the people who write before booking add that they've never meditated and can't sit still, and want to know if that rules them out. It doesn't, and here is what I ask of you instead."
+date: "2026-09-28"
+last_updated: "2026-09-28"
+author:
+  name: "Firstwater"
+  role: "Denver"
+meta_description: "A Denver facilitator on coming to a sound session with no meditation practice: what the guidance is, what the FAQ says people do on the floor, and why arriving without a technique changes nothing."
+llms_description: "First-person piece from the Firstwater facilitator for people who want to attend a sound session in Denver but have never meditated. The facilitator opens and closes the night and offers a nudge here and there; there is nothing to follow and nothing to get right. Restates the FAQ's account of what people do during the seventy-five minutes (follow the guidance, drift, or sleep), notes the one optional invitation some nights include, and says that no technique is needed to arrive."
+tags: [journal, practice]
+sections:
+  - type: prose
+    body: |
+      The email has a confession in it. Somebody wants to come, and a sentence
+      later they tell me they've never meditated, or that they tried and
+      couldn't keep their attention on anything, and they want to know whether
+      they'll be doing it wrong.
+
+      The short answer is on the [FAQ page](../faq/): if you've never
+      meditated, that changes nothing about how you arrive. The longer answer
+      is about what I ask of you on the night, because I think people picture
+      a different evening than the one I run.
+
+  - type: subhead
+    text: "What the guidance is"
+
+  - type: prose
+    body: |
+      I open the night and I close it. In between there are seventy-five
+      minutes of live instruments over music I composed for the evening, and a
+      nudge from me here and there when it seems like the moment for one.
+      That's the whole of the guidance. You lie down under blankets in low
+      light, and you rest.
+
+      When people tell me they can't meditate, what they describe is a
+      technique they kept losing hold of. There's nothing to follow and nothing
+      to get right.
+
+  - type: subhead
+    text: "What people do on the floor"
+
+  - type: prose
+    body: |
+      Some people follow the guidance closely, some drift, and some sleep, and
+      each of those is a fine way to spend the hour. I wrote a whole post
+      about the [third one](./a-nap-is-a-legitimate-outcome.html).
+
+      The person who wrote to me is worried about the second one. They picture
+      seventy-five minutes of trying to empty their head and failing at it. By
+      drifting I mean your thoughts come and go while you lie there, and you
+      don't have to do anything about them. Nobody in the space is watching
+      what you do on the floor, and that includes me.
+
+  - type: subhead
+    text: "If you have meditated"
+
+  - type: prose
+    body: |
+      I don't run the night any differently for someone who has sat for years,
+      and I think that surprises a few of them. Everyone in the space gets the
+      same instruction, which is to lie down, and the first-timer and the
+      person on their tenth session do that the same way. If you've practiced,
+      you might settle a little sooner in the first few minutes. After that
+      you're on a mat, under a blanket, hearing the same sound as the person
+      beside you.
+
+  - type: subhead
+    text: "What I do ask"
+
+  - type: prose
+    body: |
+      Your phone stays in your bag. Some nights I offer one invitation, like a
+      moment of meeting another person's eyes; you hear about it beforehand,
+      never as a surprise, and every invitation is optional. If you'd rather
+      stay on the floor, that's what the floor is for.
+
+      That is the whole of it. You don't need a practice to arrive with. You
+      lie down under a blanket, I open the night, and you're on the same floor
+      as the person beside you for seventy-five minutes.
